@@ -15,6 +15,7 @@ interface FeedClientProps {
 
 export function FeedClient({ initialReports }: FeedClientProps) {
   const [viewMode, setViewMode] = useState<'list' | 'map'>('list');
+  const [filterNearby, setFilterNearby] = useState(false);
   const { location, loading: locLoading, requestLocation } = useUserLocation();
 
   // Extraemos la ubicación real de la Base de Datos o descartamos si no tiene
@@ -28,13 +29,13 @@ export function FeedClient({ initialReports }: FeedClientProps) {
     }));
   }, [initialReports]);
 
-  // Si tenemos la ubicación del usuario, filtramos por radio de 50km
+  // Filtramos por radio solo si el usuario tiene ubicación Y eligió filtrar
   const displayedReports = useMemo(() => {
-    if (location) {
+    if (location && filterNearby) {
       return filterByRadius(reportsWithLocation, location, 50); // 50 km de radio
     }
     return reportsWithLocation;
-  }, [reportsWithLocation, location]);
+  }, [reportsWithLocation, location, filterNearby]);
 
   const mapMarkers = displayedReports.filter(r => r.location).map(r => ({
     id: r.id,
@@ -70,16 +71,24 @@ export function FeedClient({ initialReports }: FeedClientProps) {
           </div>
         </div>
 
-        <div className="text-sm text-muted">
+        <div className="flex items-center gap-3 text-sm text-muted">
           {locLoading ? (
              <span className="flex items-center gap-2">
                <Loader2 className="w-4 h-4 animate-spin" /> Buscando tu ubicación...
              </span>
           ) : location ? (
-             <span className="text-emerald-400">Mostrando casos a menos de 50km</span>
+             <label className="flex items-center gap-2 cursor-pointer hover:text-white transition-colors">
+               <input 
+                 type="checkbox" 
+                 checked={filterNearby} 
+                 onChange={(e) => setFilterNearby(e.target.checked)} 
+                 className="rounded border-white/20 bg-black/40 text-brand focus:ring-brand accent-brand w-4 h-4"
+               />
+               <span>Mostrar solo casos cerca de mí (50km)</span>
+             </label>
           ) : (
              <button onClick={requestLocation} className="text-brand hover:underline">
-               Activar ubicación para filtrar
+               Activar ubicación para filtrar cerca de ti
              </button>
           )}
         </div>
