@@ -56,24 +56,7 @@ export async function GET(
             position: 'relative',
           }}
         >
-          {/* Fondo desenfocado usando la misma imagen si existe */}
-          {report.image_url && (
-            <img
-              src={report.image_url}
-              style={{
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                width: '100%',
-                height: '100%',
-                objectFit: 'cover',
-                opacity: 0.3,
-                filter: 'blur(40px)',
-              }}
-            />
-          )}
-
-          {/* Gradiente principal oscuro */}
+          {/* Gradiente principal oscuro (usaremos un div sólido con transparencia como fallback seguro para Satori) */}
           <div
             style={{
               position: 'absolute',
@@ -81,7 +64,7 @@ export async function GET(
               left: 0,
               width: '100%',
               height: '100%',
-              backgroundImage: 'linear-gradient(to bottom, rgba(9, 9, 11, 0.4), rgba(9, 9, 11, 1))',
+              backgroundColor: 'rgba(9, 9, 11, 0.7)',
             }}
           />
 
@@ -223,7 +206,8 @@ export async function GET(
       }
     );
   } catch (e: any) {
-    return new Response(`Failed to generate the image`, {
+    console.error('Error in ImageResponse:', e);
+    return new Response(`Failed to generate the image: ${e.message}`, {
       status: 500,
     });
   }
