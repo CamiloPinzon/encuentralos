@@ -32,11 +32,20 @@ export const metadata: Metadata = {
     title: "Encuéntralos - Reporta mascotas y personas",
     description: "Plataforma comunitaria para reportar personas o mascotas perdidas, encontradas o avistadas en Colombia.",
     siteName: "Encuéntralos",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1024,
+        height: 1024,
+        alt: "Encuéntralos Logo",
+      }
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Encuéntralos - Reporta mascotas y personas",
     description: "Plataforma comunitaria para reportar personas o mascotas perdidas en Colombia.",
+    images: ["/og-image.png"],
   },
 };
 
