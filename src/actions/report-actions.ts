@@ -4,8 +4,10 @@ import { revalidatePath } from 'next/cache';
 import { v4 as uuidv4 } from 'uuid';
 import { createClient } from '@/utils/supabase/server';
 import { v2 as cloudinary } from 'cloudinary';
+import { Resend } from 'resend';
 
 // La configuración de Cloudinary se toma automáticamente de la variable de entorno CLOUDINARY_URL
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 /**
  * Server Action para crear un nuevo reporte.
@@ -96,6 +98,26 @@ export async function createReport(formData: FormData) {
 
   if (error) {
     return { success: false, error: 'Error al guardar el reporte: ' + error.message };
+  }
+
+  // Enviar correo con el enlace de edición
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://encuentralos-seven.vercel.app';
+  try {
+    await resend.emails.send({
+      from: 'onboarding@resend.dev',
+      to: contact_email,
+      subject: 'Gestiona tu reporte en Encuéntralos',
+      html: `
+        <h2>¡Tu reporte ha sido publicado!</h2>
+        <p>Hola, has publicado un reporte titulado: <strong>${title}</strong></p>
+        <p>Para editarlo, cambiar su estado (ej. de Perdido a Encontrado) o eliminarlo, haz clic en el siguiente enlace único:</p>
+        <p><a href="${baseUrl}/gestionar/${editToken}" style="display:inline-block;padding:10px 20px;background-color:#8b5cf6;color:white;text-decoration:none;border-radius:8px;">Gestionar mi reporte</a></p>
+        <p><strong>Importante:</strong> No compartas este correo con nadie, ya que cualquiera con el enlace podría modificar o borrar tu publicación.</p>
+      `
+    });
+  } catch (emailError) {
+    console.error('Error enviando correo de confirmación:', emailError);
+    // No bloqueamos el flujo si el correo falla, igual se creó el reporte
   }
 
   revalidatePath(`/${category}/${status}`);
@@ -227,10 +249,9 @@ export async function recoverManagementLinks(email: string) {
     throw new Error('Debes proporcionar un correo electrónico');
   }
 
-  // const supabase = createClient();
+  const supabase = createClient();
 
   // Buscar reportes asociados a este correo
-  /*
   const { data: reports, error } = await supabase
     .from('reports')
     .select('id, title, edit_token')
@@ -239,37 +260,37 @@ export async function recoverManagementLinks(email: string) {
   if (error) {
     throw new Error('Error al buscar reportes');
   }
-  */
 
-  // Simulación de reportes encontrados
-  const mockReports = [
-    { id: '1', title: 'Perrito perdido', edit_token: 'token-abc' },
-    { id: '2', title: 'Gato encontrado', edit_token: 'token-xyz' }
-  ];
-
-  if (mockReports.length === 0) {
-    return { success: false, message: 'No se encontraron reportes con ese correo.' };
+  if (!reports || reports.length === 0) {
+    // Por seguridad, retornamos éxito incluso si no hay reportes para no filtrar emails
+    return { success: true, message: 'Si el correo existe en nuestra base de datos, te enviaremos los enlaces de gestión.' };
   }
 
-  // Aquí integrarías el envío de email, ej. con Resend
-  /*
-  import { Resend } from 'resend';
-  const resend = new Resend(process.env.RESEND_API_KEY);
-  
-  await resend.emails.send({
-    from: 'onboarding@resend.dev',
-    to: email,
-    subject: 'Tus enlaces de gestión - Encuéntralos',
-    html: `
-      <p>Aquí tienes tus enlaces para gestionar tus reportes:</p>
-      <ul>
-        ${reports.map(r => `<li>${r.title}: <a href="https://tu-dominio.com/gestionar/${r.edit_token}">Gestionar</a></li>`).join('')}
-      </ul>
-    `
-  });
-  */
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://encuentralos-seven.vercel.app';
 
-  console.log(`Simulando envío de correo a ${email} con los enlaces de gestión...`);
+  try {
+    await resend.emails.send({
+      from: 'onboarding@resend.dev',
+      to: email,
+      subject: 'Tus enlaces de gestión - Encuéntralos',
+      html: `
+        <h2>Tus enlaces de gestión</h2>
+        <p>Has solicitado recuperar los enlaces para gestionar tus reportes en Encuéntralos. Aquí tienes la lista:</p>
+        <ul>
+          ${reports.map(r => `
+            <li style="margin-bottom: 15px;">
+              <strong>${r.title}</strong><br/>
+              <a href="${baseUrl}/gestionar/${r.edit_token}">Gestionar este reporte</a>
+            </li>
+          `).join('')}
+        </ul>
+        <p><strong>Importante:</strong> No compartas este correo, ya que cualquiera con los enlaces podría modificar o borrar tus publicaciones.</p>
+      `
+    });
+  } catch (emailError) {
+    console.error('Error enviando correo de recuperación:', emailError);
+    // Continuamos para mostrar mensaje genérico
+  }
   
   return {
     success: true,
