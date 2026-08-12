@@ -78,7 +78,7 @@ export async function GET(
               left: 0,
               width: '100%',
               height: '100%',
-              backgroundColor: 'rgba(9, 9, 11, 0.7)',
+              backgroundColor: 'rgba(9, 9, 11, 0.85)',
             }}
           />
 
@@ -181,7 +181,6 @@ export async function GET(
                 justifyContent: 'center',
                 width: '100%',
                 marginTop: 'auto',
-                gap: '20px',
               }}
             >
               <div
@@ -197,22 +196,6 @@ export async function GET(
               >
                 {`📞 Contacto: ${report.contact_phone || 'Por la app'}`}
               </div>
-            </div>
-
-            {/* Brand Logo o Texto */}
-            <div
-              style={{
-                position: 'absolute',
-                bottom: '40px',
-                right: '40px',
-                display: 'flex',
-                fontSize: 24,
-                color: 'rgba(255,255,255,0.5)',
-                fontWeight: 600,
-                letterSpacing: '0.05em',
-              }}
-            >
-              ENCUÉNTRALOS.COM
             </div>
           </div>
         </div>
