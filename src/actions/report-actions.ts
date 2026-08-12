@@ -61,6 +61,7 @@ export async function createReport(formData: FormData) {
         category,
         subject_category: category,
         status,
+        status_type: status,
         title,
         description,
         contact_email,
