@@ -3,7 +3,7 @@ import { Search, MapPin, HeartHandshake, ArrowRight, User, PawPrint } from 'luci
 
 export default function HomePage() {
   return (
-    <main className="min-h-screen flex flex-col items-center justify-center p-4 sm:p-8 relative overflow-hidden">
+    <main className="min-h-[calc(100vh-4rem)] flex flex-col items-center justify-center p-4 sm:p-8 relative overflow-hidden">
       
       {/* Círculos decorativos de fondo para potenciar el efecto glassmorphism */}
       <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-brand/20 rounded-full blur-[100px] -z-10 animate-pulse"></div>
@@ -17,13 +17,13 @@ export default function HomePage() {
             <HeartHandshake className="w-4 h-4" />
             Plataforma comunitaria de búsqueda
           </div>
-          <h1 className="text-5xl sm:text-7xl font-extrabold tracking-tight leading-tight">
+          <h1 className="text-4xl sm:text-5xl md:text-7xl font-extrabold tracking-tight leading-tight">
             Reuniendo familias,<br/>
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-light to-emerald-400">
               una búsqueda a la vez.
             </span>
           </h1>
-          <p className="text-lg sm:text-xl text-muted max-w-2xl mx-auto leading-relaxed">
+          <p className="text-base sm:text-lg md:text-xl text-muted max-w-2xl mx-auto leading-relaxed px-2">
             Reporta personas o mascotas perdidas, avistamientos y encuentros. Juntos podemos hacer la diferencia.
           </p>
         </section>

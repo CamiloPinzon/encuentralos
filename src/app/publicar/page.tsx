@@ -55,7 +55,7 @@ export default function PublicarPage() {
   };
 
   return (
-    <main className="min-h-screen py-12 px-4 sm:px-6">
+    <main className="min-h-[calc(100vh-4rem)] py-8 sm:py-12 px-4 sm:px-6">
       <div className="max-w-3xl mx-auto space-y-8">
         
         {/* Encabezado */}
