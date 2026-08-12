@@ -49,12 +49,28 @@ export async function GET(
             flexDirection: 'column',
             width: '100%',
             height: '100%',
-            backgroundColor: '#09090b', // zinc-950
+            backgroundColor: '#09090b',
             fontFamily: 'sans-serif',
             position: 'relative',
           }}
         >
-          {/* Gradiente principal oscuro (usaremos un div sólido con transparencia como fallback seguro para Satori) */}
+          {/* Fondo desenfocado usando la misma imagen si existe */}
+          {report.image_url && (
+            <img
+              src={report.image_url}
+              style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+                opacity: 0.3,
+              }}
+            />
+          )}
+
+          {/* Gradiente principal oscuro (fallback seguro para Satori) */}
           <div
             style={{
               position: 'absolute',
@@ -76,12 +92,12 @@ export async function GET(
               height: '100%',
               padding: '60px',
               position: 'relative',
-              zIndex: 10,
             }}
           >
             {/* Cabecera / Estado */}
             <div
               style={{
+                display: 'flex',
                 backgroundColor: statusInfo.bg,
                 color: statusInfo.text,
                 padding: '20px 60px',
@@ -90,11 +106,10 @@ export async function GET(
                 fontWeight: 900,
                 letterSpacing: '0.1em',
                 textTransform: 'uppercase',
-                boxShadow: '0 20px 40px rgba(0,0,0,0.5)',
                 marginBottom: '40px',
               }}
             >
-              ¡{statusInfo.label}!
+              {`¡${statusInfo.label}!`}
             </div>
 
             {/* Imagen Principal */}
@@ -106,8 +121,9 @@ export async function GET(
                   height: '600px',
                   borderRadius: '40px',
                   overflow: 'hidden',
-                  border: '8px solid rgba(255,255,255,0.1)',
-                  boxShadow: '0 30px 60px rgba(0,0,0,0.6)',
+                  borderStyle: 'solid',
+                  borderWidth: '8px',
+                  borderColor: 'rgba(255,255,255,0.1)',
                 }}
               >
                 <img
@@ -131,7 +147,9 @@ export async function GET(
                   alignItems: 'center',
                   fontSize: 100,
                   color: '#52525b',
-                  border: '8px solid rgba(255,255,255,0.05)',
+                  borderStyle: 'solid',
+                  borderWidth: '8px',
+                  borderColor: 'rgba(255,255,255,0.05)',
                 }}
               >
                 📷
@@ -141,14 +159,15 @@ export async function GET(
             {/* Título */}
             <h1
               style={{
+                display: 'flex',
                 fontSize: 64,
                 fontWeight: 900,
                 color: 'white',
                 textAlign: 'center',
-                margin: '40px 0 20px 0',
+                marginTop: '40px',
+                marginBottom: '20px',
                 lineHeight: 1.2,
                 maxWidth: '900px',
-                textShadow: '0 4px 10px rgba(0,0,0,0.5)',
               }}
             >
               {report.title.length > 50 ? report.title.substring(0, 50) + '...' : report.title}
@@ -176,7 +195,7 @@ export async function GET(
                   fontWeight: 600,
                 }}
               >
-                📞 Contacto: {report.contact_phone || 'Por la app'}
+                {`📞 Contacto: ${report.contact_phone || 'Por la app'}`}
               </div>
             </div>
 
