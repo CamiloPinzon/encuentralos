@@ -4,6 +4,7 @@ import { Report } from '@/types';
 import { ZoomableImage } from '@/components/ZoomableImage';
 import Link from 'next/link';
 import { ShareButton } from '@/components/ShareButton';
+import { InstagramButton } from '@/components/InstagramButton';
 import { formatDistanceToNow } from 'date-fns';
 import { es } from 'date-fns/locale';
 import { MapPin, Phone, MessageCircle, Clock, AlertCircle, ChevronLeft } from 'lucide-react';
@@ -183,6 +184,7 @@ export default async function ReportDetailPage({ params }: ReportDetailPageProps
                       Enviar Correo
                     </a>
                   )}
+                  <InstagramButton reportId={report.id} />
                   <ShareButton 
                     title={report.title} 
                     text={report.description.substring(0, 50) + '...'} 
