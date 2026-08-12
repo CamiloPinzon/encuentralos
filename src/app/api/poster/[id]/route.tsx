@@ -3,8 +3,6 @@ import { NextRequest } from 'next/server';
 import { createClient } from '@/utils/supabase/server';
 import { Report } from '@/types';
 
-export const runtime = 'edge';
-
 // Colores por estado
 const getStatusColors = (status: string) => {
   switch (status) {
