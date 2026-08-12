@@ -16,6 +16,7 @@ export function Navbar() {
     { name: 'Mascotas', path: '/pet/searching', icon: <Search className="w-4 h-4" /> },
     { name: 'Personas', path: '/human/searching', icon: <Search className="w-4 h-4" /> },
     { name: 'Mis Reportes', path: '/recuperar', icon: null },
+    { name: 'Lugares', path: '/lugares', icon: null },
   ];
 
   return (
