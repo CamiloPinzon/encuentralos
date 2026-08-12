@@ -113,7 +113,7 @@ export default async function ReportDetailPage({ params }: ReportDetailPageProps
             </div>
 
             {/* Sección de Datos */}
-            <div className="w-full md:w-1/2 p-8 md:p-10 flex flex-col">
+            <div className="w-full md:w-1/2 p-8 md:p-10 flex flex-col overflow-y-auto">
               
               <div className="flex items-center gap-3 mb-4">
                 <span className="bg-brand/20 text-brand px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest border border-brand/20">

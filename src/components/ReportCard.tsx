@@ -14,7 +14,10 @@ export function ReportCard({ report }: ReportCardProps) {
   const timeAgo = formatDistanceToNow(new Date(report.created_at), { addSuffix: true, locale: es });
 
   return (
-    <div className="glass rounded-2xl overflow-hidden hover:scale-[1.02] hover:shadow-[0_0_20px_rgba(139,92,246,0.15)] transition-all duration-300 flex flex-col group border border-white/5">
+    <Link 
+      href={`/${report.category}/${report.status}/${report.id}`}
+      className="glass rounded-2xl overflow-hidden hover:scale-[1.02] hover:shadow-[0_0_20px_rgba(139,92,246,0.15)] transition-all duration-300 flex flex-col group border border-white/5"
+    >
       {/* Imagen (1:1 Cuadrada) */}
       <div className="relative aspect-square w-full bg-black/40 overflow-hidden">
         {report.image_url ? (
@@ -62,12 +65,11 @@ export function ReportCard({ report }: ReportCardProps) {
       </div>
 
       {/* Botón de acción */}
-      <Link 
-        href={`/${report.category}/${report.status}/${report.id}`}
-        className="w-full bg-white/5 hover:bg-brand hover:text-white transition-colors py-3 text-center font-medium text-sm text-brand-light border-t border-white/5"
+      <div 
+        className="w-full bg-white/5 group-hover:bg-brand group-hover:text-white transition-colors py-3 text-center font-medium text-sm text-brand-light border-t border-white/5"
       >
         Ver detalles
-      </Link>
-    </div>
+      </div>
+    </Link>
   );
 }
