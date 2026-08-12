@@ -59,6 +59,7 @@ export default function LocationPickerMap({
   const [searchQuery, setSearchQuery] = useState('');
   const [isSearching, setIsSearching] = useState(false);
   const [searchCenter, setSearchCenter] = useState<[number, number] | null>(null);
+  const [searchResults, setSearchResults] = useState<any[]>([]);
   const markerRef = useRef<L.Marker>(null);
 
   const tileUrl = darkMode 
@@ -81,22 +82,29 @@ export default function LocationPickerMap({
     if (!searchQuery.trim()) return;
 
     setIsSearching(true);
+    setSearchResults([]);
     try {
-      // Usamos Nominatim de OpenStreetMap (Gratuito, no requiere API key)
-      const res = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(searchQuery)}&limit=1`);
+      // Usamos Nominatim con filtros para Colombia (countrycodes=co) y limitamos a 5 opciones
+      const res = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(searchQuery)}&limit=5&countrycodes=co&accept-language=es`);
       const data = await res.json();
       
       if (data && data.length > 0) {
-        const lat = parseFloat(data[0].lat);
-        const lon = parseFloat(data[0].lon);
-        setPosition([lat, lon]);
-        setSearchCenter([lat, lon]);
+        setSearchResults(data);
       }
     } catch (error) {
       console.error('Error buscando ubicación:', error);
     } finally {
       setIsSearching(false);
     }
+  };
+
+  const handleSelectResult = (result: any) => {
+    const lat = parseFloat(result.lat);
+    const lon = parseFloat(result.lon);
+    setPosition([lat, lon]);
+    setSearchCenter([lat, lon]);
+    setSearchResults([]);
+    setSearchQuery(result.name || result.display_name.split(',')[0]);
   };
 
   const eventHandlers = useMemo(
@@ -143,7 +151,27 @@ export default function LocationPickerMap({
         </button>
       </div>
 
-      <div className="h-[350px] w-full rounded-2xl overflow-hidden border border-white/10 relative z-0">
+      {/* Menú desplegable de sugerencias */}
+      {searchResults.length > 0 && (
+        <div className="bg-black/80 backdrop-blur-md border border-white/10 rounded-xl overflow-hidden shadow-2xl z-10 animate-fade-in relative">
+          <ul className="max-h-60 overflow-y-auto divide-y divide-white/5">
+            {searchResults.map((result, idx) => (
+              <li key={result.place_id || idx}>
+                <button
+                  type="button"
+                  onClick={() => handleSelectResult(result)}
+                  className="w-full text-left px-4 py-3 hover:bg-white/10 transition-colors flex flex-col gap-1 focus:bg-white/10 focus:outline-none"
+                >
+                  <span className="font-semibold text-white text-sm">{result.name || result.display_name.split(',')[0]}</span>
+                  <span className="text-xs text-muted truncate">{result.display_name}</span>
+                </button>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      <div className="h-[350px] w-full rounded-2xl overflow-hidden border border-white/10 relative z-0 mt-2">
         <MapContainer 
           center={defaultCenter} 
           zoom={position ? 15 : 12} 
