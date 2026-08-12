@@ -22,6 +22,8 @@ export async function createReport(formData: FormData) {
   const latitude = formData.get('latitude') as string;
   const longitude = formData.get('longitude') as string;
   const imageFile = formData.get('image') as File | null;
+  const department = formData.get('department') as string;
+  const municipality = formData.get('municipality') as string;
   
   if (!contact_email) {
     return { success: false, error: 'El email de contacto es obligatorio' };
@@ -84,7 +86,7 @@ export async function createReport(formData: FormData) {
         image_url: imageUrl || 'https://via.placeholder.com/300?text=Sin+Imagen',
         edit_token: editToken,
         edit_token_hash: editToken, // Legacy column
-        location: 'Ubicación seleccionada en el mapa', // Legacy column
+        location: municipality && department ? `${municipality}, ${department}` : 'Ubicación seleccionada en el mapa', // Legacy column
         latitude: latitude ? parseFloat(latitude) : null,
         longitude: longitude ? parseFloat(longitude) : null,
       }

@@ -17,11 +17,20 @@ export interface DaneLocation {
 export const getDaneLocations = unstable_cache(
   async (): Promise<DaneLocation[]> => {
     try {
-      const res = await fetch('https://www.datos.gov.co/resource/xdk5-pm3f.json?$limit=2000', {
+      const res = await fetch('https://www.datos.gov.co/resource/gdxc-w37w.json?$limit=2000', {
         next: { revalidate: 86400 } // Cache for 24 hours
       });
       if (!res.ok) throw new Error('Failed to fetch from DANE API');
-      return await res.json();
+      const data = await res.json();
+      
+      // Mapear el nuevo formato al formato antiguo (o usar el nuevo si prefieres)
+      return data.map((item: any) => ({
+        region: '', // no longer provided
+        c_digo_dane_del_departamento: item.cod_dpto,
+        departamento: item.dpto,
+        c_digo_dane_del_municipio: item.cod_mpio,
+        municipio: item.nom_mpio
+      }));
     } catch (error) {
       console.error('Error fetching DANE locations:', error);
       return [];
