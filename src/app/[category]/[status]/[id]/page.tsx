@@ -136,7 +136,7 @@ export default async function ReportDetailPage({ params }: ReportDetailPageProps
               </div>
 
               {/* Mapa (si hay coordenadas) */}
-              {report.latitude !== null && report.longitude !== null && (
+              {typeof report.latitude === 'number' && typeof report.longitude === 'number' && (
                 <div className="mb-8">
                   <h3 className="text-sm font-bold text-muted uppercase tracking-wider mb-3 flex items-center gap-2">
                     <MapPin className="w-4 h-4" />
