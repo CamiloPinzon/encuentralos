@@ -1,9 +1,9 @@
 import { ImageResponse } from 'next/og';
 import { NextRequest } from 'next/server';
-import { getReportById } from '@/actions/report-actions';
+import { createClient } from '@/utils/supabase/server';
 import { Report } from '@/types';
 
-// Edge runtime removido porque report-actions (Cloudinary) usa Node APIs
+export const runtime = 'edge';
 
 // Colores por estado
 const getStatusColors = (status: string) => {
@@ -27,9 +27,17 @@ export async function GET(
 ) {
   try {
     const { id } = await params;
-    const report = await getReportById(id) as Report | null;
+    
+    // Hacemos la consulta a Supabase directamente para evitar importar 
+    // report-actions.ts (el cual importa Cloudinary y rompe el Edge Runtime)
+    const supabase = createClient();
+    const { data: report, error } = await supabase
+      .from('reports')
+      .select('*')
+      .eq('id', id)
+      .single();
 
-    if (!report) {
+    if (error || !report) {
       return new Response('Not found', { status: 404 });
     }
 
