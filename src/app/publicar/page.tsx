@@ -2,9 +2,11 @@
 
 import { useState } from 'react';
 import { createReport } from '@/actions/report-actions';
-import { Camera, MapPin, Search, AlertCircle, Info, ChevronRight, User, PawPrint, Loader2 } from 'lucide-react';
+import { Camera, MapPin, Search, AlertCircle, Info, ChevronRight, User, PawPrint, Loader2, Target } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useUserLocation } from '@/hooks/useUserLocation';
+import { DynamicLocationPickerMap } from '@/components/DynamicLocationPickerMap';
+import { GeoLocation } from '@/types/geo';
 
 export default function PublicarPage() {
   const router = useRouter();
@@ -12,6 +14,7 @@ export default function PublicarPage() {
   const [status, setStatus] = useState<'searching' | 'found' | 'spotted' | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [selectedLocation, setSelectedLocation] = useState<GeoLocation | null>(null);
   
   const { location, loading: locLoading, requestLocation } = useUserLocation();
   
@@ -30,9 +33,10 @@ export default function PublicarPage() {
       form.append('category', category);
       form.append('status', status);
       
-      if (location) {
-        form.append('latitude', location.latitude.toString());
-        form.append('longitude', location.longitude.toString());
+      const finalLocation = selectedLocation || location;
+      if (finalLocation) {
+        form.append('latitude', finalLocation.latitude.toString());
+        form.append('longitude', finalLocation.longitude.toString());
       }
 
       // Llamada al Server Action
@@ -207,29 +211,30 @@ export default function PublicarPage() {
               </div>
 
               {/* Location Picker */}
-              <div className="pt-4 border-t border-white/5">
-                <label className="block text-sm font-medium mb-2 text-muted">
-                  Ubicación Exacta (Opcional, pero vital para el mapa)
+              <div className="pt-4 border-t border-white/5 space-y-4">
+                <label className="block text-sm font-medium text-muted">
+                  Ubicación Exacta (Haz clic o arrastra el pin en el mapa)
                 </label>
-                <div className="flex items-center gap-4">
+
+                <DynamicLocationPickerMap 
+                  initialCenter={location || undefined} 
+                  onLocationSelect={setSelectedLocation} 
+                />
+
+                <div className="flex items-center justify-between mt-2">
                   <button
                     type="button"
                     onClick={requestLocation}
-                    disabled={locLoading || location !== null}
-                    className="flex items-center gap-2 bg-black/40 hover:bg-black/60 border border-white/10 px-4 py-3 rounded-xl transition-colors disabled:opacity-50"
+                    disabled={locLoading}
+                    className="flex items-center gap-2 text-sm text-brand hover:text-brand-light transition-colors disabled:opacity-50"
                   >
-                    {locLoading ? (
-                      <Loader2 className="w-5 h-5 animate-spin text-brand" />
-                    ) : location ? (
-                      <MapPin className="w-5 h-5 text-emerald-400" />
-                    ) : (
-                      <MapPin className="w-5 h-5 text-muted" />
-                    )}
-                    {locLoading ? 'Obteniendo...' : location ? 'Ubicación Capturada' : 'Capturar mi ubicación actual'}
+                    {locLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Target className="w-4 h-4" />}
+                    Centrar en mi ubicación actual
                   </button>
-                  {location && (
+
+                  {selectedLocation && (
                     <span className="text-xs text-emerald-400 font-medium bg-emerald-400/10 px-3 py-1.5 rounded-full border border-emerald-400/20">
-                      ¡Listo para aparecer en el mapa!
+                      Coordenadas seleccionadas
                     </span>
                   )}
                 </div>
