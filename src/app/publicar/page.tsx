@@ -41,9 +41,11 @@ export default function PublicarPage() {
 
       // Llamada al Server Action
       const result = await createReport(form);
-      if (result.success) {
+      if (result.success && result.manageUrl) {
         // Redirigir al panel de gestión
         router.push(result.manageUrl);
+      } else {
+        setError(result.error || 'Error desconocido al crear el reporte');
       }
     } catch (err: any) {
       setError(err.message || 'Error inesperado al publicar');

@@ -24,7 +24,7 @@ export async function createReport(formData: FormData) {
   const imageFile = formData.get('image') as File | null;
   
   if (!contact_email) {
-    throw new Error('El email de contacto es obligatorio');
+    return { success: false, error: 'El email de contacto es obligatorio' };
   }
 
   let imageUrl = null;
@@ -43,7 +43,7 @@ export async function createReport(formData: FormData) {
       });
       imageUrl = uploadResult.secure_url;
     } catch (err: any) {
-      throw new Error('Error al subir imagen a Cloudinary: ' + err.message);
+      return { success: false, error: 'Error al subir imagen a Cloudinary: ' + err.message };
     }
   }
 
@@ -74,7 +74,7 @@ export async function createReport(formData: FormData) {
     .single();
 
   if (error) {
-    throw new Error('Error al guardar el reporte: ' + error.message);
+    return { success: false, error: 'Error al guardar el reporte: ' + error.message };
   }
 
   revalidatePath(`/${category}/${status}`);
