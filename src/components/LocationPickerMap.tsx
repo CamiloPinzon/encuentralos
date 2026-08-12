@@ -76,8 +76,8 @@ export default function LocationPickerMap({
     }
   }, [position, onLocationSelect]);
 
-  const handleSearch = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSearch = async (e?: React.FormEvent | React.KeyboardEvent | React.MouseEvent) => {
+    if (e) e.preventDefault();
     if (!searchQuery.trim()) return;
 
     setIsSearching(true);
@@ -114,7 +114,7 @@ export default function LocationPickerMap({
 
   return (
     <div className="flex flex-col gap-3">
-      <form onSubmit={handleSearch} className="flex gap-2">
+      <div className="flex gap-2">
         <div className="relative flex-1">
           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
             <Search className="h-4 w-4 text-muted" />
@@ -123,18 +123,25 @@ export default function LocationPickerMap({
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                e.preventDefault();
+                handleSearch(e);
+              }
+            }}
             placeholder="Buscar ciudad, barrio o dirección..."
             className="w-full bg-black/40 border border-white/10 rounded-xl pl-10 pr-4 py-2.5 text-sm text-white placeholder-muted focus:outline-none focus:ring-2 focus:ring-brand focus:border-transparent transition-all"
           />
         </div>
         <button
-          type="submit"
+          type="button"
+          onClick={handleSearch}
           disabled={isSearching || !searchQuery.trim()}
           className="bg-brand hover:bg-brand-light text-white px-4 py-2.5 rounded-xl text-sm font-medium transition-colors disabled:opacity-50 flex items-center gap-2"
         >
           {isSearching ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Buscar'}
         </button>
-      </form>
+      </div>
 
       <div className="h-[350px] w-full rounded-2xl overflow-hidden border border-white/10 relative z-0">
         <MapContainer 
