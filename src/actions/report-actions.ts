@@ -59,6 +59,7 @@ export async function createReport(formData: FormData) {
     .insert([
       {
         category,
+        subject_category: category,
         status,
         title,
         description,
