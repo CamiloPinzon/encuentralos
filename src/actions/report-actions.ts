@@ -65,9 +65,12 @@ export async function createReport(formData: FormData) {
         title,
         description,
         contact_email,
-        contact_phone,
-        image_url: imageUrl,
+        contact_name: 'Usuario', // Legacy column
+        contact_phone: contact_phone || 'No proporcionado',
+        image_url: imageUrl || 'https://via.placeholder.com/300?text=Sin+Imagen',
         edit_token: editToken,
+        edit_token_hash: editToken, // Legacy column
+        location: 'Ubicación seleccionada en el mapa', // Legacy column
         latitude: latitude ? parseFloat(latitude) : null,
         longitude: longitude ? parseFloat(longitude) : null,
       }
