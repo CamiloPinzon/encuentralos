@@ -27,6 +27,7 @@ interface LocationMapProps {
   }>;
   zoom?: number;
   darkMode?: boolean;
+  centerPopupText?: string;
 }
 
 // Componente para actualizar el centro del mapa dinámicamente
@@ -42,7 +43,8 @@ export default function LocationMap({
   center, 
   markers = [], 
   zoom = 13,
-  darkMode = true 
+  darkMode = true,
+  centerPopupText = "Tu ubicación aproximada"
 }: LocationMapProps) {
   
   // URLs de tiles (CartoDB Positron para claro, Dark Matter para oscuro)
@@ -67,7 +69,7 @@ export default function LocationMap({
         
         {/* Marcador del Usuario (Centro) */}
         <Marker position={[center.latitude, center.longitude]}>
-          <Popup>Tu ubicación aproximada</Popup>
+          <Popup>{centerPopupText}</Popup>
         </Marker>
 
         {/* Marcadores Dinámicos (Mascotas, Ads, Fundaciones) */}

@@ -7,6 +7,7 @@ import { ShareButton } from '@/components/ShareButton';
 import { formatDistanceToNow } from 'date-fns';
 import { es } from 'date-fns/locale';
 import { MapPin, Phone, MessageCircle, Clock, AlertCircle, ChevronLeft } from 'lucide-react';
+import { DynamicLocationMap } from '@/components/DynamicLocationMap';
 
 interface ReportDetailPageProps {
   params: Promise<{
@@ -133,6 +134,23 @@ export default async function ReportDetailPage({ params }: ReportDetailPageProps
               <div className="prose prose-invert prose-p:text-muted max-w-none flex-grow mb-8">
                 <p className="whitespace-pre-wrap leading-relaxed">{report.description}</p>
               </div>
+
+              {/* Mapa (si hay coordenadas) */}
+              {report.latitude !== null && report.longitude !== null && (
+                <div className="mb-8">
+                  <h3 className="text-sm font-bold text-muted uppercase tracking-wider mb-3 flex items-center gap-2">
+                    <MapPin className="w-4 h-4" />
+                    Ubicación del reporte
+                  </h3>
+                  <div className="rounded-xl overflow-hidden shadow-lg shadow-black/20 border border-white/5">
+                    <DynamicLocationMap 
+                      center={{ latitude: report.latitude, longitude: report.longitude }} 
+                      centerPopupText="Ubicación del reporte"
+                      zoom={15}
+                    />
+                  </div>
+                </div>
+              )}
 
               {/* Botones de Acción Inmediata */}
               <div className="space-y-4 mt-auto">
