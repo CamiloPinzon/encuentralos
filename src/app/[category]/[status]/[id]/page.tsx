@@ -1,7 +1,7 @@
 import { Metadata, ResolvingMetadata } from 'next';
 import { getReportById } from '@/actions/report-actions';
 import { Report } from '@/types';
-import Image from 'next/image';
+import { ZoomableImage } from '@/components/ZoomableImage';
 import Link from 'next/link';
 import { ShareButton } from '@/components/ShareButton';
 import { formatDistanceToNow } from 'date-fns';
@@ -96,16 +96,14 @@ export default async function ReportDetailPage({ params }: ReportDetailPageProps
 
         {/* Tarjeta Principal */}
         <article className="glass rounded-3xl overflow-hidden border border-white/10 shadow-2xl">
-          <div className="flex flex-col md:flex-row">
+          <div className="flex flex-col md:flex-row h-auto md:h-[calc(100vh-4rem)]">
             
-            {/* Sección de Imagen */}
-            <div className="w-full md:w-1/2 relative bg-black/60 min-h-[300px] md:min-h-[500px]">
-              {report.image_url ? (
-                <Image
-                  src={report.image_url}
-                  alt={report.title}
-                  fill
-                  className="object-contain"
+            {/* Lado Izquierdo - Imagen (Fixed on Desktop) */}
+            <div className="w-full md:w-1/2 relative bg-black flex items-center justify-center">
+              {report.image_url && report.image_url !== 'https://via.placeholder.com/300?text=Sin+Imagen' ? (
+                <ZoomableImage 
+                  src={report.image_url} 
+                  alt={`Foto de ${report.title}`} 
                 />
               ) : (
                 <div className="absolute inset-0 flex items-center justify-center text-muted">

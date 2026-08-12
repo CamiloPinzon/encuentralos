@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation';
 import { useUserLocation } from '@/hooks/useUserLocation';
 import { DynamicLocationPickerMap } from '@/components/DynamicLocationPickerMap';
 import { GeoLocation } from '@/types/geo';
+import { compressImage } from '@/utils/image-optimizer';
 
 export default function PublicarPage() {
   const router = useRouter();
@@ -37,6 +38,18 @@ export default function PublicarPage() {
       if (finalLocation) {
         form.append('latitude', finalLocation.latitude.toString());
         form.append('longitude', finalLocation.longitude.toString());
+      }
+      
+      // Optimizar imagen si es mayor a 2MB
+      const imageFile = form.get('image') as File | null;
+      if (imageFile && imageFile.size > 2 * 1024 * 1024) {
+        try {
+          const compressedFile = await compressImage(imageFile, 1920, 1920, 0.8);
+          form.set('image', compressedFile);
+        } catch (compressErr) {
+          console.warn('No se pudo comprimir la imagen, intentando enviar original:', compressErr);
+          // Si falla la compresión, dejamos la imagen original y que el servidor decida
+        }
       }
 
       // Llamada al Server Action
