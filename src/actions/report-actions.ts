@@ -27,9 +27,23 @@ export async function createReport(formData: FormData) {
     return { success: false, error: 'El email de contacto es obligatorio' };
   }
 
+  // Basic length validations (Risk Medium)
+  if (title && title.length > 100) return { success: false, error: 'El título no puede exceder 100 caracteres' };
+  if (description && description.length > 2000) return { success: false, error: 'La descripción no puede exceder 2000 caracteres' };
+  if (contact_email.length > 100) return { success: false, error: 'Email inválido' };
+  if (contact_phone && contact_phone.length > 50) return { success: false, error: 'Teléfono inválido' };
+
   let imageUrl = null;
 
   if (imageFile && imageFile.size > 0) {
+    // Unrestricted File Upload validation (Risk High)
+    if (!imageFile.type.startsWith('image/')) {
+      return { success: false, error: 'El archivo debe ser una imagen válida (jpg, png, webp, etc).' };
+    }
+    if (imageFile.size > 5 * 1024 * 1024) { // 5MB limit
+      return { success: false, error: 'La imagen no puede pesar más de 5MB.' };
+    }
+
     // Convertimos el archivo a base64 para subirlo a Cloudinary usando el SDK de Node
     const arrayBuffer = await imageFile.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
@@ -160,14 +174,14 @@ export async function updateReportStatus(token: string, newStatus: string) {
     .eq('edit_token', token)
     .single();
 
-  if (fetchError || !report) throw new Error('Token inválido');
+  if (fetchError || !report) return { success: false, error: 'Token inválido' };
 
   const { error } = await supabase
     .from('reports')
     .update({ status: newStatus })
     .eq('edit_token', token);
 
-  if (error) throw new Error('Error al actualizar');
+  if (error) return { success: false, error: 'Error al actualizar' };
 
   revalidatePath(`/${report.category}/${newStatus}`);
   revalidatePath('/');
@@ -185,14 +199,14 @@ export async function deleteReport(token: string) {
     .eq('edit_token', token)
     .single();
 
-  if (fetchError || !report) throw new Error('Token inválido');
+  if (fetchError || !report) return { success: false, error: 'Token inválido' };
 
   const { error } = await supabase
     .from('reports')
     .delete()
     .eq('edit_token', token);
 
-  if (error) throw new Error('Error al eliminar');
+  if (error) return { success: false, error: 'Error al eliminar' };
 
   revalidatePath(`/${report.category}/${report.status}`);
   revalidatePath('/');

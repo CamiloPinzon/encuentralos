@@ -27,8 +27,13 @@ export default function GestionarPage({ params }: { params: Promise<{ token: str
     if (!confirm('¿Estás seguro de que quieres marcar este caso como RESUELTO?')) return;
     setActionLoading(true);
     try {
-      await updateReportStatus(token, 'resolved');
-      router.push(`/${report?.category}/resolved/${report?.id}`);
+      const result = await updateReportStatus(token, 'resolved');
+      if (result.success) {
+        router.push(`/${report?.category}/resolved/${report?.id}`);
+      } else {
+        setError(result.error || 'Error desconocido');
+        setActionLoading(false);
+      }
     } catch (err: any) {
       setError(err.message);
       setActionLoading(false);
@@ -39,9 +44,14 @@ export default function GestionarPage({ params }: { params: Promise<{ token: str
     if (!confirm('¿Estás SEGURO de querer ELIMINAR definitivamente este reporte? Esta acción no se puede deshacer.')) return;
     setActionLoading(true);
     try {
-      await deleteReport(token);
-      alert('Reporte eliminado correctamente');
-      router.push('/');
+      const result = await deleteReport(token);
+      if (result.success) {
+        alert('Reporte eliminado correctamente');
+        router.push('/');
+      } else {
+        setError(result.error || 'Error desconocido');
+        setActionLoading(false);
+      }
     } catch (err: any) {
       setError(err.message);
       setActionLoading(false);
