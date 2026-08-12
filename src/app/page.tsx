@@ -1,87 +1,77 @@
 import Link from 'next/link';
-import { Search, MapPin, HeartHandshake, ArrowRight, User, PawPrint } from 'lucide-react';
+import { Search, MapPin, ArrowRight, User, PawPrint } from 'lucide-react';
 
 export default function HomePage() {
   return (
-    <main className="min-h-[calc(100vh-4rem)] flex flex-col items-center justify-center p-4 sm:p-8 relative overflow-hidden">
-      
-      {/* Círculos decorativos de fondo para potenciar el efecto glassmorphism */}
-      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-brand/20 rounded-full blur-[100px] -z-10 animate-pulse"></div>
-      <div className="absolute bottom-1/4 right-1/4 w-[30rem] h-[30rem] bg-emerald-500/10 rounded-full blur-[120px] -z-10 animate-pulse" style={{ animationDelay: '2s' }}></div>
-
-      <div className="max-w-5xl mx-auto w-full text-center space-y-12">
+    <main className="min-h-[calc(100vh-4rem)] flex flex-col items-center justify-center p-4 sm:p-8 bg-paper-white relative">
+      <div className="max-w-[1200px] mx-auto w-full text-center space-y-16 py-12">
         
         {/* Hero Section */}
-        <section className="space-y-6">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass border-brand/30 text-brand-light text-sm font-medium mb-4 animate-fade-in">
-            <HeartHandshake className="w-4 h-4" />
+        <section className="space-y-8">
+          <div className="inline-flex items-center px-4 py-2 border border-powder-blue rounded-sm text-mist-gray text-xs font-light tracking-wide uppercase">
             Plataforma comunitaria de búsqueda
           </div>
-          <h1 className="text-4xl sm:text-5xl md:text-7xl font-extrabold tracking-tight leading-tight">
-            Reuniendo familias,<br/>
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-light to-emerald-400">
-              una búsqueda a la vez.
-            </span>
+          <h1 className="text-4xl sm:text-5xl md:text-7xl font-light tracking-tight text-warm-ink leading-tight max-w-4xl mx-auto">
+            Reuniendo familias, una búsqueda a la vez.
           </h1>
-          <p className="text-base sm:text-lg md:text-xl text-muted max-w-2xl mx-auto leading-relaxed px-2">
+          <p className="text-base sm:text-lg md:text-xl text-mist-gray max-w-2xl mx-auto font-light leading-relaxed px-2">
             Reporta personas o mascotas perdidas, avistamientos y encuentros. Juntos podemos hacer la diferencia.
           </p>
         </section>
 
         {/* Acciones principales */}
-        <section className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
+        <section className="flex flex-col sm:flex-row items-center justify-center gap-6 pt-4">
           <Link 
             href="/publicar"
-            className="w-full sm:w-auto px-8 py-4 bg-brand hover:bg-brand-hover text-white rounded-2xl font-bold text-lg transition-all flex items-center justify-center gap-2 shadow-[0_0_30px_rgba(139,92,246,0.4)] hover:shadow-[0_0_40px_rgba(139,92,246,0.6)] hover:-translate-y-1"
+            className="w-full sm:w-auto px-8 py-4 bg-slate-bloom hover:opacity-90 text-white rounded-full font-medium text-sm transition-opacity flex items-center justify-center gap-2"
           >
             Publicar un Reporte
-            <ArrowRight className="w-5 h-5" />
           </Link>
           <Link 
             href="/recuperar"
-            className="w-full sm:w-auto px-8 py-4 glass hover:bg-white/10 text-foreground rounded-2xl font-bold text-lg transition-all flex items-center justify-center gap-2 hover:-translate-y-1"
+            className="w-full sm:w-auto px-8 py-4 border border-powder-blue hover:border-warm-ink text-warm-ink rounded-sm font-medium text-sm transition-colors flex items-center justify-center gap-2 bg-transparent"
           >
             Gestionar mis reportes
           </Link>
         </section>
 
         {/* Grilla de exploración */}
-        <section className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-12 text-left">
+        <section className="grid grid-cols-1 md:grid-cols-2 gap-8 pt-16 text-left border-t border-powder-blue">
           
           {/* Tarjeta Mascotas */}
-          <div className="glass p-8 rounded-3xl border border-white/10 hover:border-brand/30 transition-colors group">
-            <div className="bg-brand/20 w-14 h-14 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-              <PawPrint className="w-7 h-7 text-brand-light" />
+          <div className="bg-paper-white p-8 rounded-sm border border-warm-ink transition-opacity hover:opacity-80 group">
+            <div className="mb-8 border border-powder-blue w-12 h-12 flex items-center justify-center rounded-sm text-warm-ink">
+              <PawPrint className="w-5 h-5" />
             </div>
-            <h2 className="text-2xl font-bold mb-2">Mascotas</h2>
-            <p className="text-muted mb-6">Busca entre los reportes de mascotas perdidas o encontradas en tu zona.</p>
-            <div className="flex flex-col gap-3">
-              <Link href="/pet/searching" className="flex items-center justify-between p-3 rounded-xl hover:bg-white/5 transition-colors">
-                <span className="flex items-center gap-2 font-medium text-amber-400"><Search className="w-4 h-4"/> Perdidas</span>
-                <ArrowRight className="w-4 h-4 text-muted" />
+            <h2 className="text-3xl font-light text-warm-ink mb-3">Mascotas</h2>
+            <p className="text-mist-gray font-light mb-8">Busca entre los reportes de mascotas perdidas o encontradas en tu zona.</p>
+            <div className="flex flex-col gap-4 border-t border-powder-blue pt-4">
+              <Link href="/pet/searching" className="flex items-center justify-between text-warm-ink hover:text-slate-bloom transition-colors font-light">
+                <span className="flex items-center gap-2"><Search className="w-4 h-4"/> Perdidas</span>
+                <ArrowRight className="w-4 h-4" />
               </Link>
-              <Link href="/pet/found" className="flex items-center justify-between p-3 rounded-xl hover:bg-white/5 transition-colors">
-                <span className="flex items-center gap-2 font-medium text-emerald-400"><MapPin className="w-4 h-4"/> Encontradas</span>
-                <ArrowRight className="w-4 h-4 text-muted" />
+              <Link href="/pet/found" className="flex items-center justify-between text-warm-ink hover:text-slate-bloom transition-colors font-light">
+                <span className="flex items-center gap-2"><MapPin className="w-4 h-4"/> Encontradas</span>
+                <ArrowRight className="w-4 h-4" />
               </Link>
             </div>
           </div>
 
           {/* Tarjeta Personas */}
-          <div className="glass p-8 rounded-3xl border border-white/10 hover:border-emerald-500/30 transition-colors group">
-            <div className="bg-emerald-500/20 w-14 h-14 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-              <User className="w-7 h-7 text-emerald-400" />
+          <div className="bg-paper-white p-8 rounded-sm border border-warm-ink transition-opacity hover:opacity-80 group">
+            <div className="mb-8 border border-powder-blue w-12 h-12 flex items-center justify-center rounded-sm text-warm-ink">
+              <User className="w-5 h-5" />
             </div>
-            <h2 className="text-2xl font-bold mb-2">Personas</h2>
-            <p className="text-muted mb-6">Ayuda a localizar familiares desaparecidos o reporta un avistamiento.</p>
-            <div className="flex flex-col gap-3">
-              <Link href="/human/searching" className="flex items-center justify-between p-3 rounded-xl hover:bg-white/5 transition-colors">
-                <span className="flex items-center gap-2 font-medium text-amber-400"><Search className="w-4 h-4"/> Buscadas</span>
-                <ArrowRight className="w-4 h-4 text-muted" />
+            <h2 className="text-3xl font-light text-warm-ink mb-3">Personas</h2>
+            <p className="text-mist-gray font-light mb-8">Ayuda a localizar familiares desaparecidos o reporta un avistamiento.</p>
+            <div className="flex flex-col gap-4 border-t border-powder-blue pt-4">
+              <Link href="/human/searching" className="flex items-center justify-between text-warm-ink hover:text-slate-bloom transition-colors font-light">
+                <span className="flex items-center gap-2"><Search className="w-4 h-4"/> Buscadas</span>
+                <ArrowRight className="w-4 h-4" />
               </Link>
-              <Link href="/human/found" className="flex items-center justify-between p-3 rounded-xl hover:bg-white/5 transition-colors">
-                <span className="flex items-center gap-2 font-medium text-emerald-400"><MapPin className="w-4 h-4"/> Encontradas</span>
-                <ArrowRight className="w-4 h-4 text-muted" />
+              <Link href="/human/found" className="flex items-center justify-between text-warm-ink hover:text-slate-bloom transition-colors font-light">
+                <span className="flex items-center gap-2"><MapPin className="w-4 h-4"/> Encontradas</span>
+                <ArrowRight className="w-4 h-4" />
               </Link>
             </div>
           </div>

@@ -21,7 +21,7 @@ export function InstagramButton({ reportId }: { reportId: string }) {
     <button
       onClick={handleDownload}
       disabled={loading}
-      className="flex flex-1 items-center justify-center gap-2 bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600 hover:opacity-90 text-white py-3 px-4 rounded-xl font-bold transition-all shadow-lg shadow-pink-500/20 disabled:opacity-50"
+      className="flex flex-1 items-center justify-center gap-2 bg-transparent hover:bg-powder-blue/20 text-warm-ink py-3 px-4 rounded-sm font-medium transition-colors border border-powder-blue disabled:opacity-50"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"

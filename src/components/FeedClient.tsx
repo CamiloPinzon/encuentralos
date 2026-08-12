@@ -49,21 +49,21 @@ export function FeedClient({ initialReports }: FeedClientProps) {
     <div className="space-y-6">
       
       {/* Controles del Feed */}
-      <div className="flex flex-col sm:flex-row justify-between items-center gap-4 bg-white/5 p-4 rounded-2xl border border-white/5">
+      <div className="flex flex-col sm:flex-row justify-between items-center gap-4 py-4 border-b border-powder-blue mb-8">
         <div className="flex items-center gap-4">
-          <div className="flex bg-black/40 rounded-xl p-1 border border-white/10">
+          <div className="flex bg-paper-white rounded-sm p-1 border border-powder-blue">
             <button
               onClick={() => setViewMode('list')}
-              className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-                viewMode === 'list' ? 'bg-brand text-white shadow-lg' : 'text-muted hover:text-white'
+              className={`flex items-center gap-2 px-4 py-2 rounded-sm text-sm font-medium transition-all ${
+                viewMode === 'list' ? 'bg-slate-bloom text-white' : 'text-mist-gray hover:text-warm-ink'
               }`}
             >
               <List className="w-4 h-4" /> Lista
             </button>
             <button
               onClick={() => setViewMode('map')}
-              className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-                viewMode === 'map' ? 'bg-brand text-white shadow-lg' : 'text-muted hover:text-white'
+              className={`flex items-center gap-2 px-4 py-2 rounded-sm text-sm font-medium transition-all ${
+                viewMode === 'map' ? 'bg-slate-bloom text-white' : 'text-mist-gray hover:text-warm-ink'
               }`}
             >
               <Map className="w-4 h-4" /> Mapa
@@ -71,23 +71,23 @@ export function FeedClient({ initialReports }: FeedClientProps) {
           </div>
         </div>
 
-        <div className="flex items-center gap-3 text-sm text-muted">
+        <div className="flex items-center gap-3 text-sm text-mist-gray font-light">
           {locLoading ? (
-             <span className="flex items-center gap-2">
+             <span className="flex items-center gap-2 text-warm-ink">
                <Loader2 className="w-4 h-4 animate-spin" /> Buscando tu ubicación...
              </span>
           ) : location ? (
-             <label className="flex items-center gap-2 cursor-pointer hover:text-white transition-colors">
+             <label className="flex items-center gap-2 cursor-pointer hover:text-warm-ink transition-colors">
                <input 
                  type="checkbox" 
                  checked={filterNearby} 
                  onChange={(e) => setFilterNearby(e.target.checked)} 
-                 className="rounded border-white/20 bg-black/40 text-brand focus:ring-brand accent-brand w-4 h-4"
+                 className="rounded-sm border-warm-ink bg-paper-white text-slate-bloom focus:ring-slate-bloom accent-slate-bloom w-4 h-4"
                />
                <span>Mostrar solo casos cerca de mí (50km)</span>
              </label>
           ) : (
-             <button onClick={requestLocation} className="text-brand hover:underline">
+             <button onClick={requestLocation} className="text-slate-bloom hover:underline">
                Activar ubicación para filtrar cerca de ti
              </button>
           )}
