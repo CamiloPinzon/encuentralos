@@ -13,9 +13,31 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://encuentralos-seven.vercel.app";
+
 export const metadata: Metadata = {
-  title: "Encuéntralos - Reporta mascotas y personas",
-  description: "Plataforma para reportar personas o mascotas perdidas, encontradas o avistadas.",
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: "Encuéntralos - Reporta mascotas y personas",
+    template: "%s | Encuéntralos",
+  },
+  description: "Plataforma comunitaria para reportar personas o mascotas perdidas, encontradas o avistadas en Colombia.",
+  keywords: ["mascotas perdidas", "personas desaparecidas", "perros perdidos", "gatos perdidos", "reportar mascota", "colombia", "encontrar mascota"],
+  authors: [{ name: "Comunidad Encuéntralos" }],
+  creator: "Encuéntralos",
+  openGraph: {
+    type: "website",
+    locale: "es_CO",
+    url: SITE_URL,
+    title: "Encuéntralos - Reporta mascotas y personas",
+    description: "Plataforma comunitaria para reportar personas o mascotas perdidas, encontradas o avistadas en Colombia.",
+    siteName: "Encuéntralos",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Encuéntralos - Reporta mascotas y personas",
+    description: "Plataforma comunitaria para reportar personas o mascotas perdidas en Colombia.",
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
