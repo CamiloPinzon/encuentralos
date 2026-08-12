@@ -16,3 +16,17 @@ export interface Report {
   longitude?: number;
   distanceKm?: number;
 }
+
+export interface PlaceOfInterest {
+  id: string;
+  name: string;
+  category: "shelter" | "temp_home" | "donation" | "vet";
+  department: string;
+  municipality: string;
+  address: string;
+  latitude: number;
+  longitude: number;
+  business_hours?: string;
+  contact_info?: string;
+  created_at: string;
+}
