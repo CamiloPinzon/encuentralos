@@ -109,16 +109,20 @@ export async function createReport(formData: FormData) {
 
 /**
  * Server Action para obtener la lista de reportes por categoría y estado
+ * Implementa paginación con page y limit.
  */
-export async function getReports(category: string, status: string) {
+export async function getReports(category: string, status: string, page: number = 0, limit: number = 10) {
   const supabase = createClient();
+  const from = page * limit;
+  const to = from + limit - 1;
   
   const { data, error } = await supabase
     .from('reports')
     .select('*')
     .eq('category', category)
     .eq('status', status)
-    .order('created_at', { ascending: false });
+    .order('created_at', { ascending: false })
+    .range(from, to);
 
   if (error) {
     console.error('Error fetching reports:', error);

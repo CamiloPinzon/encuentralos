@@ -52,7 +52,7 @@ export default async function FeedPage({ params }: FeedPageProps) {
               {pageTitle}
             </h1>
             <p className="text-muted mt-2">
-              Mostrando {reports.length} {reports.length === 1 ? 'reporte' : 'reportes'}
+              Mostrando los reportes más recientes
             </p>
           </div>
 
@@ -77,7 +77,11 @@ export default async function FeedPage({ params }: FeedPageProps) {
             </Link>
           </div>
         ) : (
-          <FeedClient initialReports={reports} />
+          <FeedClient 
+            initialReports={reports} 
+            category={category} 
+            status={status} 
+          />
         )}
       </div>
     </main>

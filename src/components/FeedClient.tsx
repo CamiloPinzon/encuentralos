@@ -1,33 +1,79 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect, useRef, useCallback } from 'react';
 import { ReportCard } from '@/components/ReportCard';
 import { DynamicLocationMap } from '@/components/DynamicLocationMap';
 import { useUserLocation } from '@/hooks/useUserLocation';
 import { filterByRadius } from '@/utils/geo-distance';
 import { Report } from '@/types';
 import { Map, List, Loader2 } from 'lucide-react';
+import { getReports } from '@/actions/report-actions';
 import Link from 'next/link';
 
 interface FeedClientProps {
   initialReports: Report[];
+  category: string;
+  status: string;
 }
 
-export function FeedClient({ initialReports }: FeedClientProps) {
+export function FeedClient({ initialReports, category, status }: FeedClientProps) {
   const [viewMode, setViewMode] = useState<'list' | 'map'>('list');
   const [filterNearby, setFilterNearby] = useState(false);
   const { location, loading: locLoading, requestLocation } = useUserLocation();
 
+  // Estado para Infinite Scroll
+  const [reports, setReports] = useState<Report[]>(initialReports);
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(initialReports.length === 10);
+  const [loadingMore, setLoadingMore] = useState(false);
+  
+  const observerTarget = useRef<HTMLDivElement>(null);
+
+  const loadMore = useCallback(async () => {
+    if (loadingMore || !hasMore) return;
+    setLoadingMore(true);
+    
+    try {
+      const newReports = await getReports(category, status, page, 10);
+      if (newReports.length < 10) {
+        setHasMore(false);
+      }
+      setReports(prev => [...prev, ...newReports as Report[]]);
+      setPage(prev => prev + 1);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoadingMore(false);
+    }
+  }, [category, status, page, hasMore, loadingMore]);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      entries => {
+        if (entries[0].isIntersecting) {
+          loadMore();
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (observerTarget.current) {
+      observer.observe(observerTarget.current);
+    }
+
+    return () => observer.disconnect();
+  }, [loadMore]);
+
   // Extraemos la ubicación real de la Base de Datos o descartamos si no tiene
   const reportsWithLocation = useMemo(() => {
-    return initialReports.map(report => ({
+    return reports.map(report => ({
       ...report,
       location: report.latitude && report.longitude ? {
         latitude: report.latitude,
         longitude: report.longitude
       } : undefined
     }));
-  }, [initialReports]);
+  }, [reports]);
 
   // Filtramos por radio solo si el usuario tiene ubicación Y eligió filtrar
   const displayedReports = useMemo(() => {
@@ -114,6 +160,19 @@ export function FeedClient({ initialReports }: FeedClientProps) {
             markers={mapMarkers}
             zoom={12}
           />
+        </div>
+      )}
+
+      {/* Target for Infinite Scroll observer */}
+      {viewMode === 'list' && displayedReports.length > 0 && hasMore && (
+        <div ref={observerTarget} className="w-full flex justify-center py-8">
+          <Loader2 className="w-8 h-8 text-brand animate-spin" />
+        </div>
+      )}
+      
+      {viewMode === 'list' && displayedReports.length > 0 && !hasMore && (
+        <div className="text-center text-muted py-8">
+          Has llegado al final de la lista.
         </div>
       )}
     </div>
