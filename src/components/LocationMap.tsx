@@ -1,22 +1,9 @@
 'use client';
 
-import { useEffect } from 'react';
-import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
-import 'leaflet/dist/leaflet.css';
-import L from 'leaflet';
+import { useMemo } from 'react';
+import { GoogleMap, MarkerF, useLoadScript } from '@react-google-maps/api';
+import { Loader2 } from 'lucide-react';
 import { GeoLocation } from '@/types/geo';
-
-// Solución para el bug clásico de los iconos de Leaflet en React
-const iconDefault = L.icon({
-  iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
-  iconRetinaUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
-  shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-  popupAnchor: [1, -34],
-  shadowSize: [41, 41]
-});
-L.Marker.prototype.options.icon = iconDefault;
 
 interface LocationMapProps {
   center: GeoLocation;
@@ -30,14 +17,33 @@ interface LocationMapProps {
   centerPopupText?: string;
 }
 
-// Componente para actualizar el centro del mapa dinámicamente
-function MapUpdater({ center, zoom }: { center: [number, number], zoom: number }) {
-  const map = useMap();
-  useEffect(() => {
-    map.setView(center, zoom);
-  }, [center, zoom, map]);
-  return null;
-}
+// Estilos dark mode para Google Maps
+const darkMapStyle = [
+  { elementType: "geometry", stylers: [{ color: "#212121" }] },
+  { elementType: "labels.icon", stylers: [{ visibility: "off" }] },
+  { elementType: "labels.text.fill", stylers: [{ color: "#757575" }] },
+  { elementType: "labels.text.stroke", stylers: [{ color: "#212121" }] },
+  { featureType: "administrative", elementType: "geometry", stylers: [{ color: "#757575" }] },
+  { featureType: "administrative.country", elementType: "labels.text.fill", stylers: [{ color: "#9e9e9e" }] },
+  { featureType: "administrative.land_parcel", stylers: [{ visibility: "off" }] },
+  { featureType: "administrative.locality", elementType: "labels.text.fill", stylers: [{ color: "#bdbdbd" }] },
+  { featureType: "poi", elementType: "labels.text.fill", stylers: [{ color: "#757575" }] },
+  { featureType: "poi.park", elementType: "geometry", stylers: [{ color: "#181818" }] },
+  { featureType: "poi.park", elementType: "labels.text.fill", stylers: [{ color: "#616161" }] },
+  { featureType: "poi.park", elementType: "labels.text.stroke", stylers: [{ color: "#1b1b1b" }] },
+  { featureType: "road", elementType: "geometry.fill", stylers: [{ color: "#2c2c2c" }] },
+  { featureType: "road", elementType: "labels.text.fill", stylers: [{ color: "#8a8a8a" }] },
+  { featureType: "road.arterial", elementType: "geometry", stylers: [{ color: "#373737" }] },
+  { featureType: "road.highway", elementType: "geometry", stylers: [{ color: "#3c3c3c" }] },
+  { featureType: "road.highway.controlled_access", elementType: "geometry", stylers: [{ color: "#4e4e4e" }] },
+  { featureType: "road.local", elementType: "labels.text.fill", stylers: [{ color: "#616161" }] },
+  { featureType: "transit", elementType: "labels.text.fill", stylers: [{ color: "#757575" }] },
+  { featureType: "water", elementType: "geometry", stylers: [{ color: "#000000" }] },
+  { featureType: "water", elementType: "labels.text.fill", stylers: [{ color: "#3d3d3d" }] }
+];
+
+// Bibliotecas a cargar. Es importante declararlo fuera del componente para evitar re-renders.
+const libraries: ("places" | "geometry" | "drawing" | "visualization")[] = ["places"];
 
 export default function LocationMap({ 
   center, 
@@ -47,45 +53,60 @@ export default function LocationMap({
   centerPopupText = "Tu ubicación aproximada"
 }: LocationMapProps) {
   
-  // URLs de tiles (CartoDB Positron para claro, Dark Matter para oscuro)
-  const tileUrl = darkMode 
-    ? 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png'
-    : 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png';
+  const { isLoaded, loadError } = useLoadScript({
+    googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY as string,
+    libraries,
+  });
 
-  const attribution = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>';
+  const mapCenter = useMemo(() => ({ lat: center.latitude, lng: center.longitude }), [center]);
+
+  const mapOptions = useMemo(() => ({
+    disableDefaultUI: true,
+    clickableIcons: false,
+    scrollwheel: false,
+    styles: darkMode ? darkMapStyle : undefined,
+  }), [darkMode]);
+
+  if (loadError) {
+    return (
+      <div className="h-[400px] w-full rounded-2xl bg-red-500/10 border border-red-500/20 flex items-center justify-center text-red-400 p-4 text-center">
+        Error al cargar Google Maps. Verifica tu API Key.
+      </div>
+    );
+  }
+
+  if (!isLoaded) {
+    return (
+      <div className="h-[400px] w-full rounded-2xl bg-black/40 border border-white/10 flex flex-col items-center justify-center text-muted gap-3">
+        <Loader2 className="w-8 h-8 animate-spin text-brand" />
+        <p>Cargando mapa...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="h-[400px] w-full rounded-2xl overflow-hidden border border-white/10 relative z-0">
-      <MapContainer 
-        center={[center.latitude, center.longitude]} 
-        zoom={zoom} 
-        scrollWheelZoom={false}
-        className="h-full w-full"
+      <GoogleMap
+        mapContainerClassName="w-full h-full"
+        center={mapCenter}
+        zoom={zoom}
+        options={mapOptions}
       >
-        <TileLayer
-          url={tileUrl}
-          attribution={attribution}
+        {/* Marcador Principal */}
+        <MarkerF 
+          position={mapCenter} 
+          title={centerPopupText}
         />
-        
-        {/* Marcador del Usuario (Centro) */}
-        <Marker position={[center.latitude, center.longitude]}>
-          <Popup>{centerPopupText}</Popup>
-        </Marker>
 
-        {/* Marcadores Dinámicos (Mascotas, Ads, Fundaciones) */}
+        {/* Marcadores Secundarios */}
         {markers.map((marker) => (
-          <Marker 
+          <MarkerF 
             key={marker.id}
-            position={[marker.location.latitude, marker.location.longitude]}
-          >
-            <Popup className="font-sans text-sm font-semibold">
-              {marker.title}
-            </Popup>
-          </Marker>
+            position={{ lat: marker.location.latitude, lng: marker.location.longitude }}
+            title={marker.title}
+          />
         ))}
-        
-        <MapUpdater center={[center.latitude, center.longitude]} zoom={zoom} />
-      </MapContainer>
+      </GoogleMap>
     </div>
   );
 }
