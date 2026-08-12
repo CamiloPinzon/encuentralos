@@ -3,7 +3,7 @@ import { NextRequest } from 'next/server';
 import { getReportById } from '@/actions/report-actions';
 import { Report } from '@/types';
 
-export const runtime = 'edge';
+// Edge runtime removido porque report-actions (Cloudinary) usa Node APIs
 
 // Colores por estado
 const getStatusColors = (status: string) => {
