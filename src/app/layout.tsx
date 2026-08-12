@@ -55,9 +55,26 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       lang="es"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">
+      <body className="min-h-full flex flex-col bg-background text-foreground">
         <Navbar />
-        {children}
+        <main className="flex-1">
+          {children}
+        </main>
+        <footer className="w-full border-t border-white/10 bg-black/20 py-8 mt-auto">
+          <div className="container mx-auto px-4 text-center text-sm text-muted">
+            <p>
+              Desarrollado por{' '}
+              <a 
+                href="https://camilopinzon.dev/" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-brand hover:text-brand-light transition-colors font-medium"
+              >
+                Camilo Pinzón
+              </a>
+            </p>
+          </div>
+        </footer>
       </body>
     </html>
   );

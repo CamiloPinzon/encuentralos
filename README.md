@@ -1,36 +1,32 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Encuéntralos
 
-## Getting Started
+**Encuéntralos** es una plataforma comunitaria y colaborativa diseñada para reportar personas o mascotas perdidas, encontradas o avistadas en Colombia. También sirve como un directorio interactivo para localizar lugares de interés como refugios, fundaciones, y centros de acopio.
 
-First, run the development server:
+La plataforma fue diseñada con un enfoque de alto rendimiento, fácil uso, y perfecta geolocalización, buscando aportar valor real a las comunidades a través de la tecnología.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 🚀 Desarrollo
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Este proyecto ha sido desarrollado e ideado por **[Camilo Pinzón](https://camilopinzon.dev/)**, con el apoyo y programación en pareja de **Antigravity** (Inteligencia Artificial de desarrollo de software avanzada). 
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+La combinación de dirección de producto humana y ejecución por IA permitió construir una aplicación de grado de producción en tiempo récord, con estándares modernos de arquitectura y diseño.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🛠️ Tecnologías Principales
 
-## Learn More
+- **Framework:** [Next.js](https://nextjs.org/) (App Router, Server Actions)
+- **Base de Datos:** [Supabase](https://supabase.com/) (PostgreSQL)
+- **Mapas y Geolocalización:** [Google Maps Platform](https://developers.google.com/maps)
+- **Estilos:** [Tailwind CSS](https://tailwindcss.com/)
+- **Almacenamiento de Imágenes:** [Cloudinary](https://cloudinary.com/)
+- **Correos Electrónicos:** [Resend](https://resend.com/)
 
-To learn more about Next.js, take a look at the following resources:
+## 🌟 Características
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- **Reportes Dinámicos:** Publicación rápida de mascotas o personas (perdidas/encontradas).
+- **Lugares de Interés:** Mapa de refugios y centros de donación.
+- **Geolocalización Precisa:** Autocompletado de direcciones de Google optimizado para la compleja nomenclatura colombiana.
+- **Sin contraseñas:** Sistema seguro basado en tokens de un solo uso y recuperación por correo electrónico.
+- **Totalmente Responsive:** Diseño 'Mobile-first' optimizado para cualquier dispositivo.
+- **Dark Mode Nativo:** Interfaz moderna y amigable con la vista.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+*Desarrollado con ❤️ para ayudar a quienes más lo necesitan.*
