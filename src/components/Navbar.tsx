@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Menu, X, HeartHandshake, PlusCircle, Search } from 'lucide-react';
+import { Menu, X, HeartHandshake, PlusCircle, Search, Instagram } from 'lucide-react';
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -53,8 +53,17 @@ export function Navbar() {
               ))}
             </nav>
 
-            {/* Desktop Action */}
-            <div className="hidden md:flex items-center">
+            {/* Desktop Action & Social */}
+            <div className="hidden md:flex items-center gap-4">
+              <a 
+                href="https://instagram.com/tu_usuario_aqui" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-muted hover:text-pink-500 transition-colors p-2"
+                aria-label="Síguenos en Instagram"
+              >
+                <Instagram className="w-5 h-5" />
+              </a>
               <Link
                 href="/publicar"
                 className="flex items-center gap-2 bg-brand hover:bg-brand-hover text-white px-5 py-2.5 rounded-xl text-sm font-bold transition-all shadow-[0_0_15px_rgba(139,92,246,0.3)] hover:shadow-[0_0_25px_rgba(139,92,246,0.5)] hover:-translate-y-0.5"
@@ -117,6 +126,18 @@ export function Navbar() {
                   <PlusCircle className="w-5 h-5" />
                   Publicar un Reporte
                 </Link>
+                <div className="pt-4 flex justify-center">
+                  <a 
+                    href="https://instagram.com/tu_usuario_aqui" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 text-muted hover:text-pink-500 transition-colors p-2"
+                    aria-label="Síguenos en Instagram"
+                  >
+                    <Instagram className="w-5 h-5" />
+                    <span className="text-sm font-medium">Síguenos en Instagram</span>
+                  </a>
+                </div>
               </div>
             </div>
           </div>
