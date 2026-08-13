@@ -120,6 +120,28 @@ export async function createReport(formData: FormData) {
     // No bloqueamos el flujo si el correo falla, igual se creó el reporte
   }
 
+  // Trigger Webhook para Instagram (Zapier/Make)
+  const webhookUrl = process.env.INSTAGRAM_WEBHOOK_URL;
+  if (webhookUrl) {
+    try {
+      await fetch(webhookUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          title,
+          description,
+          image_url: imageUrl || 'https://via.placeholder.com/300?text=Sin+Imagen',
+          category,
+          status,
+          location: municipality && department ? `${municipality}, ${department}` : 'Ubicación seleccionada en el mapa',
+          link: `${baseUrl}/${category}/${status}/${data.id}`
+        })
+      });
+    } catch (webhookError) {
+      console.error('Error enviando webhook de Instagram:', webhookError);
+    }
+  }
+
   revalidatePath(`/${category}/${status}`);
   revalidatePath('/');
 
