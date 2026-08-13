@@ -167,8 +167,15 @@ export function PlacesClient({ initialPlaces, departments }: PlacesClientProps) 
             sortedPlaces.map((place: any) => (
               <div key={place.id} className="glass rounded-2xl overflow-hidden hover:scale-[1.02] hover:shadow-[0_0_20px_rgba(16,185,129,0.15)] transition-all flex flex-col border border-white/5 p-5">
                 <div className="flex items-start justify-between mb-4">
-                  <div className={`px-3 py-1 rounded-full text-xs font-semibold border ${categoryColors[place.category]}`}>
-                    {categoryLabels[place.category]}
+                  <div className="flex flex-wrap gap-2">
+                    <div className={`px-3 py-1 rounded-full text-xs font-semibold border ${categoryColors[place.category]}`}>
+                      {categoryLabels[place.category]}
+                    </div>
+                    {place.is_temporary && (
+                      <div className="px-3 py-1 rounded-full text-xs font-semibold border border-orange-500/20 text-orange-400 bg-orange-500/10">
+                        Temporal
+                      </div>
+                    )}
                   </div>
                 </div>
                 
@@ -189,6 +196,24 @@ export function PlacesClient({ initialPlaces, departments }: PlacesClientProps) 
                     <div className="flex items-start gap-2">
                       <Phone className="w-4 h-4 shrink-0 mt-0.5" />
                       <span>{place.contact_info}</span>
+                    </div>
+                  )}
+                  {place.is_temporary && place.start_date && place.end_date && (
+                    <div className="flex items-start gap-2 text-orange-400/90">
+                      <Clock className="w-4 h-4 shrink-0 mt-0.5" />
+                      <span>Desde {new Date(place.start_date).toLocaleDateString()} hasta {new Date(place.end_date).toLocaleDateString()}</span>
+                    </div>
+                  )}
+                  {place.donation_types && place.donation_types.length > 0 && (
+                    <div className="pt-2">
+                      <div className="text-xs font-semibold text-white/50 mb-1">Reciben:</div>
+                      <div className="flex flex-wrap gap-1">
+                        {place.donation_types.map((type: string) => (
+                          <span key={type} className="text-[10px] px-2 py-0.5 rounded bg-white/5 border border-white/10 text-white/70">
+                            {type}
+                          </span>
+                        ))}
+                      </div>
                     </div>
                   )}
                   {'distanceKm' in place && place.distanceKm !== undefined && (

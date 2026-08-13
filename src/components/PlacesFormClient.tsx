@@ -21,6 +21,9 @@ export function PlacesFormClient({ departments }: PlacesFormClientProps) {
   const [selectedMuni, setSelectedMuni] = useState('');
   const [municipalities, setMunicipalities] = useState<string[]>([]);
   const [location, setLocation] = useState<GeoLocation | null>(null);
+  
+  const [category, setCategory] = useState('');
+  const [isTemporary, setIsTemporary] = useState(false);
 
   useEffect(() => {
     if (selectedDept) {
@@ -49,7 +52,11 @@ export function PlacesFormClient({ departments }: PlacesFormClientProps) {
       if (!result.success) {
         setError(result.error || 'Ocurrió un error inesperado');
       } else {
-        router.push('/lugares');
+        if (result.edit_token) {
+          router.push(`/lugares/gestionar/${result.edit_token}`);
+        } else {
+          router.push('/lugares');
+        }
         router.refresh();
       }
     } catch (err: any) {
@@ -84,6 +91,8 @@ export function PlacesFormClient({ departments }: PlacesFormClientProps) {
           <select
             name="category"
             required
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
             className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none transition-all"
           >
             <option value="">Selecciona una categoría</option>
@@ -93,6 +102,58 @@ export function PlacesFormClient({ departments }: PlacesFormClientProps) {
             <option value="vet">Veterinaria Solidaria</option>
           </select>
         </div>
+
+        {category === 'donation' && (
+          <div className="md:col-span-2 space-y-6 bg-black/20 p-6 rounded-2xl border border-white/5">
+            <div className="space-y-3">
+              <label className="text-sm font-medium text-white block">Tipos de Donación que Reciben</label>
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                {['Alimentos', 'Medicamentos', 'Ropa', 'Insumos Veterinarios', 'Dinero', 'Otros'].map(type => (
+                  <label key={type} className="flex items-center gap-2 text-sm text-white/80 cursor-pointer">
+                    <input type="checkbox" name="donation_types" value={type} className="rounded border-white/20 bg-black/40 text-emerald-500 focus:ring-emerald-500" />
+                    {type}
+                  </label>
+                ))}
+              </div>
+            </div>
+
+            <div className="space-y-4">
+              <label className="flex items-center gap-3 text-sm font-medium text-white cursor-pointer">
+                <input 
+                  type="checkbox" 
+                  name="is_temporary" 
+                  checked={isTemporary} 
+                  onChange={(e) => setIsTemporary(e.target.checked)} 
+                  className="w-5 h-5 rounded border-white/20 bg-black/40 text-emerald-500 focus:ring-emerald-500" 
+                />
+                ¿Es un centro de acopio temporal?
+              </label>
+
+              {isTemporary && (
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+                  <div className="space-y-2">
+                    <label className="text-xs font-medium text-white/70 block">Fecha de Inicio</label>
+                    <input
+                      type="date"
+                      name="start_date"
+                      required
+                      className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-2 text-white focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-xs font-medium text-white/70 block">Fecha de Fin</label>
+                    <input
+                      type="date"
+                      name="end_date"
+                      required
+                      className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-2 text-white focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none"
+                    />
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
 
         <div className="space-y-2">
           <label className="text-sm font-medium text-white block">Departamento</label>

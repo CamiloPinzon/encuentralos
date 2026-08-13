@@ -14,6 +14,10 @@ export async function createPlaceOfInterest(formData: FormData) {
   const longitude = parseFloat(formData.get('longitude') as string);
   const business_hours = formData.get('business_hours') as string | null;
   const contact_info = formData.get('contact_info') as string | null;
+  const donation_types = formData.getAll('donation_types') as string[];
+  const is_temporary = formData.get('is_temporary') === 'on';
+  const start_date = formData.get('start_date') as string | null;
+  const end_date = formData.get('end_date') as string | null;
 
   if (!category || !name || !department || !municipality || !address || isNaN(latitude) || isNaN(longitude)) {
     return { success: false, error: 'Faltan campos obligatorios' };
@@ -38,7 +42,7 @@ export async function createPlaceOfInterest(formData: FormData) {
   }
 
   // 2. Insert new place
-  const { error } = await supabase
+  const { data, error } = await supabase
     .from('places_of_interest')
     .insert([{
       name,
@@ -49,15 +53,25 @@ export async function createPlaceOfInterest(formData: FormData) {
       latitude,
       longitude,
       business_hours,
-      contact_info
-    }]);
+      contact_info,
+      donation_types: category === 'donation' ? donation_types : [],
+      is_temporary: category === 'donation' ? is_temporary : false,
+      start_date: (category === 'donation' && is_temporary && start_date) ? start_date : null,
+      end_date: (category === 'donation' && is_temporary && end_date) ? end_date : null
+    }])
+    .select('edit_token')
+    .single();
 
   if (error) {
     return { success: false, error: 'Error al guardar el lugar: ' + error.message };
   }
 
   revalidatePath('/lugares');
-  return { success: true, message: 'Lugar de interés publicado exitosamente' };
+  return { 
+    success: true, 
+    message: 'Lugar de interés publicado exitosamente',
+    edit_token: data.edit_token 
+  };
 }
 
 export async function getPlacesOfInterest(filters?: { department?: string, municipality?: string, category?: string }): Promise<PlaceOfInterest[]> {
@@ -76,4 +90,33 @@ export async function getPlacesOfInterest(filters?: { department?: string, munic
   }
 
   return data as PlaceOfInterest[];
+}
+
+export async function getPlaceByToken(token: string) {
+  const supabase = createClient();
+  const { data, error } = await supabase
+    .from('places_of_interest')
+    .select('*')
+    .eq('edit_token', token)
+    .single();
+
+  if (error) {
+    return null;
+  }
+  return data as PlaceOfInterest;
+}
+
+export async function deletePlaceOfInterest(token: string) {
+  const supabase = createClient();
+  const { error } = await supabase
+    .from('places_of_interest')
+    .delete()
+    .eq('edit_token', token);
+
+  if (error) {
+    return { success: false, error: error.message };
+  }
+  
+  revalidatePath('/lugares');
+  return { success: true };
 }
