@@ -77,7 +77,7 @@ export default function LocationMap({
 
   if (!isLoaded) {
     return (
-      <div className="h-[400px] w-full rounded-2xl bg-black/40 border border-white/10 flex flex-col items-center justify-center text-muted gap-3">
+      <div className="h-[400px] w-full rounded-2xl bg-white/90 border border-slate-200 flex flex-col items-center justify-center text-muted gap-3">
         <Loader2 className="w-8 h-8 animate-spin text-brand" />
         <p>Cargando mapa...</p>
       </div>
@@ -85,7 +85,7 @@ export default function LocationMap({
   }
 
   return (
-    <div className="h-[400px] w-full rounded-2xl overflow-hidden border border-white/10 relative z-0">
+    <div className="h-[400px] w-full rounded-2xl overflow-hidden border border-slate-200 relative z-0">
       <GoogleMap
         mapContainerClassName="w-full h-full"
         center={mapCenter}

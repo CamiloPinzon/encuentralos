@@ -8,7 +8,7 @@ const DynamicLocationPickerMap = dynamic(
   { 
     ssr: false, 
     loading: () => (
-      <div className="h-[350px] w-full rounded-2xl bg-black/40 border border-white/10 flex flex-col items-center justify-center text-muted gap-3">
+      <div className="h-[350px] w-full rounded-2xl bg-white/90 border border-slate-200 flex flex-col items-center justify-center text-muted gap-3">
         <Loader2 className="w-8 h-8 animate-spin text-brand" />
         <p>Cargando mapa interactivo...</p>
       </div>

@@ -67,7 +67,7 @@ export function PlacesFormClient({ departments }: PlacesFormClientProps) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-8 glass p-8 rounded-3xl border border-white/10">
+    <form onSubmit={handleSubmit} className="space-y-8 glass p-8 rounded-3xl border border-slate-200">
       {error && (
         <div className="bg-red-500/10 border border-red-500/50 text-red-500 p-4 rounded-xl text-sm font-medium">
           {error}
@@ -81,7 +81,7 @@ export function PlacesFormClient({ departments }: PlacesFormClientProps) {
             name="name"
             required
             maxLength={100}
-            className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none transition-all"
+            className="w-full bg-white/90 border border-slate-200 rounded-xl px-4 py-3 text-slate-900 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none transition-all"
             placeholder="Ej: Fundación Patitas"
           />
         </div>
@@ -93,7 +93,7 @@ export function PlacesFormClient({ departments }: PlacesFormClientProps) {
             required
             value={category}
             onChange={(e) => setCategory(e.target.value)}
-            className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none transition-all"
+            className="w-full bg-white/90 border border-slate-200 rounded-xl px-4 py-3 text-slate-900 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none transition-all"
           >
             <option value="">Selecciona una categoría</option>
             <option value="shelter">Refugio</option>
@@ -104,13 +104,13 @@ export function PlacesFormClient({ departments }: PlacesFormClientProps) {
         </div>
 
         {category === 'donation' && (
-          <div className="md:col-span-2 space-y-6 bg-black/20 p-6 rounded-2xl border border-white/5">
+          <div className="md:col-span-2 space-y-6 bg-white/70 p-6 rounded-2xl border border-slate-200">
             <div className="space-y-3">
               <label className="text-sm font-medium text-white block">Tipos de Donación que Reciben</label>
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                 {['Alimentos', 'Medicamentos', 'Ropa', 'Insumos Veterinarios', 'Items de Aseo', 'Dinero', 'Otros'].map(type => (
                   <label key={type} className="flex items-center gap-2 text-sm text-white/80 cursor-pointer">
-                    <input type="checkbox" name="donation_types" value={type} className="rounded border-white/20 bg-black/40 text-emerald-500 focus:ring-emerald-500" />
+                    <input type="checkbox" name="donation_types" value={type} className="rounded border-white/20 bg-white/90 text-emerald-500 focus:ring-emerald-500" />
                     {type}
                   </label>
                 ))}
@@ -124,7 +124,7 @@ export function PlacesFormClient({ departments }: PlacesFormClientProps) {
                   name="is_temporary" 
                   checked={isTemporary} 
                   onChange={(e) => setIsTemporary(e.target.checked)} 
-                  className="w-5 h-5 rounded border-white/20 bg-black/40 text-emerald-500 focus:ring-emerald-500" 
+                  className="w-5 h-5 rounded border-white/20 bg-white/90 text-emerald-500 focus:ring-emerald-500" 
                 />
                 ¿Es un centro de acopio temporal?
               </label>
@@ -137,7 +137,7 @@ export function PlacesFormClient({ departments }: PlacesFormClientProps) {
                       type="date"
                       name="start_date"
                       required
-                      className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-2 text-white focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none"
+                      className="w-full bg-white/90 border border-slate-200 rounded-xl px-4 py-2 text-slate-900 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none"
                     />
                   </div>
                   <div className="space-y-2">
@@ -146,7 +146,7 @@ export function PlacesFormClient({ departments }: PlacesFormClientProps) {
                       type="date"
                       name="end_date"
                       required
-                      className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-2 text-white focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none"
+                      className="w-full bg-white/90 border border-slate-200 rounded-xl px-4 py-2 text-slate-900 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none"
                     />
                   </div>
                 </div>
@@ -162,7 +162,7 @@ export function PlacesFormClient({ departments }: PlacesFormClientProps) {
             required
             value={selectedDept}
             onChange={(e) => setSelectedDept(e.target.value)}
-            className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none transition-all"
+            className="w-full bg-white/90 border border-slate-200 rounded-xl px-4 py-3 text-slate-900 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none transition-all"
           >
             <option value="">Selecciona un departamento</option>
             {departments.map(d => (
@@ -179,7 +179,7 @@ export function PlacesFormClient({ departments }: PlacesFormClientProps) {
             value={selectedMuni}
             onChange={(e) => setSelectedMuni(e.target.value)}
             disabled={!selectedDept}
-            className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none transition-all disabled:opacity-50"
+            className="w-full bg-white/90 border border-slate-200 rounded-xl px-4 py-3 text-slate-900 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none transition-all disabled:opacity-50"
           >
             <option value="">Selecciona un municipio</option>
             {municipalities.map(m => (
@@ -194,7 +194,7 @@ export function PlacesFormClient({ departments }: PlacesFormClientProps) {
             name="address"
             required
             maxLength={200}
-            className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none transition-all"
+            className="w-full bg-white/90 border border-slate-200 rounded-xl px-4 py-3 text-slate-900 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none transition-all"
             placeholder="Ej: Calle 123 # 45 - 67"
           />
         </div>
@@ -204,7 +204,7 @@ export function PlacesFormClient({ departments }: PlacesFormClientProps) {
           <input
             name="business_hours"
             maxLength={100}
-            className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none transition-all"
+            className="w-full bg-white/90 border border-slate-200 rounded-xl px-4 py-3 text-slate-900 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none transition-all"
             placeholder="Ej: Lunes a Viernes 8am - 5pm"
           />
         </div>
@@ -214,7 +214,7 @@ export function PlacesFormClient({ departments }: PlacesFormClientProps) {
           <input
             name="contact_info"
             maxLength={100}
-            className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none transition-all"
+            className="w-full bg-white/90 border border-slate-200 rounded-xl px-4 py-3 text-slate-900 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none transition-all"
             placeholder="Teléfono o Email público"
           />
         </div>
@@ -229,19 +229,19 @@ export function PlacesFormClient({ departments }: PlacesFormClientProps) {
             name="contact_email"
             required
             maxLength={100}
-            className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none transition-all"
+            className="w-full bg-white/90 border border-slate-200 rounded-xl px-4 py-3 text-slate-900 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none transition-all"
             placeholder="Ej: tu@correo.com"
           />
         </div>
       </div>
 
-      <div className="space-y-3 pt-4 border-t border-white/10">
+      <div className="space-y-3 pt-4 border-t border-slate-200">
         <label className="text-sm font-medium text-white flex items-center gap-2">
           <MapPin className="w-4 h-4 text-emerald-400" />
           Ubicación Exacta en el Mapa (Requerido)
         </label>
         <p className="text-xs text-muted">Arrastra el marcador rojo a la ubicación exacta del lugar. Esto ayudará a que la gente lo encuentre cerca de ellos.</p>
-        <div className="w-full rounded-2xl overflow-hidden border border-white/10">
+        <div className="w-full rounded-2xl overflow-hidden border border-slate-200">
           <DynamicLocationPickerMap
             onLocationSelect={setLocation}
             initialCenter={{ latitude: 4.6097, longitude: -74.0817 }} // Bogota fallback

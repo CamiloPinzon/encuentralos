@@ -58,7 +58,7 @@ export default async function FeedPage({ params }: FeedPageProps) {
 
           <Link 
             href="/publicar" 
-            className="flex items-center gap-2 bg-brand hover:bg-brand-hover text-white px-5 py-2.5 rounded-xl font-medium transition-all shadow-[0_0_15px_rgba(139,92,246,0.3)]"
+            className="flex items-center gap-2 bg-brand hover:bg-brand-hover text-white px-5 py-2.5 rounded-xl font-medium transition-all shadow-[0_0_15px_rgba(16,185,129,0.3)]"
           >
             <PlusCircle className="w-5 h-5" />
             Crear Reporte
@@ -66,7 +66,7 @@ export default async function FeedPage({ params }: FeedPageProps) {
         </div>
 
         {reports.length === 0 ? (
-          <div className="glass rounded-2xl p-12 text-center border-white/5 shadow-xl">
+          <div className="glass rounded-2xl p-12 text-center border-slate-200 shadow-xl">
             <h3 className="text-xl font-semibold text-foreground mb-2">No hay reportes en esta categoría</h3>
             <p className="text-muted mb-6">Sé el primero en publicar un reporte aquí si necesitas ayuda.</p>
             <Link 

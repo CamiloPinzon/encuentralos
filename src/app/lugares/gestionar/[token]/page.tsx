@@ -76,8 +76,8 @@ export default function GestionarLugarPage({ params }: { params: Promise<{ token
           </div>
         </div>
 
-        <div className="glass p-8 rounded-3xl border border-white/10 space-y-6 text-left shadow-2xl">
-          <div className="space-y-2 pb-6 border-b border-white/5">
+        <div className="glass p-8 rounded-3xl border border-slate-200 space-y-6 text-left shadow-2xl">
+          <div className="space-y-2 pb-6 border-b border-slate-200">
             <h2 className="text-2xl font-bold">{place.name}</h2>
             <p className="text-muted text-sm">{place.address}, {place.municipality}, {place.department}</p>
             <div className="pt-2 flex flex-wrap gap-2">

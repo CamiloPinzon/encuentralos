@@ -120,7 +120,7 @@ export function PublicarClient({ departments }: PublicarClientProps) {
                 className={`p-6 rounded-xl border transition-all duration-300 flex flex-col items-center gap-3 ${
                   category === 'human' 
                     ? 'glass-active scale-[1.02]' 
-                    : 'glass hover:bg-white/5 border-white/5 text-muted hover:text-foreground'
+                    : 'glass hover:bg-slate-50/80 border-slate-200 text-muted hover:text-foreground'
                 }`}
               >
                 <User className={`w-8 h-8 ${category === 'human' ? 'text-brand-light' : ''}`} />
@@ -133,7 +133,7 @@ export function PublicarClient({ departments }: PublicarClientProps) {
                 className={`p-6 rounded-xl border transition-all duration-300 flex flex-col items-center gap-3 ${
                   category === 'pet' 
                     ? 'glass-active scale-[1.02]' 
-                    : 'glass hover:bg-white/5 border-white/5 text-muted hover:text-foreground'
+                    : 'glass hover:bg-slate-50/80 border-slate-200 text-muted hover:text-foreground'
                 }`}
               >
                 <PawPrint className={`w-8 h-8 ${category === 'pet' ? 'text-brand-light' : ''}`} />
@@ -161,7 +161,7 @@ export function PublicarClient({ departments }: PublicarClientProps) {
                   className={`p-4 rounded-xl border transition-all duration-300 flex flex-col items-center gap-2 ${
                     status === s.id 
                       ? 'glass-active scale-[1.02]' 
-                      : 'glass hover:bg-white/5 border-white/5 text-muted hover:text-foreground'
+                      : 'glass hover:bg-slate-50/80 border-slate-200 text-muted hover:text-foreground'
                   }`}
                 >
                   <s.icon className={`w-6 h-6 ${status === s.id ? s.color : ''}`} />
@@ -228,7 +228,7 @@ export function PublicarClient({ departments }: PublicarClientProps) {
               {/* Upload de Foto */}
               <div>
                 <label className="block text-sm font-medium mb-1.5 text-muted">Fotografía (Opcional, pero recomendada)</label>
-                <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-white/10 border-dashed rounded-xl bg-black/20 hover:bg-black/40 transition-colors group cursor-pointer relative">
+                <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-slate-200 border-dashed rounded-xl bg-white/70 hover:bg-white/90 transition-colors group cursor-pointer relative">
                   <div className="space-y-2 text-center">
                     <Camera className="mx-auto h-12 w-12 text-muted group-hover:text-brand-light transition-colors" />
                     <div className="flex text-sm">
@@ -244,7 +244,7 @@ export function PublicarClient({ departments }: PublicarClientProps) {
               </div>
 
               {/* Department and Municipality */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-5 pt-4 border-t border-white/5">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5 pt-4 border-t border-slate-200">
                 <div>
                   <label className="block text-sm font-medium mb-1.5 text-muted">Departamento (Obligatorio)</label>
                   <select
@@ -252,7 +252,7 @@ export function PublicarClient({ departments }: PublicarClientProps) {
                     required
                     value={selectedDept}
                     onChange={(e) => setSelectedDept(e.target.value)}
-                    className="w-full px-4 py-3 rounded-xl input-glass text-foreground bg-black/40"
+                    className="w-full px-4 py-3 rounded-xl input-glass text-foreground bg-white/90"
                   >
                     <option value="">Selecciona un departamento</option>
                     {departments.map(d => (
@@ -268,7 +268,7 @@ export function PublicarClient({ departments }: PublicarClientProps) {
                     value={selectedMuni}
                     onChange={(e) => setSelectedMuni(e.target.value)}
                     disabled={!selectedDept}
-                    className="w-full px-4 py-3 rounded-xl input-glass text-foreground bg-black/40 disabled:opacity-50"
+                    className="w-full px-4 py-3 rounded-xl input-glass text-foreground bg-white/90 disabled:opacity-50"
                   >
                     <option value="">Selecciona una ciudad</option>
                     {municipalities.map(m => (
@@ -279,7 +279,7 @@ export function PublicarClient({ departments }: PublicarClientProps) {
               </div>
 
               {/* Location Picker */}
-              <div className="pt-4 border-t border-white/5 space-y-4">
+              <div className="pt-4 border-t border-slate-200 space-y-4">
                 <label className="block text-sm font-medium text-muted">
                   Ubicación Exacta (Haz clic o arrastra el pin en el mapa)
                 </label>
@@ -312,7 +312,7 @@ export function PublicarClient({ departments }: PublicarClientProps) {
           </section>
 
           {/* Sección 4: Legal y Submit */}
-          <section className="pt-4 border-t border-white/10 space-y-6">
+          <section className="pt-4 border-t border-slate-200 space-y-6">
             <label className="flex items-start gap-3 cursor-pointer group">
               <div className="flex items-center h-6">
                 <input 
@@ -329,7 +329,7 @@ export function PublicarClient({ departments }: PublicarClientProps) {
             <button
               type="submit"
               disabled={loading}
-              className="w-full flex items-center justify-center gap-2 bg-brand hover:bg-brand-hover text-white py-4 px-8 rounded-xl font-bold text-lg transition-all shadow-[0_0_20px_rgba(139,92,246,0.3)] hover:shadow-[0_0_30px_rgba(139,92,246,0.5)] disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+              className="w-full flex items-center justify-center gap-2 bg-brand hover:bg-brand-hover text-white py-4 px-8 rounded-xl font-bold text-lg transition-all shadow-[0_0_20px_rgba(16,185,129,0.3)] hover:shadow-[0_0_30px_rgba(16,185,129,0.5)] disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
             >
               {loading ? (
                 <>

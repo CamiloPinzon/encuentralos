@@ -97,7 +97,7 @@ export default async function ReportDetailPage({ params }: ReportDetailPageProps
         </Link>
 
         {/* Tarjeta Principal */}
-        <article className="glass rounded-3xl overflow-hidden border border-white/10 shadow-2xl">
+        <article className="glass rounded-3xl overflow-hidden border border-slate-200 shadow-2xl">
           <div className="flex flex-col md:flex-row h-auto md:h-[calc(100vh-4rem)]">
             
             {/* Lado Izquierdo - Imagen (Fixed on Desktop) */}
@@ -142,7 +142,7 @@ export default async function ReportDetailPage({ params }: ReportDetailPageProps
                     <MapPin className="w-4 h-4" />
                     Ubicación del reporte
                   </h3>
-                  <div className="rounded-xl overflow-hidden shadow-lg shadow-black/20 border border-white/5">
+                  <div className="rounded-xl overflow-hidden shadow-lg shadow-black/20 border border-slate-200">
                     <DynamicLocationMap 
                       center={{ latitude: report.latitude, longitude: report.longitude }} 
                       centerPopupText="Ubicación del reporte"

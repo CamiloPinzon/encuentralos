@@ -95,9 +95,9 @@ export function FeedClient({ initialReports, category, status }: FeedClientProps
     <div className="space-y-6">
       
       {/* Controles del Feed */}
-      <div className="flex flex-col sm:flex-row justify-between items-center gap-4 bg-white/5 p-4 rounded-2xl border border-white/5">
+      <div className="flex flex-col sm:flex-row justify-between items-center gap-4 bg-slate-50/80 p-4 rounded-2xl border border-slate-200">
         <div className="flex items-center gap-4">
-          <div className="flex bg-black/40 rounded-xl p-1 border border-white/10">
+          <div className="flex bg-white/90 rounded-xl p-1 border border-slate-200">
             <button
               onClick={() => setViewMode('list')}
               className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
@@ -128,7 +128,7 @@ export function FeedClient({ initialReports, category, status }: FeedClientProps
                  type="checkbox" 
                  checked={filterNearby} 
                  onChange={(e) => setFilterNearby(e.target.checked)} 
-                 className="rounded border-white/20 bg-black/40 text-brand focus:ring-brand accent-brand w-4 h-4"
+                 className="rounded border-white/20 bg-white/90 text-brand focus:ring-brand accent-brand w-4 h-4"
                />
                <span>Mostrar solo casos cerca de mí (50km)</span>
              </label>

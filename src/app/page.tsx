@@ -32,7 +32,7 @@ export default function HomePage() {
         <section className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
           <Link 
             href="/publicar"
-            className="w-full sm:w-auto px-8 py-4 bg-brand hover:bg-brand-hover text-white rounded-2xl font-bold text-lg transition-all flex items-center justify-center gap-2 shadow-[0_0_30px_rgba(139,92,246,0.4)] hover:shadow-[0_0_40px_rgba(139,92,246,0.6)] hover:-translate-y-1"
+            className="w-full sm:w-auto px-8 py-4 bg-brand hover:bg-brand-hover text-white rounded-2xl font-bold text-lg transition-all flex items-center justify-center gap-2 shadow-[0_0_30px_rgba(16,185,129,0.4)] hover:shadow-[0_0_40px_rgba(16,185,129,0.6)] hover:-translate-y-1"
           >
             Publicar un Reporte
             <ArrowRight className="w-5 h-5" />
@@ -49,18 +49,18 @@ export default function HomePage() {
         <section className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-12 text-left">
           
           {/* Tarjeta Mascotas */}
-          <div className="glass p-8 rounded-3xl border border-white/10 hover:border-brand/30 transition-colors group">
+          <div className="glass p-8 rounded-3xl border border-slate-200 hover:border-brand/30 transition-colors group">
             <div className="bg-brand/20 w-14 h-14 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
               <PawPrint className="w-7 h-7 text-brand-light" />
             </div>
             <h2 className="text-2xl font-bold mb-2">Mascotas</h2>
             <p className="text-muted mb-6">Busca entre los reportes de mascotas perdidas o encontradas en tu zona.</p>
             <div className="flex flex-col gap-3">
-              <Link href="/pet/searching" className="flex items-center justify-between p-3 rounded-xl hover:bg-white/5 transition-colors">
+              <Link href="/pet/searching" className="flex items-center justify-between p-3 rounded-xl hover:bg-slate-50/80 transition-colors">
                 <span className="flex items-center gap-2 font-medium text-amber-400"><Search className="w-4 h-4"/> Perdidas</span>
                 <ArrowRight className="w-4 h-4 text-muted" />
               </Link>
-              <Link href="/pet/found" className="flex items-center justify-between p-3 rounded-xl hover:bg-white/5 transition-colors">
+              <Link href="/pet/found" className="flex items-center justify-between p-3 rounded-xl hover:bg-slate-50/80 transition-colors">
                 <span className="flex items-center gap-2 font-medium text-emerald-400"><MapPin className="w-4 h-4"/> Encontradas</span>
                 <ArrowRight className="w-4 h-4 text-muted" />
               </Link>
@@ -68,24 +68,60 @@ export default function HomePage() {
           </div>
 
           {/* Tarjeta Personas */}
-          <div className="glass p-8 rounded-3xl border border-white/10 hover:border-emerald-500/30 transition-colors group">
+          <div className="glass p-8 rounded-3xl border border-slate-200 hover:border-emerald-500/30 transition-colors group">
             <div className="bg-emerald-500/20 w-14 h-14 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
               <User className="w-7 h-7 text-emerald-400" />
             </div>
             <h2 className="text-2xl font-bold mb-2">Personas</h2>
             <p className="text-muted mb-6">Ayuda a localizar familiares desaparecidos o reporta un avistamiento.</p>
             <div className="flex flex-col gap-3">
-              <Link href="/human/searching" className="flex items-center justify-between p-3 rounded-xl hover:bg-white/5 transition-colors">
+              <Link href="/human/searching" className="flex items-center justify-between p-3 rounded-xl hover:bg-slate-50/80 transition-colors">
                 <span className="flex items-center gap-2 font-medium text-amber-400"><Search className="w-4 h-4"/> Buscadas</span>
                 <ArrowRight className="w-4 h-4 text-muted" />
               </Link>
-              <Link href="/human/found" className="flex items-center justify-between p-3 rounded-xl hover:bg-white/5 transition-colors">
+              <Link href="/human/found" className="flex items-center justify-between p-3 rounded-xl hover:bg-slate-50/80 transition-colors">
                 <span className="flex items-center gap-2 font-medium text-emerald-400"><MapPin className="w-4 h-4"/> Encontradas</span>
                 <ArrowRight className="w-4 h-4 text-muted" />
               </Link>
             </div>
           </div>
 
+        </section>
+
+        {/* Comunidad / Instagram */}
+        <section className="pt-8 w-full max-w-3xl mx-auto">
+          <a 
+            href="https://www.instagram.com/encuentralos.app?utm_source=qr&igsh=Mnk2bjJrZ213cm83"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center justify-between p-6 sm:p-8 bg-gradient-to-r from-purple-50 to-pink-50 border border-pink-100 rounded-3xl hover:shadow-xl hover:shadow-pink-500/10 transition-all group"
+          >
+            <div className="text-left space-y-2">
+              <h3 className="text-xl sm:text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-600 via-pink-500 to-orange-500">
+                ¡Únete a nuestra comunidad!
+              </h3>
+              <p className="text-sm sm:text-base text-slate-600 font-medium">
+                Síguenos en Instagram para ayudar a más mascotas y personas a volver a casa.
+              </p>
+            </div>
+            <div className="bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600 p-4 rounded-2xl text-white group-hover:scale-110 transition-transform shadow-lg shadow-pink-500/20 shrink-0 ml-4">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="28"
+                height="28"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
+                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+                <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
+              </svg>
+            </div>
+          </a>
         </section>
 
       </div>

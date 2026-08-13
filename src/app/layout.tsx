@@ -60,7 +60,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <main className="flex-1">
           {children}
         </main>
-        <footer className="w-full border-t border-white/10 bg-black/20 py-8 mt-auto">
+        <footer className="w-full border-t border-slate-200 bg-white/70 py-8 mt-auto">
           <div className="container mx-auto px-4 text-center text-sm text-muted">
             <p>
               Desarrollado por{' '}

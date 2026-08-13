@@ -65,7 +65,7 @@ export default function RecuperarPage() {
             </Link>
           </div>
         ) : (
-          <form onSubmit={onSubmit} className="glass p-8 rounded-3xl border border-white/10 shadow-xl space-y-6">
+          <form onSubmit={onSubmit} className="glass p-8 rounded-3xl border border-slate-200 shadow-xl space-y-6">
             {error && (
               <div className="p-4 bg-red-500/10 border border-red-500/20 rounded-xl text-red-400 text-sm">
                 {error}
@@ -86,7 +86,7 @@ export default function RecuperarPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full flex items-center justify-center gap-2 bg-brand hover:bg-brand-hover text-white py-4 px-8 rounded-xl font-bold text-lg transition-all shadow-[0_0_20px_rgba(139,92,246,0.3)] disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full flex items-center justify-center gap-2 bg-brand hover:bg-brand-hover text-white py-4 px-8 rounded-xl font-bold text-lg transition-all shadow-[0_0_20px_rgba(16,185,129,0.3)] disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? (
                 <Loader2 className="w-6 h-6 animate-spin" />

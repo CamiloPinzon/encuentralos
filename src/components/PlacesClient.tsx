@@ -92,10 +92,10 @@ export function PlacesClient({ initialPlaces, departments }: PlacesClientProps) 
     <div className="space-y-6">
       
       {/* Filters Bar */}
-      <div className="flex flex-col lg:flex-row gap-4 bg-white/5 p-4 rounded-2xl border border-white/5">
+      <div className="flex flex-col lg:flex-row gap-4 bg-slate-50/80 p-4 rounded-2xl border border-slate-200">
         
         {/* Toggle View */}
-        <div className="flex bg-black/40 rounded-xl p-1 border border-white/10 shrink-0 h-11">
+        <div className="flex bg-white/90 rounded-xl p-1 border border-slate-200 shrink-0 h-11">
           <button
             onClick={() => setViewMode('list')}
             className={`flex items-center gap-2 px-4 h-full rounded-lg text-sm font-medium transition-all ${
@@ -119,7 +119,7 @@ export function PlacesClient({ initialPlaces, departments }: PlacesClientProps) 
           <select
             value={selectedCategory}
             onChange={(e) => setSelectedCategory(e.target.value)}
-            className="w-full h-11 bg-black/40 border border-white/10 rounded-xl px-4 text-white focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none"
+            className="w-full h-11 bg-white/90 border border-slate-200 rounded-xl px-4 text-slate-900 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none"
           >
             <option value="all">Todas las categorías</option>
             <option value="shelter">Refugio</option>
@@ -131,7 +131,7 @@ export function PlacesClient({ initialPlaces, departments }: PlacesClientProps) 
           <select
             value={selectedDept}
             onChange={(e) => setSelectedDept(e.target.value)}
-            className="w-full h-11 bg-black/40 border border-white/10 rounded-xl px-4 text-white focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none"
+            className="w-full h-11 bg-white/90 border border-slate-200 rounded-xl px-4 text-slate-900 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none"
           >
             <option value="">Todo el país</option>
             {departments.map(d => (
@@ -143,7 +143,7 @@ export function PlacesClient({ initialPlaces, departments }: PlacesClientProps) 
             value={selectedMuni}
             onChange={(e) => setSelectedMuni(e.target.value)}
             disabled={!selectedDept}
-            className="w-full h-11 bg-black/40 border border-white/10 rounded-xl px-4 text-white focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none disabled:opacity-50"
+            className="w-full h-11 bg-white/90 border border-slate-200 rounded-xl px-4 text-slate-900 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none disabled:opacity-50"
           >
             <option value="">Cualquier ciudad</option>
             {municipalities.map(m => (
@@ -165,7 +165,7 @@ export function PlacesClient({ initialPlaces, departments }: PlacesClientProps) 
             </div>
           ) : (
             sortedPlaces.map((place: any) => (
-              <div key={place.id} className="glass rounded-2xl overflow-hidden hover:scale-[1.02] hover:shadow-[0_0_20px_rgba(16,185,129,0.15)] transition-all flex flex-col border border-white/5 p-5">
+              <div key={place.id} className="glass rounded-2xl overflow-hidden hover:scale-[1.02] hover:shadow-[0_0_20px_rgba(16,185,129,0.15)] transition-all flex flex-col border border-slate-200 p-5">
                 <div className="flex items-start justify-between mb-4">
                   <div className="flex flex-wrap gap-2">
                     <div className={`px-3 py-1 rounded-full text-xs font-semibold border ${categoryColors[place.category]}`}>
@@ -209,7 +209,7 @@ export function PlacesClient({ initialPlaces, departments }: PlacesClientProps) 
                       <div className="text-xs font-semibold text-white/50 mb-1">Reciben:</div>
                       <div className="flex flex-wrap gap-1">
                         {place.donation_types.map((type: string) => (
-                          <span key={type} className="text-[10px] px-2 py-0.5 rounded bg-white/5 border border-white/10 text-white/70">
+                          <span key={type} className="text-[10px] px-2 py-0.5 rounded bg-slate-50/80 border border-slate-200 text-white/70">
                             {type}
                           </span>
                         ))}
@@ -217,7 +217,7 @@ export function PlacesClient({ initialPlaces, departments }: PlacesClientProps) 
                     </div>
                   )}
                   {'distanceKm' in place && place.distanceKm !== undefined && (
-                    <div className="flex items-center gap-2 mt-2 pt-2 border-t border-white/5 text-emerald-400 font-medium">
+                    <div className="flex items-center gap-2 mt-2 pt-2 border-t border-slate-200 text-emerald-400 font-medium">
                       <MapPin className="w-4 h-4" />
                       A {(place.distanceKm as number).toFixed(1)} km de ti
                     </div>
@@ -228,7 +228,7 @@ export function PlacesClient({ initialPlaces, departments }: PlacesClientProps) 
           )}
         </div>
       ) : (
-        <div className="w-full h-[600px] animate-fade-in border border-white/10 rounded-2xl overflow-hidden">
+        <div className="w-full h-[600px] animate-fade-in border border-slate-200 rounded-2xl overflow-hidden">
           <DynamicLocationMap 
             center={centerLocation}
             markers={mapMarkers}

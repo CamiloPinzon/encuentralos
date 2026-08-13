@@ -111,7 +111,7 @@ export async function createReport(formData: FormData) {
         <h2>¡Tu reporte ha sido publicado!</h2>
         <p>Hola, has publicado un reporte titulado: <strong>${title}</strong></p>
         <p>Para editarlo, cambiar su estado (ej. de Perdido a Encontrado) o eliminarlo, haz clic en el siguiente enlace único:</p>
-        <p><a href="${baseUrl}/gestionar/${editToken}" style="display:inline-block;padding:10px 20px;background-color:#8b5cf6;color:white;text-decoration:none;border-radius:8px;">Gestionar mi reporte</a></p>
+        <p><a href="${baseUrl}/gestionar/${editToken}" style="display:inline-block;padding:10px 20px;background-color:#10b981;color:white;text-decoration:none;border-radius:8px;">Gestionar mi reporte</a></p>
         <p><strong>Importante:</strong> No compartas este correo con nadie, ya que cualquiera con el enlace podría modificar o borrar tu publicación.</p>
       `
     });

@@ -2,8 +2,9 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
-import { Menu, X, HeartHandshake, PlusCircle, Search } from 'lucide-react';
+import { Menu, X, PlusCircle, Search } from 'lucide-react';
 
 const InstagramIcon = ({ className }: { className?: string }) => (
   <svg
@@ -38,17 +39,17 @@ export function Navbar() {
 
   return (
     <>
-      <header className="sticky top-0 z-50 w-full glass border-b border-white/5 shadow-sm">
+      <header className="sticky top-0 z-50 w-full glass border-b border-slate-200 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             
             {/* Logo */}
             <div className="flex-shrink-0">
-              <Link href="/" className="flex items-center gap-2 group">
-                <div className="bg-brand/20 p-2 rounded-xl group-hover:bg-brand/30 transition-colors">
-                  <HeartHandshake className="w-5 h-5 text-brand-light" />
+              <Link href="/" className="flex items-center gap-3 group">
+                <div className="relative w-10 h-10 rounded-full overflow-hidden shadow-sm border border-slate-200 group-hover:scale-105 transition-transform">
+                  <Image src="/logo.jpg" alt="Encuéntralos" fill className="object-cover" />
                 </div>
-                <span className="font-extrabold text-xl tracking-tight hidden sm:block">
+                <span className="font-extrabold text-xl tracking-tight hidden sm:block text-slate-800">
                   Encuéntralos
                 </span>
               </Link>
@@ -76,14 +77,15 @@ export function Navbar() {
                 href="https://www.instagram.com/encuentralos.app?utm_source=qr&igsh=Mnk2bjJrZ213cm83" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="text-muted hover:text-pink-500 transition-colors p-2"
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-slate-200 hover:border-pink-300 bg-white hover:bg-pink-50 text-slate-700 hover:text-pink-600 transition-all shadow-sm hover:shadow-md"
                 aria-label="Síguenos en Instagram"
               >
-                <InstagramIcon className="w-5 h-5" />
+                <InstagramIcon className="w-4 h-4 text-pink-500" />
+                <span className="text-xs font-bold hidden lg:block">Instagram</span>
               </a>
               <Link
                 href="/publicar"
-                className="flex items-center gap-2 bg-brand hover:bg-brand-hover text-white px-5 py-2.5 rounded-xl text-sm font-bold transition-all shadow-[0_0_15px_rgba(139,92,246,0.3)] hover:shadow-[0_0_25px_rgba(139,92,246,0.5)] hover:-translate-y-0.5"
+                className="flex items-center gap-2 bg-brand hover:bg-brand-hover text-white px-5 py-2.5 rounded-2xl text-sm font-bold transition-all shadow-[0_0_15px_rgba(16,185,129,0.3)] hover:shadow-[0_0_25px_rgba(16,185,129,0.5)] hover:-translate-y-0.5"
               >
                 <PlusCircle className="w-4 h-4" />
                 Publicar Reporte
@@ -94,7 +96,7 @@ export function Navbar() {
             <div className="flex md:hidden items-center gap-4">
               <Link
                 href="/publicar"
-                className="flex items-center justify-center bg-brand text-white w-9 h-9 rounded-full shadow-[0_0_10px_rgba(139,92,246,0.3)]"
+                className="flex items-center justify-center bg-brand text-white w-9 h-9 rounded-full shadow-[0_0_10px_rgba(16,185,129,0.3)]"
                 aria-label="Publicar Reporte"
               >
                 <PlusCircle className="w-5 h-5" />
@@ -102,7 +104,7 @@ export function Navbar() {
               
               <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="text-muted hover:text-white p-2 focus:outline-none bg-white/5 rounded-lg"
+                className="text-muted hover:text-slate-900 p-2 focus:outline-none bg-slate-100 rounded-lg"
                 aria-label="Menú principal"
               >
                 {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -116,7 +118,7 @@ export function Navbar() {
       {/* Mobile Menu Drawer */}
       {isOpen && (
         <div className="md:hidden fixed inset-0 z-40 bg-background/80 backdrop-blur-sm mt-16 animate-fade-in">
-          <div className="bg-card/90 border-b border-white/10 shadow-2xl">
+          <div className="bg-card/90 border-b border-slate-200 shadow-2xl">
             <div className="px-4 pt-2 pb-6 space-y-2">
               {navLinks.map((link) => (
                 <Link
@@ -126,7 +128,7 @@ export function Navbar() {
                   className={`flex items-center gap-3 px-4 py-3 rounded-xl text-base font-medium transition-colors ${
                     isActive(link.path)
                       ? 'bg-brand/10 text-brand'
-                      : 'text-muted hover:bg-white/5 hover:text-white'
+                      : 'text-muted hover:bg-slate-100 hover:text-slate-900'
                   }`}
                 >
                   {link.icon}
@@ -134,11 +136,11 @@ export function Navbar() {
                 </Link>
               ))}
               
-              <div className="pt-4 mt-2 border-t border-white/5">
+              <div className="pt-4 mt-2 border-t border-slate-200">
                 <Link
                   href="/publicar"
                   onClick={() => setIsOpen(false)}
-                  className="flex items-center justify-center gap-2 w-full bg-brand hover:bg-brand-hover text-white px-5 py-3.5 rounded-xl text-base font-bold transition-all shadow-[0_0_20px_rgba(139,92,246,0.4)]"
+                  className="flex items-center justify-center gap-2 w-full bg-brand hover:bg-brand-hover text-white px-5 py-3.5 rounded-2xl text-base font-bold transition-all shadow-[0_0_20px_rgba(16,185,129,0.4)]"
                 >
                   <PlusCircle className="w-5 h-5" />
                   Publicar un Reporte
@@ -148,11 +150,11 @@ export function Navbar() {
                     href="https://www.instagram.com/encuentralos.app?utm_source=qr&igsh=Mnk2bjJrZ213cm83" 
                     target="_blank" 
                     rel="noopener noreferrer"
-                    className="flex items-center gap-2 text-muted hover:text-pink-500 transition-colors p-2"
+                    className="flex items-center justify-center gap-2 w-full bg-gradient-to-r from-purple-500 via-pink-500 to-orange-500 text-white px-5 py-3 rounded-2xl text-sm font-bold transition-all shadow-md hover:shadow-lg hover:opacity-90"
                     aria-label="Síguenos en Instagram"
                   >
                     <InstagramIcon className="w-5 h-5" />
-                    <span className="text-sm font-medium">Síguenos en Instagram</span>
+                    <span>Síguenos en Instagram</span>
                   </a>
                 </div>
               </div>

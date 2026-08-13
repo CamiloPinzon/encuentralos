@@ -27,7 +27,7 @@ export function ZoomableImage({ src, alt }: ZoomableImageProps) {
           priority
           sizes="(max-width: 768px) 100vw, 50vw"
         />
-        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center">
+        <div className="absolute inset-0 bg-black/0 group-hover:bg-white/70 transition-colors flex items-center justify-center">
           <div className="opacity-0 group-hover:opacity-100 bg-black/60 p-3 rounded-full backdrop-blur-md transform scale-90 group-hover:scale-100 transition-all">
             <ZoomIn className="w-6 h-6 text-white" />
           </div>

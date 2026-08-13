@@ -88,8 +88,8 @@ export default function GestionarPage({ params }: { params: Promise<{ token: str
           <p className="text-muted">Administra el estado de tu publicación de forma segura.</p>
         </div>
 
-        <div className="glass p-8 rounded-3xl border border-white/10 space-y-6 text-left shadow-2xl">
-          <div className="space-y-2 pb-6 border-b border-white/5">
+        <div className="glass p-8 rounded-3xl border border-slate-200 space-y-6 text-left shadow-2xl">
+          <div className="space-y-2 pb-6 border-b border-slate-200">
             <h2 className="text-2xl font-bold">{report.title}</h2>
             <p className="text-muted text-sm line-clamp-2">{report.description}</p>
             <div className="pt-2">

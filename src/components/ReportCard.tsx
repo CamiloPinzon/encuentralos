@@ -16,10 +16,10 @@ export function ReportCard({ report }: ReportCardProps) {
   return (
     <Link 
       href={`/${report.category}/${report.status}/${report.id}`}
-      className="glass rounded-2xl overflow-hidden hover:scale-[1.02] hover:shadow-[0_0_20px_rgba(139,92,246,0.15)] transition-all duration-300 flex flex-col group border border-white/5"
+      className="glass rounded-2xl overflow-hidden hover:scale-[1.02] hover:shadow-[0_0_20px_rgba(16,185,129,0.15)] transition-all duration-300 flex flex-col group border border-slate-200"
     >
       {/* Imagen (1:1 Cuadrada) */}
-      <div className="relative aspect-square w-full bg-black/40 overflow-hidden">
+      <div className="relative aspect-square w-full bg-white/90 overflow-hidden">
         {report.image_url ? (
           <Image
             src={report.image_url}
@@ -34,7 +34,7 @@ export function ReportCard({ report }: ReportCardProps) {
         )}
         
         {/* Etiqueta de estado visual (opcional) */}
-        <div className="absolute top-3 right-3 bg-black/60 backdrop-blur-md px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider border border-white/10">
+        <div className="absolute top-3 right-3 bg-black/60 backdrop-blur-md px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider border border-slate-200">
           {report.status === 'searching' && <span className="text-amber-400">Buscando</span>}
           {report.status === 'found' && <span className="text-emerald-400">Encontrado</span>}
           {report.status === 'spotted' && <span className="text-blue-400">Visto</span>}
@@ -50,7 +50,7 @@ export function ReportCard({ report }: ReportCardProps) {
           {report.description}
         </p>
 
-        <div className="mt-auto pt-4 flex items-center justify-between text-xs text-muted border-t border-white/5">
+        <div className="mt-auto pt-4 flex items-center justify-between text-xs text-muted border-t border-slate-200">
           <div className="flex items-center gap-1.5">
             <Clock className="w-4 h-4" />
             <span>{timeAgo}</span>
@@ -66,7 +66,7 @@ export function ReportCard({ report }: ReportCardProps) {
 
       {/* Botón de acción */}
       <div 
-        className="w-full bg-white/5 group-hover:bg-brand group-hover:text-white transition-colors py-3 text-center font-medium text-sm text-brand-light border-t border-white/5"
+        className="w-full bg-slate-50/80 group-hover:bg-brand group-hover:text-white transition-colors py-3 text-center font-medium text-sm text-brand-light border-t border-slate-200"
       >
         Ver detalles
       </div>

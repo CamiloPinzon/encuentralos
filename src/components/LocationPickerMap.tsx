@@ -121,7 +121,7 @@ export default function LocationPickerMap({
 
   if (!isLoaded) {
     return (
-      <div className="h-[350px] w-full rounded-2xl bg-black/40 border border-white/10 flex flex-col items-center justify-center text-muted gap-3 mt-2">
+      <div className="h-[350px] w-full rounded-2xl bg-white/90 border border-slate-200 flex flex-col items-center justify-center text-muted gap-3 mt-2">
         <Loader2 className="w-8 h-8 animate-spin text-brand" />
         <p>Cargando mapa interactivo...</p>
       </div>
@@ -142,13 +142,13 @@ export default function LocationPickerMap({
           <input
             type="text"
             placeholder="Buscar ciudad, barrio o dirección..."
-            className="w-full bg-black/40 border border-white/10 rounded-xl pl-10 pr-4 py-2.5 text-sm text-white placeholder-muted focus:outline-none focus:ring-2 focus:ring-brand focus:border-transparent transition-all"
+            className="w-full bg-white/90 border border-slate-200 rounded-xl pl-10 pr-4 py-2.5 text-sm text-white placeholder-muted focus:outline-none focus:ring-2 focus:ring-brand focus:border-transparent transition-all"
           />
         </div>
       </StandaloneSearchBox>
 
       {/* Map Container */}
-      <div className="h-[350px] w-full rounded-2xl overflow-hidden border border-white/10 relative z-0 mt-2">
+      <div className="h-[350px] w-full rounded-2xl overflow-hidden border border-slate-200 relative z-0 mt-2">
         <GoogleMap
           mapContainerClassName="w-full h-full"
           center={position || defaultCenter}
