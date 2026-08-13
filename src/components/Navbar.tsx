@@ -73,7 +73,7 @@ export function Navbar() {
             {/* Desktop Action & Social */}
             <div className="hidden md:flex items-center gap-4">
               <a 
-                href="https://instagram.com/tu_usuario_aqui" 
+                href="https://www.instagram.com/encuentralos.app?utm_source=qr&igsh=Mnk2bjJrZ213cm83" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="text-muted hover:text-pink-500 transition-colors p-2"
@@ -145,7 +145,7 @@ export function Navbar() {
                 </Link>
                 <div className="pt-4 flex justify-center">
                   <a 
-                    href="https://instagram.com/tu_usuario_aqui" 
+                    href="https://www.instagram.com/encuentralos.app?utm_source=qr&igsh=Mnk2bjJrZ213cm83" 
                     target="_blank" 
                     rel="noopener noreferrer"
                     className="flex items-center gap-2 text-muted hover:text-pink-500 transition-colors p-2"
