@@ -3,6 +3,9 @@
 import { revalidatePath } from 'next/cache';
 import { createClient } from '@/utils/supabase/server';
 import { PlaceOfInterest } from '@/types';
+import { Resend } from 'resend';
+
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function createPlaceOfInterest(formData: FormData) {
   const category = formData.get('category') as string;
@@ -14,12 +17,13 @@ export async function createPlaceOfInterest(formData: FormData) {
   const longitude = parseFloat(formData.get('longitude') as string);
   const business_hours = formData.get('business_hours') as string | null;
   const contact_info = formData.get('contact_info') as string | null;
+  const contact_email = formData.get('contact_email') as string;
   const donation_types = formData.getAll('donation_types') as string[];
   const is_temporary = formData.get('is_temporary') === 'on';
   const start_date = formData.get('start_date') as string | null;
   const end_date = formData.get('end_date') as string | null;
 
-  if (!category || !name || !department || !municipality || !address || isNaN(latitude) || isNaN(longitude)) {
+  if (!category || !name || !department || !municipality || !address || !contact_email || isNaN(latitude) || isNaN(longitude)) {
     return { success: false, error: 'Faltan campos obligatorios' };
   }
 
@@ -54,6 +58,7 @@ export async function createPlaceOfInterest(formData: FormData) {
       longitude,
       business_hours,
       contact_info,
+      contact_email,
       donation_types: category === 'donation' ? donation_types : [],
       is_temporary: category === 'donation' ? is_temporary : false,
       start_date: (category === 'donation' && is_temporary && start_date) ? start_date : null,
@@ -64,6 +69,25 @@ export async function createPlaceOfInterest(formData: FormData) {
 
   if (error) {
     return { success: false, error: 'Error al guardar el lugar: ' + error.message };
+  }
+
+  // Enviar correo con el enlace de edición
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://encuentralos.camilopinzon.com';
+  try {
+    await resend.emails.send({
+      from: 'onboarding@resend.dev',
+      to: contact_email,
+      subject: 'Gestiona tu lugar en Encuéntralos',
+      html: `
+        <h2>¡Tu lugar ha sido publicado!</h2>
+        <p>Hola, has publicado un lugar titulado: <strong>${name}</strong></p>
+        <p>Para administrarlo o eliminarlo definitivamente, haz clic en el siguiente enlace único:</p>
+        <p><a href="${baseUrl}/lugares/gestionar/${data.edit_token}" style="display:inline-block;padding:10px 20px;background-color:#10b981;color:white;text-decoration:none;border-radius:8px;">Gestionar mi lugar</a></p>
+        <p><strong>Importante:</strong> No compartas este correo con nadie, ya que cualquiera con el enlace podría borrar tu publicación.</p>
+      `
+    });
+  } catch (emailError) {
+    console.error('Error enviando correo de confirmación de lugar:', emailError);
   }
 
   revalidatePath('/lugares');

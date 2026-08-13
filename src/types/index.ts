@@ -28,6 +28,7 @@ export interface PlaceOfInterest {
   longitude: number;
   business_hours?: string;
   contact_info?: string;
+  contact_email?: string;
   donation_types?: string[];
   is_temporary?: boolean;
   start_date?: string;
