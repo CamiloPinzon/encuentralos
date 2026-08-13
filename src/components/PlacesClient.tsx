@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { PlaceOfInterest } from '@/types';
 import { getMunicipalities } from '@/actions/location-actions';
 import { getPlacesOfInterest } from '@/actions/places-actions';
@@ -58,13 +58,13 @@ export function PlacesClient({ initialPlaces, departments }: PlacesClientProps) 
       return [...places].sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
     }
 
-    return places.map(p => ({
+    return places.map((p: PlaceOfInterest) => ({
       ...p,
       distanceKm: calculateDistance(location.latitude, location.longitude, p.latitude, p.longitude)
     })).sort((a, b) => a.distanceKm - b.distanceKm);
   }, [places, location]);
 
-  const mapMarkers = sortedPlaces.map(p => ({
+  const mapMarkers = sortedPlaces.map((p: any) => ({
     id: p.id,
     location: { latitude: p.latitude, longitude: p.longitude },
     title: `${p.name} (${p.category})`
@@ -164,7 +164,7 @@ export function PlacesClient({ initialPlaces, departments }: PlacesClientProps) 
               No se encontraron lugares con estos filtros.
             </div>
           ) : (
-            sortedPlaces.map((place) => (
+            sortedPlaces.map((place: any) => (
               <div key={place.id} className="glass rounded-2xl overflow-hidden hover:scale-[1.02] hover:shadow-[0_0_20px_rgba(16,185,129,0.15)] transition-all flex flex-col border border-white/5 p-5">
                 <div className="flex items-start justify-between mb-4">
                   <div className={`px-3 py-1 rounded-full text-xs font-semibold border ${categoryColors[place.category]}`}>
