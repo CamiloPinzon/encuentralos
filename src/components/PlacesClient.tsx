@@ -5,6 +5,8 @@ import { PlaceOfInterest } from '@/types';
 import { getMunicipalities } from '@/actions/location-actions';
 import { getPlacesOfInterest } from '@/actions/places-actions';
 import { DynamicLocationMap } from '@/components/DynamicLocationMap';
+import { useUserLocation } from '@/hooks/useUserLocation';
+import { calculateDistance } from '@/utils/geo-distance';
 import { Map, List, Loader2, Building2, MapPin, Clock, Phone } from 'lucide-react';
 
 interface PlacesClientProps {
@@ -22,6 +24,8 @@ export function PlacesClient({ initialPlaces, departments }: PlacesClientProps) 
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [municipalities, setMunicipalities] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
+  
+  const { location, loading: locLoading } = useUserLocation();
 
   // Update municipalities when department changes
   useEffect(() => {
@@ -49,14 +53,25 @@ export function PlacesClient({ initialPlaces, departments }: PlacesClientProps) 
     fetchPlaces();
   }, [selectedDept, selectedMuni, selectedCategory]);
 
-  const mapMarkers = places.map(p => ({
+  const sortedPlaces = useMemo(() => {
+    if (!location) {
+      return [...places].sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+    }
+
+    return places.map(p => ({
+      ...p,
+      distanceKm: calculateDistance(location.latitude, location.longitude, p.latitude, p.longitude)
+    })).sort((a, b) => a.distanceKm - b.distanceKm);
+  }, [places, location]);
+
+  const mapMarkers = sortedPlaces.map(p => ({
     id: p.id,
     location: { latitude: p.latitude, longitude: p.longitude },
     title: `${p.name} (${p.category})`
   }));
 
-  const centerLocation = places.length > 0 
-    ? { latitude: places[0].latitude, longitude: places[0].longitude }
+  const centerLocation = sortedPlaces.length > 0 
+    ? { latitude: sortedPlaces[0].latitude, longitude: sortedPlaces[0].longitude }
     : { latitude: 4.6097, longitude: -74.0817 }; // Fallback to Bogota
 
   const categoryLabels: Record<string, string> = {
@@ -138,18 +153,18 @@ export function PlacesClient({ initialPlaces, departments }: PlacesClientProps) 
         </div>
       </div>
 
-      {loading ? (
+      {(loading || locLoading) ? (
         <div className="w-full flex justify-center py-20">
           <Loader2 className="w-10 h-10 animate-spin text-emerald-500" />
         </div>
       ) : viewMode === 'list' ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {places.length === 0 ? (
+          {sortedPlaces.length === 0 ? (
             <div className="col-span-full text-center py-10 text-muted glass rounded-2xl">
               No se encontraron lugares con estos filtros.
             </div>
           ) : (
-            places.map((place) => (
+            sortedPlaces.map((place) => (
               <div key={place.id} className="glass rounded-2xl overflow-hidden hover:scale-[1.02] hover:shadow-[0_0_20px_rgba(16,185,129,0.15)] transition-all flex flex-col border border-white/5 p-5">
                 <div className="flex items-start justify-between mb-4">
                   <div className={`px-3 py-1 rounded-full text-xs font-semibold border ${categoryColors[place.category]}`}>
@@ -174,6 +189,12 @@ export function PlacesClient({ initialPlaces, departments }: PlacesClientProps) 
                     <div className="flex items-start gap-2">
                       <Phone className="w-4 h-4 shrink-0 mt-0.5" />
                       <span>{place.contact_info}</span>
+                    </div>
+                  )}
+                  {'distanceKm' in place && place.distanceKm !== undefined && (
+                    <div className="flex items-center gap-2 mt-2 pt-2 border-t border-white/5 text-emerald-400 font-medium">
+                      <MapPin className="w-4 h-4" />
+                      A {(place.distanceKm as number).toFixed(1)} km de ti
                     </div>
                   )}
                 </div>
