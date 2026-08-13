@@ -90,6 +90,28 @@ export async function createPlaceOfInterest(formData: FormData) {
     console.error('Error enviando correo de confirmación de lugar:', emailError);
   }
 
+  // Trigger Webhook para Instagram (Zapier/Make)
+  const webhookUrl = process.env.INSTAGRAM_WEBHOOK_URL;
+  if (webhookUrl) {
+    try {
+      await fetch(webhookUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          title: name,
+          description: `Dirección: ${address}${contact_info ? ' | Contacto: ' + contact_info : ''}`,
+          image_url: 'https://encuentralos.camilopinzon.com/icon.png',
+          category,
+          status: 'lugar',
+          location: `${municipality}, ${department}`,
+          link: `${baseUrl}/lugares`
+        })
+      });
+    } catch (webhookError) {
+      console.error('Error enviando webhook de Instagram para lugar:', webhookError);
+    }
+  }
+
   revalidatePath('/lugares');
   return { 
     success: true, 
