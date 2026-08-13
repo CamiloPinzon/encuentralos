@@ -108,7 +108,7 @@ export function PlacesFormClient({ departments }: PlacesFormClientProps) {
             <div className="space-y-3">
               <label className="text-sm font-medium text-white block">Tipos de Donación que Reciben</label>
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                {['Alimentos', 'Medicamentos', 'Ropa', 'Insumos Veterinarios', 'Dinero', 'Otros'].map(type => (
+                {['Alimentos', 'Medicamentos', 'Ropa', 'Insumos Veterinarios', 'Items de Aseo', 'Dinero', 'Otros'].map(type => (
                   <label key={type} className="flex items-center gap-2 text-sm text-white/80 cursor-pointer">
                     <input type="checkbox" name="donation_types" value={type} className="rounded border-white/20 bg-black/40 text-emerald-500 focus:ring-emerald-500" />
                     {type}
