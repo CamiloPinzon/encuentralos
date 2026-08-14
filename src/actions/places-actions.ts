@@ -141,19 +141,22 @@ export async function createPlaceOfInterest(formData: FormData) {
   }
 
   // Trigger Webhook para Instagram (Zapier/Make)
-  const webhookUrl = process.env.INSTAGRAM_WEBHOOK_URL_PLACES;
+  const webhookUrl = process.env.INSTAGRAM_WEBHOOK_URL;
   if (webhookUrl) {
     try {
       const donationText = (category === 'donation' && donation_types.length > 0) 
         ? ` | Se recibe: ${donation_types.join(', ')}` 
         : '';
         
+      const caption = `¡Nuevo lugar en nuestra comunidad! 📍\n${name}\n\nDirección: ${address}\n${contact_info ? 'Contacto: ' + contact_info + '\n' : ''}${donationText ? donationText + '\n' : ''}\nConoce más ingresando al enlace en nuestra biografía.\n\n#Encuentralos #Lugares #Comunidad`;
+
       await fetch(webhookUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           title: name,
           description: `Dirección: ${address}${contact_info ? ' | Contacto: ' + contact_info : ''}${donationText}`,
+          caption,
           image_url: instagramImageUrl,
           category,
           status: 'lugar',

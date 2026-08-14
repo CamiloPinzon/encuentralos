@@ -91,11 +91,14 @@ export async function createClassified(formData: FormData) {
   }
 
   // Trigger Webhook para Instagram (Zapier/Make)
-  const webhookUrl = process.env.INSTAGRAM_WEBHOOK_URL_CLASSIFIEDS;
+  const webhookUrl = process.env.INSTAGRAM_WEBHOOK_URL;
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://encuentralos-seven.vercel.app';
   
   if (webhookUrl) {
     try {
+      const typeText = type === 'ofrece' ? '¡Nueva oferta de ayuda! 📢' : '¡Atención comunidad, se necesita ayuda! 📢';
+      const caption = `${typeText}\n${title}\n\n${description}\n\n📍 Ubicación: ${location || 'No especificada'}\n👤 Contacto: ${contact_name}\n\nSi quieres ayudar o conocer más, ingresa al enlace en nuestra biografía.\n\n#Encuentralos #Clasificados #Ayuda #Comunidad`;
+
       await fetch(webhookUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -105,6 +108,7 @@ export async function createClassified(formData: FormData) {
           category,
           title,
           description,
+          caption,
           image_url: instagramImageUrl,
           location: location || 'No especificada',
           contact_name,
