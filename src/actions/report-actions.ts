@@ -55,6 +55,15 @@ export async function createReport(formData: FormData) {
     const mimeType = imageFile.type;
     const fileUri = `data:${mimeType};base64,${base64Data}`;
 
+    // --- MODERACIÓN DE IMAGEN CON GEMINI ---
+    const { moderateImage } = await import('@/utils/gemini-moderator');
+    const moderation = await moderateImage(base64Data, mimeType);
+    
+    if (!moderation.isSafe) {
+      return { success: false, error: 'Imagen rechazada por políticas comunitarias: ' + moderation.reason };
+    }
+    // ----------------------------------------
+
     try {
       const uploadResult = await cloudinary.uploader.upload(fileUri, {
         folder: 'encuentralos_reports',
