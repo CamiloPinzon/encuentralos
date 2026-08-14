@@ -124,12 +124,23 @@ export async function createPlaceOfInterest(formData: FormData) {
       { overlay: { font_family: "Arial", font_size: 40, text: encodeURIComponent(locationText) }, color: "#475569", gravity: "center", y: 80, width: 850, crop: "fit" }
     ];
 
-    if (encodedAddress) {
-      transformations.push({ overlay: { font_family: "Arial", font_size: 35, text: encodedAddress }, color: "#64748b", gravity: "south", y: 220 });
+    let currentY = 80;
+
+    if (category === 'donation' && donation_types.length > 0) {
+      const donationTypesStr = `📦 Se recibe: ${donation_types.join(', ')}`;
+      const cleanDonation = donationTypesStr.replace(/\r?\n|\r/g, " ");
+      const encodedDonation = encodeURIComponent(cleanDonation.substring(0, 110) + (cleanDonation.length > 110 ? '...' : ''));
+      transformations.push({ overlay: { font_family: "Arial", font_size: 30, text: encodedDonation }, color: "#10b981", gravity: "south", y: currentY, width: 900, crop: "fit" });
+      currentY += 80;
     }
-    
+
     if (encodedContact) {
-      transformations.push({ overlay: { font_family: "Arial", font_size: 35, font_weight: "bold", text: encodedContact }, color: "#64748b", gravity: "south", y: 150 });
+      transformations.push({ overlay: { font_family: "Arial", font_size: 35, font_weight: "bold", text: encodedContact }, color: "#64748b", gravity: "south", y: currentY });
+      currentY += 70;
+    }
+
+    if (encodedAddress) {
+      transformations.push({ overlay: { font_family: "Arial", font_size: 35, text: encodedAddress }, color: "#64748b", gravity: "south", y: currentY });
     }
 
     instagramImageUrl = cloudinary.url(bgId, {
