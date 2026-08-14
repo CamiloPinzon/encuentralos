@@ -105,7 +105,7 @@ export default async function ClasificadosPage({ searchParams }: { searchParams:
                     {item.category}
                   </div>
                   
-                  <p className="mt-4 text-slate-600 text-sm line-clamp-3 flex-1">{item.description}</p>
+                  <p className="mt-4 text-slate-600 text-sm whitespace-pre-wrap flex-1">{item.description}</p>
                   
                   <div className="mt-6 space-y-2 border-t border-slate-100 pt-4">
                     {item.location && (
