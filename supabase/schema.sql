@@ -44,3 +44,47 @@ create policy "Bloquear borrados desde cliente público"
 on public.reports for delete
 to public
 using ( false );
+
+-- =========================================
+-- Tabla de Clasificados (Ofrecer/Necesitar Ayuda)
+-- =========================================
+create table public.classifieds (
+    id uuid default uuid_generate_v4() primary key,
+    created_at timestamp with time zone default timezone('utc'::text, now()) not null,
+    type text not null check (type in ('ofrece', 'necesita')),
+    category text not null,
+    title text not null,
+    description text not null,
+    contact_name text not null,
+    contact_email text not null,
+    contact_phone text,
+    location text,
+    image_url text,
+    status text not null default 'active' check (status in ('active', 'closed')),
+    edit_token uuid default uuid_generate_v4() not null
+);
+
+-- Políticas de Seguridad de Filas (Row Level Security) para Clasificados
+alter table public.classifieds enable row level security;
+
+-- Permitir lectura a todos
+create policy "Clasificados visibles para todos"
+on public.classifieds for select
+to public
+using ( true );
+
+-- Restringir INSERT/UPDATE/DELETE desde cliente (Se usará Server Actions)
+create policy "Bloquear inserciones desde cliente público para clasificados"
+on public.classifieds for insert
+to public
+with check ( false );
+
+create policy "Bloquear actualizaciones desde cliente público para clasificados"
+on public.classifieds for update
+to public
+using ( false );
+
+create policy "Bloquear borrados desde cliente público para clasificados"
+on public.classifieds for delete
+to public
+using ( false );

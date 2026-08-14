@@ -106,11 +106,11 @@ export function PlacesFormClient({ departments }: PlacesFormClientProps) {
         {category === 'donation' && (
           <div className="md:col-span-2 space-y-6 bg-white/70 p-6 rounded-2xl border border-slate-200">
             <div className="space-y-3">
-              <label className="text-sm font-medium text-white block">Tipos de Donación que Reciben</label>
+              <label className="text-sm font-medium text-slate-800 block">Tipos de Donación que Reciben</label>
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                 {['Alimentos', 'Medicamentos', 'Ropa', 'Insumos Veterinarios', 'Items de Aseo', 'Dinero', 'Otros'].map(type => (
-                  <label key={type} className="flex items-center gap-2 text-sm text-white/80 cursor-pointer">
-                    <input type="checkbox" name="donation_types" value={type} className="rounded border-white/20 bg-white/90 text-emerald-500 focus:ring-emerald-500" />
+                  <label key={type} className="flex items-center gap-2 text-sm text-slate-700 cursor-pointer">
+                    <input type="checkbox" name="donation_types" value={type} className="rounded border-slate-300 bg-white text-emerald-500 focus:ring-emerald-500" />
                     {type}
                   </label>
                 ))}
@@ -118,13 +118,13 @@ export function PlacesFormClient({ departments }: PlacesFormClientProps) {
             </div>
 
             <div className="space-y-4">
-              <label className="flex items-center gap-3 text-sm font-medium text-white cursor-pointer">
+              <label className="flex items-center gap-3 text-sm font-medium text-slate-800 cursor-pointer">
                 <input 
                   type="checkbox" 
                   name="is_temporary" 
                   checked={isTemporary} 
                   onChange={(e) => setIsTemporary(e.target.checked)} 
-                  className="w-5 h-5 rounded border-white/20 bg-white/90 text-emerald-500 focus:ring-emerald-500" 
+                  className="w-5 h-5 rounded border-slate-300 bg-white text-emerald-500 focus:ring-emerald-500" 
                 />
                 ¿Es un centro de acopio temporal?
               </label>
@@ -132,21 +132,21 @@ export function PlacesFormClient({ departments }: PlacesFormClientProps) {
               {isTemporary && (
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
                   <div className="space-y-2">
-                    <label className="text-xs font-medium text-white/70 block">Fecha de Inicio</label>
+                    <label className="text-xs font-medium text-slate-700 block">Fecha de Inicio</label>
                     <input
                       type="date"
                       name="start_date"
                       required
-                      className="w-full bg-white/90 border border-slate-200 rounded-xl px-4 py-2 text-slate-900 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none"
+                      className="w-full bg-white border border-slate-200 rounded-xl px-4 py-2 text-slate-900 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none"
                     />
                   </div>
                   <div className="space-y-2">
-                    <label className="text-xs font-medium text-white/70 block">Fecha de Fin</label>
+                    <label className="text-xs font-medium text-slate-700 block">Fecha de Fin</label>
                     <input
                       type="date"
                       name="end_date"
                       required
-                      className="w-full bg-white/90 border border-slate-200 rounded-xl px-4 py-2 text-slate-900 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none"
+                      className="w-full bg-white border border-slate-200 rounded-xl px-4 py-2 text-slate-900 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none"
                     />
                   </div>
                 </div>

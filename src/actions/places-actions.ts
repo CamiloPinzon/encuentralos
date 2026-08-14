@@ -4,8 +4,16 @@ import { revalidatePath } from 'next/cache';
 import { createClient } from '@/utils/supabase/server';
 import { PlaceOfInterest } from '@/types';
 import { Resend } from 'resend';
+import { v2 as cloudinary } from 'cloudinary';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
+
+const PLACE_EMOJIS: Record<string, string> = {
+  "veterinary": "🏥",
+  "shelter": "🏡",
+  "donation": "🛍️",
+  "public": "🏢"
+};
 
 export async function createPlaceOfInterest(formData: FormData) {
   const category = formData.get('category') as string;
@@ -90,20 +98,66 @@ export async function createPlaceOfInterest(formData: FormData) {
     console.error('Error enviando correo de confirmación de lugar:', emailError);
   }
 
+  // Generar URL de Cloudinary para Instagram (Diseño Tipográfico)
+  const bgId = 'encuentralos_assets/bg_lugares.jpg';
+  const tagText = '¡NUEVO LUGAR EN EL MAPA!';
+  const emoji = PLACE_EMOJIS[category] || '📍';
+  
+  const encodedTag = encodeURIComponent(`${emoji} ${tagText}`);
+  const encodedTitle = encodeURIComponent(name);
+  const locationText = `${municipality}, ${department}`;
+  const addressText = address ? `📍 ${address}` : '';
+  const contactText = contact_info ? `👤 ${contact_info}` : '';
+  const encodedAddress = encodeURIComponent(addressText);
+  const encodedContact = encodeURIComponent(contactText);
+
+  let instagramImageUrl = 'https://encuentralos.camilopinzon.com/icon.png';
+  try {
+    const cloudinaryUrlEnv = process.env.CLOUDINARY_URL || '';
+    const cloudName = cloudinaryUrlEnv.split('@')[1] || 'xysikv0c';
+    cloudinary.config({ cloud_name: cloudName, secure: true });
+
+    const transformations: any[] = [
+      { width: 1080, height: 1080, crop: "fill" },
+      { overlay: { font_family: "Arial", font_size: 45, font_weight: "bold", text: encodedTag }, color: "#3b82f6", gravity: "north", y: 150 },
+      { overlay: { font_family: "Arial", font_size: 75, font_weight: "bold", text: encodedTitle }, color: "#1e293b", gravity: "center", y: -100, width: 850, crop: "fit" },
+      { overlay: { font_family: "Arial", font_size: 40, text: encodeURIComponent(locationText) }, color: "#475569", gravity: "center", y: 80, width: 850, crop: "fit" }
+    ];
+
+    if (encodedAddress) {
+      transformations.push({ overlay: { font_family: "Arial", font_size: 35, text: encodedAddress }, color: "#64748b", gravity: "south", y: 220 });
+    }
+    
+    if (encodedContact) {
+      transformations.push({ overlay: { font_family: "Arial", font_size: 35, font_weight: "bold", text: encodedContact }, color: "#64748b", gravity: "south", y: 150 });
+    }
+
+    instagramImageUrl = cloudinary.url(bgId, {
+      analytics: false,
+      transformation: transformations
+    });
+  } catch (error) {
+    console.error("Error generando url de cloudinary para lugares:", error);
+  }
+
   // Trigger Webhook para Instagram (Zapier/Make)
-  const webhookUrl = process.env.INSTAGRAM_WEBHOOK_URL;
+  const webhookUrl = process.env.INSTAGRAM_WEBHOOK_URL_PLACES;
   if (webhookUrl) {
     try {
+      const donationText = (category === 'donation' && donation_types.length > 0) 
+        ? ` | Se recibe: ${donation_types.join(', ')}` 
+        : '';
+        
       await fetch(webhookUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           title: name,
-          description: `Dirección: ${address}${contact_info ? ' | Contacto: ' + contact_info : ''}`,
-          image_url: 'https://encuentralos.camilopinzon.com/icon.png',
+          description: `Dirección: ${address}${contact_info ? ' | Contacto: ' + contact_info : ''}${donationText}`,
+          image_url: instagramImageUrl,
           category,
           status: 'lugar',
-          location: `${municipality}, ${department}`,
+          location: locationText,
           link: `${baseUrl}/lugares`
         })
       });

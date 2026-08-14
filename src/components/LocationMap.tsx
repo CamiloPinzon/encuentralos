@@ -61,9 +61,10 @@ export default function LocationMap({
   const mapCenter = useMemo(() => ({ lat: center.latitude, lng: center.longitude }), [center]);
 
   const mapOptions = useMemo(() => ({
-    disableDefaultUI: true,
+    disableDefaultUI: false,
+    zoomControl: true,
     clickableIcons: false,
-    scrollwheel: false,
+    scrollwheel: true,
     styles: darkMode ? darkMapStyle : undefined,
   }), [darkMode]);
 

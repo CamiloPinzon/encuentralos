@@ -206,10 +206,10 @@ export function PlacesClient({ initialPlaces, departments }: PlacesClientProps) 
                   )}
                   {place.donation_types && place.donation_types.length > 0 && (
                     <div className="pt-2">
-                      <div className="text-xs font-semibold text-white/50 mb-1">Reciben:</div>
+                      <div className="text-xs font-semibold text-slate-500 mb-1">Reciben:</div>
                       <div className="flex flex-wrap gap-1">
                         {place.donation_types.map((type: string) => (
-                          <span key={type} className="text-[10px] px-2 py-0.5 rounded bg-slate-50/80 border border-slate-200 text-white/70">
+                          <span key={type} className="text-[10px] px-2 py-0.5 rounded bg-slate-50/80 border border-slate-200 text-slate-700">
                             {type}
                           </span>
                         ))}
