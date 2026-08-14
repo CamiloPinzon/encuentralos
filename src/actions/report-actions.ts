@@ -124,16 +124,21 @@ export async function createReport(formData: FormData) {
   const webhookUrl = process.env.INSTAGRAM_WEBHOOK_URL;
   if (webhookUrl) {
     try {
+      const locationText = municipality && department ? `${municipality}, ${department}` : 'Ubicación seleccionada en el mapa';
+      const statusEmoji = status === 'perdido' ? '🔍' : '✅';
+      const caption = `¡Ayuda a difundir! ${statusEmoji}\n${title}\n\n${description}\n\n📍 Ubicación: ${locationText}\n\nConoce más y contacta al anunciante en el enlace de nuestra biografía.\n\n#Encuentralos #Mascotas #Comunidad`;
+
       await fetch(webhookUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           title,
           description,
+          caption,
           image_url: imageUrl || 'https://via.placeholder.com/300?text=Sin+Imagen',
           category,
           status,
-          location: municipality && department ? `${municipality}, ${department}` : 'Ubicación seleccionada en el mapa',
+          location: locationText,
           link: `${baseUrl}/${category}/${status}/${data.id}`
         })
       });
