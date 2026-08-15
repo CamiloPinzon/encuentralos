@@ -25,6 +25,7 @@ export async function createPlaceOfInterest(formData: FormData) {
   const longitude = parseFloat(formData.get('longitude') as string);
   const business_hours = formData.get('business_hours') as string | null;
   const contact_info = formData.get('contact_info') as string | null;
+  const instagram_profile = formData.get('instagram_profile') as string | null;
   const contact_email = formData.get('contact_email') as string;
   const donation_types = formData.getAll('donation_types') as string[];
   const is_temporary = formData.get('is_temporary') === 'on';
@@ -66,6 +67,7 @@ export async function createPlaceOfInterest(formData: FormData) {
       longitude,
       business_hours,
       contact_info,
+      instagram_profile: instagram_profile ? instagram_profile.replace('@', '') : null,
       contact_email,
       donation_types: category === 'donation' ? donation_types : [],
       is_temporary: category === 'donation' ? is_temporary : false,
@@ -159,7 +161,8 @@ export async function createPlaceOfInterest(formData: FormData) {
         ? ` | Se recibe: ${donation_types.join(', ')}` 
         : '';
         
-      const caption = `¡Nuevo lugar en nuestra comunidad! 📍\n${name}\n\nDirección: ${address}\n${contact_info ? 'Contacto: ' + contact_info + '\n' : ''}${donationText ? donationText + '\n' : ''}\nConoce más ingresando al enlace en nuestra biografía.\n\n#Encuentralos #Lugares #Comunidad`;
+      const instagramTag = instagram_profile ? `\n\nPublicado por: @${instagram_profile.replace('@', '')}` : '';
+      const caption = `¡Nuevo lugar en nuestra comunidad! 📍\n${name}\n\nDirección: ${address}\n${contact_info ? 'Contacto: ' + contact_info + '\n' : ''}${donationText ? donationText + '\n' : ''}${instagramTag}\nConoce más ingresando al enlace en nuestra biografía.\n\n#Encuentralos #Lugares #Comunidad`;
 
       await fetch(webhookUrl, {
         method: 'POST',

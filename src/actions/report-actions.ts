@@ -21,6 +21,7 @@ export async function createReport(formData: FormData) {
   const description = formData.get('description') as string;
   const contact_email = formData.get('contact_email') as string;
   const contact_phone = formData.get('contact_phone') as string;
+  const instagram_profile = formData.get('instagram_profile') as string;
   const latitude = formData.get('latitude') as string;
   const longitude = formData.get('longitude') as string;
   const imageFile = formData.get('image') as File | null;
@@ -94,6 +95,7 @@ export async function createReport(formData: FormData) {
         contact_email,
         contact_name: 'Usuario', // Legacy column
         contact_phone: contact_phone || 'No proporcionado',
+        instagram_profile: instagram_profile ? instagram_profile.replace('@', '') : null,
         image_url: imageUrl || 'https://via.placeholder.com/300?text=Sin+Imagen',
         edit_token: editToken,
         edit_token_hash: editToken, // Legacy column
@@ -135,7 +137,8 @@ export async function createReport(formData: FormData) {
     try {
       const locationText = municipality && department ? `${municipality}, ${department}` : 'Ubicación seleccionada en el mapa';
       const statusEmoji = status === 'perdido' ? '🔍' : '✅';
-      const caption = `¡Ayuda a difundir! ${statusEmoji}\n${title}\n\n${description}\n\n📍 Ubicación: ${locationText}\n\nConoce más y contacta al anunciante en el enlace de nuestra biografía.\n\n#Encuentralos #Mascotas #Comunidad`;
+      const instagramTag = instagram_profile ? `\n\nPublicado por: @${instagram_profile.replace('@', '')}` : '';
+      const caption = `¡Ayuda a difundir! ${statusEmoji}\n${title}\n\n${description}\n\n📍 Ubicación: ${locationText}${instagramTag}\n\nConoce más y contacta al anunciante en el enlace de nuestra biografía.\n\n#Encuentralos #Mascotas #Comunidad`;
 
       await fetch(webhookUrl, {
         method: 'POST',

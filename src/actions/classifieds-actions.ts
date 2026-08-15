@@ -24,6 +24,7 @@ export async function createClassified(formData: FormData) {
   const contact_name = formData.get('contact_name') as string;
   const contact_email = formData.get('contact_email') as string;
   const contact_phone = formData.get('contact_phone') as string;
+  const instagram_profile = formData.get('instagram_profile') as string;
   const location = formData.get('location') as string;
   
   if (!contact_email || !title || !description || !type || !category || !contact_name) {
@@ -78,6 +79,7 @@ export async function createClassified(formData: FormData) {
         contact_name,
         contact_email,
         contact_phone: contact_phone || null,
+        instagram_profile: instagram_profile ? instagram_profile.replace('@', '') : null,
         location: location || null,
         image_url: null, // Ya no se suben fotos de usuario
         edit_token: editToken,
@@ -97,7 +99,8 @@ export async function createClassified(formData: FormData) {
   if (webhookUrl) {
     try {
       const typeText = type === 'ofrece' ? '¡Nueva oferta de ayuda! 📢' : '¡Atención comunidad, se necesita ayuda! 📢';
-      const caption = `${typeText}\n${title}\n\n${description}\n\n📍 Ubicación: ${location || 'No especificada'}\n👤 Contacto: ${contact_name}\n\nSi quieres ayudar o conocer más, ingresa al enlace en nuestra biografía.\n\n#Encuentralos #Clasificados #Ayuda #Comunidad`;
+      const instagramTag = instagram_profile ? `\n\nPublicado por: @${instagram_profile.replace('@', '')}` : '';
+      const caption = `${typeText}\n${title}\n\n${description}\n\n📍 Ubicación: ${location || 'No especificada'}\n👤 Contacto: ${contact_name}${instagramTag}\n\nSi quieres ayudar o conocer más, ingresa al enlace en nuestra biografía.\n\n#Encuentralos #Clasificados #Ayuda #Comunidad`;
 
       await fetch(webhookUrl, {
         method: 'POST',

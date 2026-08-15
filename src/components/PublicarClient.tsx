@@ -201,7 +201,7 @@ export function PublicarClient({ departments }: PublicarClientProps) {
                 />
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
                 <div>
                   <label className="block text-sm font-medium mb-1.5 text-muted">Correo electrónico (Obligatorio)</label>
                   <input 
@@ -221,7 +221,17 @@ export function PublicarClient({ departments }: PublicarClientProps) {
                     placeholder="+54 9 11 1234 5678"
                     className="w-full px-4 py-3 rounded-xl input-glass text-foreground"
                   />
-                  <p className="text-xs text-muted mt-1">Se mostrará públicamente para que te contacten.</p>
+                  <p className="text-xs text-muted mt-1">Se mostrará públicamente.</p>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-1.5 text-muted">Perfil de Instagram (Opcional)</label>
+                  <input 
+                    type="text" 
+                    name="instagram_profile"
+                    placeholder="@usuario"
+                    className="w-full px-4 py-3 rounded-xl input-glass text-foreground"
+                  />
+                  <p className="text-xs text-muted mt-1">Para etiquetarte al publicar.</p>
                 </div>
               </div>
 

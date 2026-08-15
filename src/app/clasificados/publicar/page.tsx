@@ -201,6 +201,16 @@ export default function PublicarClasificadoPage() {
                 />
               </div>
               <div className="space-y-2">
+                <label className="text-sm font-semibold text-slate-700">Perfil de Instagram (Opcional)</label>
+                <input 
+                  type="text" 
+                  name="instagram_profile" 
+                  maxLength={50}
+                  placeholder="@usuario"
+                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 outline-none focus:border-brand focus:ring-1 focus:ring-brand transition-all"
+                />
+              </div>
+              <div className="space-y-2 md:col-span-2">
                 <label className="text-sm font-semibold text-slate-700">Ubicación / Ciudad (Opcional)</label>
                 <input 
                   type="text" 

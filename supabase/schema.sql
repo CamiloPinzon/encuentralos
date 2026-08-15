@@ -11,6 +11,7 @@ create table public.reports (
     description text,
     contact_email text not null,
     contact_phone text,
+    instagram_profile text,
     image_url text,
     edit_token uuid default uuid_generate_v4() not null
 );
@@ -59,6 +60,7 @@ create table public.classifieds (
     contact_email text not null,
     contact_phone text,
     location text,
+    instagram_profile text,
     image_url text,
     status text not null default 'active' check (status in ('active', 'closed')),
     edit_token uuid default uuid_generate_v4() not null

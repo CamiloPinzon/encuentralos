@@ -219,6 +219,16 @@ export function PlacesFormClient({ departments }: PlacesFormClientProps) {
           />
         </div>
 
+        <div className="space-y-2">
+          <label className="text-sm font-medium text-white block">Perfil de Instagram (Opcional)</label>
+          <input
+            name="instagram_profile"
+            maxLength={100}
+            className="w-full bg-white/90 border border-slate-200 rounded-xl px-4 py-3 text-slate-900 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none transition-all"
+            placeholder="@usuario"
+          />
+        </div>
+
         <div className="space-y-2 md:col-span-2">
           <label className="text-sm font-medium text-white flex items-center gap-2">
             Tu Correo Electrónico <span className="text-xs text-brand-light bg-brand/20 px-2 py-0.5 rounded-full">Privado</span>
