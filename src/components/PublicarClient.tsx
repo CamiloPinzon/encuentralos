@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { createReport } from '@/actions/report-actions';
-import { Camera, MapPin, Search, AlertCircle, Info, ChevronRight, User, PawPrint, Loader2, Target } from 'lucide-react';
+import { Camera, MapPin, Search, AlertCircle, Info, ChevronRight, User, PawPrint, Loader2, Target, Heart } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useUserLocation } from '@/hooks/useUserLocation';
 import { DynamicLocationPickerMap } from '@/components/DynamicLocationPickerMap';
@@ -17,7 +17,7 @@ interface PublicarClientProps {
 export function PublicarClient({ departments }: PublicarClientProps) {
   const router = useRouter();
   const [category, setCategory] = useState<'human' | 'pet' | null>(null);
-  const [status, setStatus] = useState<'searching' | 'found' | 'spotted' | null>(null);
+  const [status, setStatus] = useState<'searching' | 'found' | 'spotted' | 'adoption' | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [selectedLocation, setSelectedLocation] = useState<GeoLocation | null>(null);
@@ -116,7 +116,7 @@ export function PublicarClient({ departments }: PublicarClientProps) {
             <div className="grid grid-cols-2 gap-4">
               <button
                 type="button"
-                onClick={() => setCategory('human')}
+                onClick={() => { setCategory('human'); if (status === 'adoption') setStatus(null); }}
                 className={`p-6 rounded-xl border transition-all duration-300 flex flex-col items-center gap-3 ${
                   category === 'human' 
                     ? 'glass-active scale-[1.02]' 
@@ -148,11 +148,12 @@ export function PublicarClient({ departments }: PublicarClientProps) {
               <span className="bg-brand/20 text-brand rounded-full w-8 h-8 flex items-center justify-center text-sm">2</span>
               ¿Cuál es la situación?
             </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div className={`grid grid-cols-2 ${category === 'pet' ? 'sm:grid-cols-4' : 'sm:grid-cols-3'} gap-4`}>
               {[
                 { id: 'searching', label: 'Buscando', icon: Search, color: 'text-amber-400' },
                 { id: 'found', label: 'Encontrado', icon: MapPin, color: 'text-emerald-400' },
                 { id: 'spotted', label: 'Avistamiento', icon: Info, color: 'text-blue-400' },
+                ...(category === 'pet' ? [{ id: 'adoption', label: 'En Adopción', icon: Heart, color: 'text-pink-400' }] : []),
               ].map((s) => (
                 <button
                   key={s.id}
@@ -203,7 +204,9 @@ export function PublicarClient({ departments }: PublicarClientProps) {
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
                 <div>
-                  <label className="block text-sm font-medium mb-1.5 text-muted">Correo electrónico (Obligatorio)</label>
+                  <label className="block text-sm font-medium mb-1.5 text-muted">
+                    {status === 'adoption' ? 'Correo de contacto de la fundación' : 'Correo electrónico (Obligatorio)'}
+                  </label>
                   <input 
                     type="email" 
                     name="contact_email"
@@ -214,7 +217,9 @@ export function PublicarClient({ departments }: PublicarClientProps) {
                   <p className="text-xs text-muted mt-1">Aquí te enviaremos el enlace para gestionar el reporte.</p>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium mb-1.5 text-muted">Teléfono / WhatsApp (Opcional)</label>
+                  <label className="block text-sm font-medium mb-1.5 text-muted">
+                    {status === 'adoption' ? 'Teléfono o WhatsApp de contacto' : 'Teléfono / WhatsApp (Opcional)'}
+                  </label>
                   <input 
                     type="tel" 
                     name="contact_phone"
@@ -224,14 +229,16 @@ export function PublicarClient({ departments }: PublicarClientProps) {
                   <p className="text-xs text-muted mt-1">Se mostrará públicamente.</p>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium mb-1.5 text-muted">Perfil de Instagram (Opcional)</label>
+                  <label className="block text-sm font-medium mb-1.5 text-muted">
+                    {status === 'adoption' ? 'Cuenta de Instagram de la fundación (Opcional)' : 'Perfil de Instagram (Opcional)'}
+                  </label>
                   <input 
                     type="text" 
                     name="instagram_profile"
                     placeholder="@usuario"
                     className="w-full px-4 py-3 rounded-xl input-glass text-foreground"
                   />
-                  <p className="text-xs text-muted mt-1">Para etiquetarte al publicar.</p>
+                  <p className="text-xs text-muted mt-1">Para etiquetarte al auto-publicar.</p>
                 </div>
               </div>
 

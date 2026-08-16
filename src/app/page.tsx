@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Search, MapPin, HeartHandshake, ArrowRight, User, PawPrint } from 'lucide-react';
+import { Search, MapPin, HeartHandshake, ArrowRight, User, PawPrint, Heart } from 'lucide-react';
 
 export default function HomePage() {
   return (
@@ -62,6 +62,10 @@ export default function HomePage() {
               </Link>
               <Link href="/pet/found" className="flex items-center justify-between p-3 rounded-xl hover:bg-slate-50/80 transition-colors">
                 <span className="flex items-center gap-2 font-medium text-emerald-400"><MapPin className="w-4 h-4"/> Encontradas</span>
+                <ArrowRight className="w-4 h-4 text-muted" />
+              </Link>
+              <Link href="/pet/adoption" className="flex items-center justify-between p-3 rounded-xl hover:bg-slate-50/80 transition-colors">
+                <span className="flex items-center gap-2 font-medium text-pink-400"><Heart className="w-4 h-4"/> En Adopción</span>
                 <ArrowRight className="w-4 h-4 text-muted" />
               </Link>
             </div>

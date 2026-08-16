@@ -6,7 +6,7 @@ create table public.reports (
     id uuid default uuid_generate_v4() primary key,
     created_at timestamp with time zone default timezone('utc'::text, now()) not null,
     category text not null check (category in ('human', 'pet')),
-    status text not null check (status in ('searching', 'found', 'spotted', 'resolved')),
+    status text not null check (status in ('searching', 'found', 'spotted', 'resolved', 'adoption')),
     title text not null,
     description text,
     contact_email text not null,

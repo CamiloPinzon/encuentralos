@@ -5,7 +5,7 @@ export interface Report {
   id: string;
   created_at: string;
   category: 'human' | 'pet';
-  status: 'searching' | 'found' | 'spotted' | 'resolved';
+  status: 'searching' | 'found' | 'spotted' | 'resolved' | 'adoption';
   title: string;
   description: string;
   contact_email: string;

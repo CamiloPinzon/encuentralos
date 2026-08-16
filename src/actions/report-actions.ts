@@ -136,7 +136,7 @@ export async function createReport(formData: FormData) {
   if (webhookUrl) {
     try {
       const locationText = municipality && department ? `${municipality}, ${department}` : 'Ubicación seleccionada en el mapa';
-      const statusEmoji = status === 'perdido' ? '🔍' : '✅';
+      const statusEmoji = status === 'searching' ? '🔍' : status === 'adoption' ? '🏡' : '✅';
       const instagramTag = instagram_profile ? `\n\nPublicado por: @${instagram_profile.replace('@', '')}` : '';
       const caption = `¡Ayuda a difundir! ${statusEmoji}\n${title}\n\n${description}\n\n📍 Ubicación: ${locationText}${instagramTag}\n\nConoce más y contacta al anunciante en el enlace de nuestra biografía.\n\n#Encuentralos #Mascotas #Comunidad`;
 
