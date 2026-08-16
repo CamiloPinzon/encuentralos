@@ -121,28 +121,29 @@ export async function createPlaceOfInterest(formData: FormData) {
 
     const transformations: any[] = [
       { width: 1080, height: 1080, crop: "fill" },
-      { overlay: { font_family: "Arial", font_size: 45, font_weight: "bold", text: encodedTag }, color: "#3b82f6", gravity: "north", y: 150 },
-      { overlay: { font_family: "Arial", font_size: 75, font_weight: "bold", text: encodedTitle }, color: "#1e293b", gravity: "center", y: -100, width: 850, crop: "fit" },
-      { overlay: { font_family: "Arial", font_size: 40, text: encodeURIComponent(locationText) }, color: "#475569", gravity: "center", y: 80, width: 850, crop: "fit" }
+      { overlay: { font_family: "Arial", font_size: 50, font_weight: "bold", text: encodedTag }, color: "#3b82f6", gravity: "north", y: 180 },
+      { overlay: { font_family: "Arial", font_size: 90, font_weight: "bold", text: encodedTitle }, color: "#1e293b", gravity: "center", y: -180, width: 900, crop: "fit" },
+      { overlay: { font_family: "Arial", font_size: 45, text: encodeURIComponent(locationText) }, color: "#475569", gravity: "center", y: -50, width: 850, crop: "fit" }
     ];
 
-    let currentY = 80;
+    let currentY = 70;
+
+    if (encodedAddress) {
+      transformations.push({ overlay: { font_family: "Arial", font_size: 40, text: encodedAddress }, color: "#64748b", gravity: "center", y: currentY, width: 850, crop: "fit" });
+      currentY += 100;
+    }
+
+    if (encodedContact) {
+      transformations.push({ overlay: { font_family: "Arial", font_size: 40, font_weight: "bold", text: encodedContact }, color: "#64748b", gravity: "center", y: currentY, width: 850, crop: "fit" });
+      currentY += 100;
+    }
 
     if (category === 'donation' && donation_types.length > 0) {
       const donationTypesStr = `📦 Se recibe: ${donation_types.join(', ')}`;
       const cleanDonation = donationTypesStr.replace(/\r?\n|\r/g, " ");
       const encodedDonation = encodeURIComponent(cleanDonation.substring(0, 110) + (cleanDonation.length > 110 ? '...' : ''));
-      transformations.push({ overlay: { font_family: "Arial", font_size: 30, text: encodedDonation }, color: "#10b981", gravity: "south", y: currentY, width: 900, crop: "fit" });
-      currentY += 80;
-    }
-
-    if (encodedContact) {
-      transformations.push({ overlay: { font_family: "Arial", font_size: 35, font_weight: "bold", text: encodedContact }, color: "#64748b", gravity: "south", y: currentY });
-      currentY += 70;
-    }
-
-    if (encodedAddress) {
-      transformations.push({ overlay: { font_family: "Arial", font_size: 35, text: encodedAddress }, color: "#64748b", gravity: "south", y: currentY });
+      transformations.push({ overlay: { font_family: "Arial", font_size: 35, text: encodedDonation }, color: "#10b981", gravity: "center", y: currentY, width: 900, crop: "fit" });
+      currentY += 100;
     }
 
     instagramImageUrl = cloudinary.url(bgId, {
