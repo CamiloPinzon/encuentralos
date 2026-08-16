@@ -83,7 +83,7 @@ export function FlyerModal({ report, onClose }: FlyerModalProps) {
             style={{ fontFamily: 'sans-serif' }}
           >
             {/* Foto con Banner Superpuesto */}
-            <div className="w-full h-[450px] relative shrink-0 bg-slate-100">
+            <div className="w-full h-[380px] relative shrink-0 bg-slate-100">
               {report.image_url && report.image_url !== 'https://via.placeholder.com/300?text=Sin+Imagen' ? (
                 /* eslint-disable-next-line @next/next/no-img-element */
                 <img 
@@ -99,49 +99,49 @@ export function FlyerModal({ report, onClose }: FlyerModalProps) {
               )}
 
               {/* Banner Superpuesto en la parte inferior de la imagen */}
-              <div className={`absolute bottom-0 left-0 w-full py-4 text-center ${headerColor} bg-opacity-95 backdrop-blur-sm`}>
-                <h1 className="text-4xl font-black text-white tracking-widest uppercase m-0 leading-none drop-shadow-lg">
+              <div className={`absolute bottom-0 left-0 w-full py-3 text-center ${headerColor} bg-opacity-95 backdrop-blur-sm`}>
+                <h1 className="text-3xl font-black text-white tracking-widest uppercase m-0 leading-none drop-shadow-lg">
                   {headerText}
                 </h1>
               </div>
             </div>
 
-            <div className="flex-1 p-6 flex flex-col bg-white overflow-hidden justify-between">
+            <div className="flex-1 p-5 flex flex-col bg-white overflow-hidden justify-between">
               {/* Título y Descripción */}
               <div className="text-center">
-                <h2 className="text-4xl font-black text-slate-900 leading-tight uppercase mb-2 line-clamp-2">
+                <h2 className="text-2xl font-black text-slate-900 leading-tight uppercase mb-2">
                   {report.title}
                 </h2>
-                <p className="text-base font-semibold text-slate-700 leading-snug line-clamp-3">
+                <p className="text-[13px] font-semibold text-slate-700 leading-relaxed max-h-[140px] overflow-hidden">
                   {report.description}
                 </p>
               </div>
 
               {/* Panel de Contacto (Muy Destacado) */}
-              <div className="bg-slate-50 p-4 rounded-xl border-2 border-dashed border-slate-300 flex items-center justify-between shadow-sm mt-4">
-                <div className="flex-1 overflow-hidden pr-3 text-left">
-                  <p className="text-xs font-black text-red-600 uppercase tracking-wider mb-1">¡Contacto Directo!</p>
+              <div className="bg-slate-50 p-3 rounded-xl border-2 border-dashed border-slate-300 flex items-center justify-between shadow-sm mt-3 shrink-0">
+                <div className="flex-1 overflow-hidden pr-2 text-left">
+                  <p className="text-[10px] font-black text-red-600 uppercase tracking-wider mb-1">¡Contacto Directo!</p>
                   
                   {report.contact_phone ? (
-                    <p className="text-3xl font-black text-slate-900 tracking-tight">{report.contact_phone}</p>
+                    <p className="text-2xl font-black text-slate-900 tracking-tight">{report.contact_phone}</p>
                   ) : (
-                    <p className="text-xl font-bold text-slate-500 italic">Sin teléfono</p>
+                    <p className="text-lg font-bold text-slate-500 italic">Sin teléfono</p>
                   )}
                   
-                  <p className="text-sm font-bold text-slate-500 truncate mt-1">
+                  <p className="text-xs font-bold text-slate-500 truncate mt-1">
                     {report.contact_email}
                   </p>
-                  <p className="text-[11px] text-slate-400 mt-2 font-medium">
+                  <p className="text-[10px] text-slate-400 mt-1 font-medium">
                     {format(new Date(report.created_at), 'dd MMM yyyy', { locale: es })}
                   </p>
                 </div>
                 
                 {reportUrl && (
                   <div className="flex flex-col items-center shrink-0">
-                    <div className="p-2 bg-white border border-slate-200 rounded-lg shadow-sm">
-                      <QRCodeSVG value={reportUrl} size={72} />
+                    <div className="p-1.5 bg-white border border-slate-200 rounded-lg shadow-sm">
+                      <QRCodeSVG value={reportUrl} size={60} />
                     </div>
-                    <span className="text-[9px] font-black text-slate-400 uppercase mt-1 tracking-widest">Escanear</span>
+                    <span className="text-[8px] font-black text-slate-400 uppercase mt-1 tracking-widest">Escanear</span>
                   </div>
                 )}
               </div>
