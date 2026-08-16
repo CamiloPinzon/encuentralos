@@ -1,7 +1,7 @@
 import { ImageResponse } from 'next/og';
 import { NextRequest } from 'next/server';
 import { createClient } from '@/utils/supabase/server';
-import { Report } from '@/types';
+
 
 // Colores vibrantes acordes al diseño moderno de la web
 const getStatusColors = (status: string) => {
@@ -56,8 +56,10 @@ export async function GET(
         >
           {/* Fondo desenfocado usando la misma imagen si existe */}
           {report.image_url && (
+            // eslint-disable-next-line @next/next/no-img-element
             <img
               src={report.image_url}
+              alt="Fondo desenfocado"
               style={{
                 position: 'absolute',
                 top: 0,
@@ -86,11 +88,11 @@ export async function GET(
             style={{
               display: 'flex',
               flexDirection: 'column',
-              justifyContent: 'space-between',
+              justifyContent: 'flex-start',
               alignItems: 'center',
               width: '100%',
               height: '100%',
-              padding: '60px',
+              padding: '100px 60px',
               position: 'relative',
             }}
           >
@@ -100,17 +102,17 @@ export async function GET(
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                backgroundColor: 'rgba(0, 0, 0, 0.6)',
+                backgroundColor: 'rgba(0, 0, 0, 0.7)',
                 borderStyle: 'solid',
-                borderWidth: '4px',
+                borderWidth: '6px',
                 borderColor: statusInfo.border,
                 color: statusInfo.text,
-                padding: '16px 60px',
+                padding: '24px 80px',
                 borderRadius: '100px',
-                fontSize: 48,
+                fontSize: 64,
                 fontWeight: 900,
                 letterSpacing: '0.15em',
-                marginBottom: '40px',
+                marginBottom: '80px',
               }}
             >
               {`¡${statusInfo.label}!`}
@@ -121,17 +123,20 @@ export async function GET(
               <div
                 style={{
                   display: 'flex',
-                  width: '600px',
-                  height: '600px',
-                  borderRadius: '40px',
+                  width: '850px',
+                  height: '850px',
+                  borderRadius: '60px',
                   overflow: 'hidden',
                   borderStyle: 'solid',
-                  borderWidth: '8px',
-                  borderColor: 'rgba(255,255,255,0.1)',
+                  borderWidth: '12px',
+                  borderColor: 'rgba(255,255,255,0.15)',
+                  boxShadow: '0 20px 40px rgba(0,0,0,0.5)',
                 }}
               >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={report.image_url}
+                  alt={report.title}
                   style={{
                     width: '100%',
                     height: '100%',
@@ -143,16 +148,16 @@ export async function GET(
               <div
                 style={{
                   display: 'flex',
-                  width: '600px',
-                  height: '600px',
-                  borderRadius: '40px',
+                  width: '850px',
+                  height: '850px',
+                  borderRadius: '60px',
                   backgroundColor: '#27272a',
                   justifyContent: 'center',
                   alignItems: 'center',
-                  fontSize: 100,
+                  fontSize: 150,
                   color: '#52525b',
                   borderStyle: 'solid',
-                  borderWidth: '8px',
+                  borderWidth: '12px',
                   borderColor: 'rgba(255,255,255,0.05)',
                 }}
               >
@@ -166,27 +171,47 @@ export async function GET(
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                fontSize: 64,
+                fontSize: 80,
                 fontWeight: 900,
                 color: 'white',
                 textAlign: 'center',
-                marginTop: '40px',
-                marginBottom: '20px',
-                lineHeight: 1.2,
+                marginTop: '80px',
+                marginBottom: '30px',
+                lineHeight: 1.1,
                 maxWidth: '900px',
+                textShadow: '0 4px 10px rgba(0,0,0,0.5)'
               }}
             >
               {report.title.length > 50 ? report.title.substring(0, 50) + '...' : report.title}
             </h1>
 
+            {/* Descripción */}
+            {report.description && (
+              <p
+                style={{
+                  display: 'flex',
+                  fontSize: 36,
+                  color: '#d4d4d8',
+                  textAlign: 'center',
+                  maxWidth: '900px',
+                  lineHeight: 1.4,
+                  marginBottom: '60px',
+                }}
+              >
+                {report.description.length > 150 ? report.description.substring(0, 150) + '...' : report.description}
+              </p>
+            )}
+
             {/* Información de Contacto / Footer */}
             <div
               style={{
                 display: 'flex',
+                flexDirection: 'column',
                 alignItems: 'center',
                 justifyContent: 'center',
                 width: '100%',
                 marginTop: 'auto',
+                gap: '24px',
               }}
             >
               <div
@@ -194,15 +219,46 @@ export async function GET(
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  backgroundColor: 'rgba(255,255,255,0.1)',
-                  padding: '20px 40px',
-                  borderRadius: '20px',
-                  fontSize: 32,
-                  color: '#e4e4e7',
-                  fontWeight: 600,
+                  backgroundColor: 'rgba(255,255,255,0.15)',
+                  padding: '30px 60px',
+                  borderRadius: '30px',
+                  fontSize: 56,
+                  color: '#ffffff',
+                  fontWeight: 900,
+                  borderStyle: 'solid',
+                  borderWidth: '4px',
+                  borderColor: 'rgba(255,255,255,0.3)',
                 }}
               >
-                {`📞 Contacto: ${report.contact_phone || 'Por la app'}`}
+                {report.contact_phone ? `📞 ${report.contact_phone}` : '📩 Contacto vía Email'}
+              </div>
+              
+              {report.contact_email && (
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontSize: 36,
+                    color: '#a1a1aa',
+                    fontWeight: 600,
+                  }}
+                >
+                  {report.contact_email}
+                </div>
+              )}
+
+              <div
+                style={{
+                  display: 'flex',
+                  marginTop: '40px',
+                  fontSize: 24,
+                  color: '#71717a',
+                  fontWeight: 'bold',
+                  letterSpacing: '0.1em'
+                }}
+              >
+                ENCUENTRALOS.APP
               </div>
             </div>
           </div>
@@ -210,12 +266,13 @@ export async function GET(
       ),
       {
         width: 1080,
-        height: 1080,
+        height: 1920,
       }
     );
-  } catch (e: any) {
+  } catch (e: unknown) {
     console.error('Error in ImageResponse:', e);
-    return new Response(`Failed to generate the image: ${e.message}`, {
+    const error = e as Error;
+    return new Response(`Failed to generate the image: ${error.message}`, {
       status: 500,
     });
   }

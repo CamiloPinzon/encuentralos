@@ -20,7 +20,7 @@ export function FlyerButton({ report }: FlyerButtonProps) {
         title="Generar Cartel"
       >
         <Printer className="w-5 h-5" />
-        <span className="hidden sm:inline">Cartel</span>
+        <span className="font-bold">Cartel</span>
       </button>
 
       {isModalOpen && (

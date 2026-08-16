@@ -19,7 +19,8 @@ export function FlyerModal({ report, onClose }: FlyerModalProps) {
   const [reportUrl, setReportUrl] = useState('');
 
   useEffect(() => {
-    setReportUrl(window.location.href);
+    const timer = setTimeout(() => setReportUrl(window.location.href), 0);
+    return () => clearTimeout(timer);
   }, []);
 
   const handleDownload = async () => {

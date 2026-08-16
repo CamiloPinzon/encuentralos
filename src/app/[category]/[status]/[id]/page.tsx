@@ -175,7 +175,7 @@ export default async function ReportDetailPage({ params }: ReportDetailPageProps
                   </div>
                 )}
 
-                <div className="flex gap-4">
+                <div className="flex flex-wrap gap-3 mt-4">
                   {!report.contact_phone && (
                     <a 
                       href={`mailto:${report.contact_email}?subject=Sobre el reporte: ${report.title}`}

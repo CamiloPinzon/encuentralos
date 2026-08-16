@@ -50,7 +50,7 @@ export function ShareButton({ title, text }: ShareButtonProps) {
       ) : (
         <>
           <Share2 className="w-5 h-5" />
-          <span className="hidden sm:inline">Compartir</span>
+          <span className="font-bold">Compartir</span>
         </>
       )}
     </button>
