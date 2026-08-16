@@ -1,8 +1,27 @@
 import Link from 'next/link';
 import { 
   Search, MapPin, HeartHandshake, ArrowRight, User, 
-  PawPrint, Heart, Printer, Map, MessageCircle, Instagram 
+  PawPrint, Heart, Printer, Map, MessageCircle 
 } from 'lucide-react';
+
+const InstagramIcon = ({ className = "w-6 h-6" }: { className?: string }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    className={className}
+  >
+    <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
+    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+    <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
+  </svg>
+);
 
 export default function HomePage() {
   return (
@@ -93,7 +112,7 @@ export default function HomePage() {
               
               <div className="text-left space-y-6 flex-1">
                 <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 text-pink-300 text-sm font-bold border border-white/10 uppercase tracking-widest">
-                  <Instagram className="w-4 h-4" /> La red que salva vidas
+                  <InstagramIcon className="w-4 h-4" /> La red que salva vidas
                 </div>
                 <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black text-white leading-tight">
                   Cada seguidor es <br/>
@@ -106,7 +125,7 @@ export default function HomePage() {
                 </p>
                 
                 <div className="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-yellow-400 via-pink-500 to-purple-600 text-white rounded-2xl font-bold text-lg shadow-lg group-hover:scale-105 transition-transform">
-                  <Instagram className="w-6 h-6" />
+                  <InstagramIcon className="w-6 h-6" />
                   Seguir a @encuentralos.app
                 </div>
               </div>
@@ -114,7 +133,7 @@ export default function HomePage() {
               {/* Elemento visual a la derecha */}
               <div className="hidden lg:flex w-64 h-64 shrink-0 bg-white/5 rounded-full border border-white/10 items-center justify-center relative">
                 <div className="absolute inset-0 bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600 rounded-full animate-pulse blur-xl opacity-50"></div>
-                <Instagram className="w-24 h-24 text-white relative z-10" />
+                <InstagramIcon className="w-24 h-24 text-white relative z-10" />
               </div>
               
             </div>
