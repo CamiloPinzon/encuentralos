@@ -27,6 +27,9 @@ export async function createReport(formData: FormData) {
   const imageFile = formData.get('image') as File | null;
   const department = formData.get('department') as string;
   const municipality = formData.get('municipality') as string;
+  const featuresText = formData.get('features_text') as string;
+  const featuresEmbeddingStr = formData.get('features_embedding') as string;
+
   
   if (!contact_email) {
     return { success: false, error: 'El email de contacto es obligatorio' };
@@ -73,6 +76,33 @@ export async function createReport(formData: FormData) {
     } catch (err: any) {
       return { success: false, error: 'Error al subir imagen a Cloudinary: ' + err.message };
     }
+
+    // Si no vienen features del frontend (ej. no pasó por el check de matches) y es imagen,
+    // extraemos características y generamos embedding para TODOS los reportes que tengan imagen.
+    if (!featuresText || !featuresEmbeddingStr) {
+       try {
+           const { extractFeaturesAndEmbed } = await import('@/utils/gemini-features');
+           const extraction = await extractFeaturesAndEmbed(base64Data, mimeType, category);
+           if (extraction) {
+               formData.set('features_text', extraction.features);
+               formData.set('features_embedding', JSON.stringify(extraction.embedding));
+           }
+       } catch (extractErr) {
+           console.error("Error extrayendo features en createReport:", extractErr);
+           // No bloqueamos la creación del reporte por esto
+       }
+    }
+  }
+
+  const finalFeaturesText = formData.get('features_text') as string;
+  const finalFeaturesEmbeddingStr = formData.get('features_embedding') as string;
+  let finalEmbedding = null;
+  if (finalFeaturesEmbeddingStr) {
+      try {
+          finalEmbedding = `[${JSON.parse(finalFeaturesEmbeddingStr).join(',')}]`;
+      } catch (e) {
+          console.error("Error parsing embedding:", e);
+      }
   }
 
   // Generamos el token de edición único
@@ -102,6 +132,8 @@ export async function createReport(formData: FormData) {
         location: municipality && department ? `${municipality}, ${department}` : 'Ubicación seleccionada en el mapa', // Legacy column
         latitude: latitude ? parseFloat(latitude) : null,
         longitude: longitude ? parseFloat(longitude) : null,
+        features_text: finalFeaturesText || null,
+        features_embedding: finalEmbedding || null
       }
     ])
     .select()

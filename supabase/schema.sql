@@ -1,5 +1,6 @@
--- Habilitar la extensión para UUID
+-- Habilitar la extensión para UUID y Vector
 create extension if not exists "uuid-ossp";
+create extension if not exists vector;
 
 -- Tabla principal de Reportes
 create table public.reports (
@@ -13,8 +14,47 @@ create table public.reports (
     contact_phone text,
     instagram_profile text,
     image_url text,
-    edit_token uuid default uuid_generate_v4() not null
+    edit_token uuid default uuid_generate_v4() not null,
+    features_text text,
+    features_embedding vector(768)
 );
+
+-- Crear función para buscar reportes similares (IA)
+create or replace function match_reports (
+  query_embedding vector(768),
+  match_threshold float,
+  match_count int,
+  target_category text
+)
+returns table (
+  id uuid,
+  title text,
+  description text,
+  image_url text,
+  status text,
+  contact_phone text,
+  contact_email text,
+  similarity float
+)
+language sql stable
+as $$
+  select
+    id,
+    title,
+    description,
+    image_url,
+    status,
+    contact_phone,
+    contact_email,
+    1 - (reports.features_embedding <=> query_embedding) as similarity
+  from reports
+  where 1 - (reports.features_embedding <=> query_embedding) > match_threshold
+    and category = target_category
+    and status = 'searching'
+    and features_embedding is not null
+  order by reports.features_embedding <=> query_embedding
+  limit match_count;
+$$;
 
 -- Políticas de Seguridad de Filas (Row Level Security)
 alter table public.reports enable row level security;

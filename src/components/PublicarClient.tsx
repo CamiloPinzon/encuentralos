@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { createReport } from '@/actions/report-actions';
+import { checkMatchesForFoundReport } from '@/actions/match-actions';
 import { Camera, MapPin, Search, AlertCircle, Info, ChevronRight, User, PawPrint, Loader2, Target, Heart } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useUserLocation } from '@/hooks/useUserLocation';
@@ -25,6 +26,12 @@ export function PublicarClient({ departments }: PublicarClientProps) {
   const [selectedMuni, setSelectedMuni] = useState('');
   const [municipalities, setMunicipalities] = useState<string[]>([]);
   
+  // AI Matching States
+  const [analyzing, setAnalyzing] = useState(false);
+  const [aiMatches, setAiMatches] = useState<any[]>([]);
+  const [showMatchModal, setShowMatchModal] = useState(false);
+  const [pendingFormData, setPendingFormData] = useState<FormData | null>(null);
+
   const { location, loading: locLoading, requestLocation } = useUserLocation();
 
   // Actualizar municipios cuando cambia el departamento
@@ -70,10 +77,30 @@ export function PublicarClient({ departments }: PublicarClientProps) {
         }
       }
 
-      // Llamada al Server Action
-      const result = await createReport(form);
+      // Si es "Encontrado" y no estamos en la segunda pasada, verificamos similitudes
+      if (status === 'found' && !pendingFormData) {
+        setAnalyzing(true);
+        const matchResult = await checkMatchesForFoundReport(form);
+        setAnalyzing(false);
+        
+        if (matchResult.success && matchResult.matches && matchResult.matches.length > 0) {
+          setAiMatches(matchResult.matches);
+          // Guardamos las features extraídas para no volver a llamarlas si el usuario ignora los matches
+          if (matchResult.features) form.set('features_text', matchResult.features);
+          if (matchResult.embedding) form.set('features_embedding', JSON.stringify(matchResult.embedding));
+          
+          setPendingFormData(form);
+          setShowMatchModal(true);
+          setLoading(false);
+          return;
+        }
+      }
+
+      // Proceder con la publicación (ya sea normal, o la segunda pasada después de ignorar matches)
+      const dataToSubmit = pendingFormData || form;
+      
+      const result = await createReport(dataToSubmit);
       if (result.success && result.manageUrl) {
-        // Redirigir al panel de gestión
         router.push(result.manageUrl);
       } else {
         setError(result.error || 'Error desconocido al crear el reporte');
@@ -82,7 +109,27 @@ export function PublicarClient({ departments }: PublicarClientProps) {
       setError(err.message || 'Error inesperado al publicar');
     } finally {
       setLoading(false);
+      setAnalyzing(false);
     }
+  };
+
+  const handleContinuePublishing = () => {
+     setShowMatchModal(false);
+     setLoading(true);
+     // Re-disparamos la creación usando el pendingFormData
+     if (pendingFormData) {
+         createReport(pendingFormData).then(result => {
+             if (result.success && result.manageUrl) {
+                 router.push(result.manageUrl);
+             } else {
+                 setError(result.error || 'Error al publicar');
+                 setLoading(false);
+             }
+         }).catch(err => {
+             setError(err.message || 'Error inesperado');
+             setLoading(false);
+         });
+     }
   };
 
   return (
@@ -345,13 +392,13 @@ export function PublicarClient({ departments }: PublicarClientProps) {
 
             <button
               type="submit"
-              disabled={loading}
+              disabled={loading || analyzing}
               className="w-full flex items-center justify-center gap-2 bg-brand hover:bg-brand-hover text-white py-4 px-8 rounded-xl font-bold text-lg transition-all shadow-[0_0_20px_rgba(16,185,129,0.3)] hover:shadow-[0_0_30px_rgba(16,185,129,0.5)] disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
             >
-              {loading ? (
+              {loading || analyzing ? (
                 <>
                   <Loader2 className="w-6 h-6 animate-spin" />
-                  Publicando...
+                  {analyzing ? 'Analizando imagen con IA...' : 'Publicando...'}
                 </>
               ) : (
                 <>
@@ -364,6 +411,55 @@ export function PublicarClient({ departments }: PublicarClientProps) {
 
         </form>
       </div>
+
+      {/* Modal de Similitud IA */}
+      {showMatchModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fade-in">
+          <div className="bg-slate-900 rounded-3xl border border-slate-700 shadow-2xl max-w-2xl w-full max-h-[90vh] flex flex-col overflow-hidden">
+            <div className="p-6 border-b border-slate-800 text-center">
+              <h3 className="text-2xl font-bold text-white mb-2">¡Un momento! 🔍</h3>
+              <p className="text-slate-300">
+                Nuestra IA ha detectado posibles coincidencias con reportes de "{category === 'pet' ? 'Mascotas' : 'Personas'} Buscadas". ¿Podría ser alguno de estos?
+              </p>
+            </div>
+            
+            <div className="flex-1 overflow-y-auto p-6 space-y-4 bg-slate-800/50">
+              {aiMatches.map((match) => (
+                <div key={match.id} className="bg-slate-800 p-4 rounded-2xl border border-slate-700 flex flex-col sm:flex-row gap-4 items-center">
+                  <div className="w-24 h-24 rounded-xl overflow-hidden shrink-0 bg-slate-900">
+                    <img src={match.image_url} alt={match.title} className="w-full h-full object-cover" />
+                  </div>
+                  <div className="flex-1 text-center sm:text-left">
+                    <h4 className="font-bold text-lg text-white">{match.title}</h4>
+                    <p className="text-sm text-slate-400 line-clamp-2 mt-1">{match.description}</p>
+                    <p className="text-xs text-brand mt-2 font-medium">Coincidencia IA: {Math.round(match.similarity * 100)}%</p>
+                  </div>
+                  <div className="shrink-0">
+                    <a 
+                      href={`/${category}/searching/${match.id}`}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="inline-block bg-brand/20 hover:bg-brand/30 text-brand px-4 py-2 rounded-lg font-semibold transition-colors text-sm"
+                    >
+                      ¡Es este!
+                    </a>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div className="p-6 border-t border-slate-800 flex justify-end">
+              <button 
+                onClick={handleContinuePublishing}
+                className="w-full sm:w-auto px-6 py-3 bg-slate-700 hover:bg-slate-600 text-white font-bold rounded-xl transition-all"
+              >
+                Ninguno coincide, continuar publicando
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
     </main>
   );
 }
