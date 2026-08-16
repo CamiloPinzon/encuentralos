@@ -79,11 +79,11 @@ export function FlyerModal({ report, onClose }: FlyerModalProps) {
           {/* EL CARTEL (Ancho fijo para que la imagen se genere consistente) */}
           <div 
             ref={flyerRef}
-            className="bg-white w-[400px] shrink-0 text-black p-0 overflow-hidden flex flex-col shadow-xl border border-slate-200"
+            className="bg-white w-[450px] h-[800px] shrink-0 text-black p-0 overflow-hidden flex flex-col shadow-xl border border-slate-200 relative"
             style={{ fontFamily: 'sans-serif' }}
           >
             {/* Foto con Banner Superpuesto */}
-            <div className="w-full relative aspect-square bg-slate-100">
+            <div className="w-full h-[450px] relative shrink-0 bg-slate-100">
               {report.image_url && report.image_url !== 'https://via.placeholder.com/300?text=Sin+Imagen' ? (
                 /* eslint-disable-next-line @next/next/no-img-element */
                 <img 
@@ -94,7 +94,7 @@ export function FlyerModal({ report, onClose }: FlyerModalProps) {
                 />
               ) : (
                 <div className="w-full h-full flex items-center justify-center">
-                  <span className="text-slate-400 font-bold">Sin fotografía</span>
+                  <span className="text-slate-400 font-bold text-lg">Sin fotografía</span>
                 </div>
               )}
 
@@ -106,32 +106,32 @@ export function FlyerModal({ report, onClose }: FlyerModalProps) {
               </div>
             </div>
 
-            <div className="p-6 flex flex-col gap-4 bg-white">
+            <div className="flex-1 p-6 flex flex-col bg-white overflow-hidden justify-between">
               {/* Título y Descripción */}
               <div className="text-center">
-                <h2 className="text-3xl font-black text-slate-900 leading-tight uppercase mb-3">
+                <h2 className="text-4xl font-black text-slate-900 leading-tight uppercase mb-2 line-clamp-2">
                   {report.title}
                 </h2>
-                <p className="text-sm font-semibold text-slate-700 leading-snug whitespace-pre-wrap break-words">
+                <p className="text-base font-semibold text-slate-700 leading-snug line-clamp-3">
                   {report.description}
                 </p>
               </div>
 
               {/* Panel de Contacto (Muy Destacado) */}
-              <div className="mt-2 bg-slate-50 p-4 rounded-xl border-2 border-dashed border-slate-300 flex items-center justify-between shadow-sm">
+              <div className="bg-slate-50 p-4 rounded-xl border-2 border-dashed border-slate-300 flex items-center justify-between shadow-sm mt-4">
                 <div className="flex-1 overflow-hidden pr-3 text-left">
                   <p className="text-xs font-black text-red-600 uppercase tracking-wider mb-1">¡Contacto Directo!</p>
                   
                   {report.contact_phone ? (
-                    <p className="text-2xl font-black text-slate-900 tracking-tight">{report.contact_phone}</p>
+                    <p className="text-3xl font-black text-slate-900 tracking-tight">{report.contact_phone}</p>
                   ) : (
-                    <p className="text-lg font-bold text-slate-500 italic">Sin teléfono</p>
+                    <p className="text-xl font-bold text-slate-500 italic">Sin teléfono</p>
                   )}
                   
-                  <p className="text-xs font-bold text-slate-500 truncate mt-1">
+                  <p className="text-sm font-bold text-slate-500 truncate mt-1">
                     {report.contact_email}
                   </p>
-                  <p className="text-[10px] text-slate-400 mt-2 font-medium">
+                  <p className="text-[11px] text-slate-400 mt-2 font-medium">
                     {format(new Date(report.created_at), 'dd MMM yyyy', { locale: es })}
                   </p>
                 </div>
@@ -139,7 +139,7 @@ export function FlyerModal({ report, onClose }: FlyerModalProps) {
                 {reportUrl && (
                   <div className="flex flex-col items-center shrink-0">
                     <div className="p-2 bg-white border border-slate-200 rounded-lg shadow-sm">
-                      <QRCodeSVG value={reportUrl} size={64} />
+                      <QRCodeSVG value={reportUrl} size={72} />
                     </div>
                     <span className="text-[9px] font-black text-slate-400 uppercase mt-1 tracking-widest">Escanear</span>
                   </div>
@@ -148,8 +148,8 @@ export function FlyerModal({ report, onClose }: FlyerModalProps) {
             </div>
             
             {/* Footer del Cartel */}
-            <div className="bg-slate-900 w-full py-2 text-center mt-auto">
-              <p className="text-[10px] font-bold text-slate-400 tracking-widest">
+            <div className="bg-slate-900 w-full py-3 text-center shrink-0 mt-auto">
+              <p className="text-xs font-bold text-slate-400 tracking-widest">
                 ENCUENTRALOS.APP
               </p>
             </div>
