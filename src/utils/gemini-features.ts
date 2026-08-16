@@ -10,7 +10,7 @@ export async function extractFeaturesAndEmbed(base64Image: string, mimeType: str
     }
 
     // 1. Extraer características detalladas con Gemini Flash
-    const model = genAI.getGenerativeModel({ model: "gemini-3.5-flash" });
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
     let prompt = '';
     if (category === 'pet') {
