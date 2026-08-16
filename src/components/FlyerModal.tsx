@@ -81,71 +81,74 @@ export function FlyerModal({ report, onClose }: FlyerModalProps) {
             className="bg-white w-[400px] shrink-0 text-black p-0 overflow-hidden flex flex-col shadow-xl border border-slate-200"
             style={{ fontFamily: 'sans-serif' }}
           >
-            {/* Header del Cartel */}
-            <div className={`${headerColor} w-full py-5 text-center`}>
-              <h1 className="text-5xl font-black text-white tracking-widest uppercase m-0 leading-none">
-                {headerText}
-              </h1>
-            </div>
-
-            <div className="p-6 flex flex-col gap-4 items-center text-center">
-              {/* Título */}
-              <h2 className="text-3xl font-extrabold text-slate-900 leading-tight uppercase">
-                {report.title}
-              </h2>
-
-              {/* Foto */}
+            {/* Foto con Banner Superpuesto */}
+            <div className="w-full relative aspect-square bg-slate-100">
               {report.image_url && report.image_url !== 'https://via.placeholder.com/300?text=Sin+Imagen' ? (
-                <div className="w-full aspect-square relative bg-slate-100 rounded-xl overflow-hidden border-4 border-slate-200">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img 
-                    src={report.image_url} 
-                    alt={report.title}
-                    className="w-full h-full object-cover"
-                    crossOrigin="anonymous"
-                  />
-                </div>
+                /* eslint-disable-next-line @next/next/no-img-element */
+                <img 
+                  src={report.image_url} 
+                  alt={report.title}
+                  className="w-full h-full object-cover"
+                  crossOrigin="anonymous"
+                />
               ) : (
-                <div className="w-full aspect-square bg-slate-100 flex items-center justify-center rounded-xl border-4 border-slate-200">
+                <div className="w-full h-full flex items-center justify-center">
                   <span className="text-slate-400 font-bold">Sin fotografía</span>
                 </div>
               )}
 
-              {/* Descripción */}
-              <div className="w-full border-t-2 border-b-2 border-slate-200 py-4 my-2">
-                <p className="text-base font-medium text-slate-700 leading-relaxed text-left whitespace-pre-wrap">
+              {/* Banner Superpuesto en la parte inferior de la imagen */}
+              <div className={`absolute bottom-0 left-0 w-full py-4 text-center ${headerColor} bg-opacity-95 backdrop-blur-sm`}>
+                <h1 className="text-4xl font-black text-white tracking-widest uppercase m-0 leading-none drop-shadow-lg">
+                  {headerText}
+                </h1>
+              </div>
+            </div>
+
+            <div className="p-6 flex flex-col gap-4 bg-white">
+              {/* Título y Descripción */}
+              <div className="text-center">
+                <h2 className="text-3xl font-black text-slate-900 leading-tight uppercase mb-3">
+                  {report.title}
+                </h2>
+                <p className="text-sm font-semibold text-slate-700 leading-snug whitespace-pre-wrap break-words">
                   {report.description}
                 </p>
               </div>
 
-              {/* Contacto y QR */}
-              <div className="w-full flex items-center justify-between gap-4 mt-2">
-                <div className="flex-1 text-left">
-                  <p className="text-sm font-bold text-red-600 uppercase mb-1">¡Ayúdanos a encontrarlo!</p>
-                  <p className="text-sm font-bold text-slate-900">Contacto:</p>
-                  {report.contact_phone && (
-                    <p className="text-xl font-black text-slate-900">{report.contact_phone}</p>
+              {/* Panel de Contacto (Muy Destacado) */}
+              <div className="mt-2 bg-slate-50 p-4 rounded-xl border-2 border-dashed border-slate-300 flex items-center justify-between shadow-sm">
+                <div className="flex-1 overflow-hidden pr-3 text-left">
+                  <p className="text-xs font-black text-red-600 uppercase tracking-wider mb-1">¡Contacto Directo!</p>
+                  
+                  {report.contact_phone ? (
+                    <p className="text-2xl font-black text-slate-900 tracking-tight">{report.contact_phone}</p>
+                  ) : (
+                    <p className="text-lg font-bold text-slate-500 italic">Sin teléfono</p>
                   )}
-                  <p className="text-sm font-semibold text-slate-700">{report.contact_email}</p>
-                  <p className="text-xs text-slate-500 mt-2">
-                    Reportado el {format(new Date(report.created_at), 'dd MMM yyyy', { locale: es })}
+                  
+                  <p className="text-xs font-bold text-slate-500 truncate mt-1">
+                    {report.contact_email}
+                  </p>
+                  <p className="text-[10px] text-slate-400 mt-2 font-medium">
+                    {format(new Date(report.created_at), 'dd MMM yyyy', { locale: es })}
                   </p>
                 </div>
                 
                 {reportUrl && (
-                  <div className="flex flex-col items-center gap-1">
-                    <div className="p-2 bg-white border-2 border-slate-200 rounded-lg">
-                      <QRCodeSVG value={reportUrl} size={90} />
+                  <div className="flex flex-col items-center shrink-0">
+                    <div className="p-2 bg-white border border-slate-200 rounded-lg shadow-sm">
+                      <QRCodeSVG value={reportUrl} size={64} />
                     </div>
-                    <span className="text-[10px] font-bold text-slate-500 uppercase">Escanear</span>
+                    <span className="text-[9px] font-black text-slate-400 uppercase mt-1 tracking-widest">Escanear</span>
                   </div>
                 )}
               </div>
             </div>
             
             {/* Footer del Cartel */}
-            <div className="bg-slate-900 w-full py-3 text-center mt-auto">
-              <p className="text-xs font-bold text-white tracking-widest">
+            <div className="bg-slate-900 w-full py-2 text-center mt-auto">
+              <p className="text-[10px] font-bold text-slate-400 tracking-widest">
                 ENCUENTRALOS.APP
               </p>
             </div>

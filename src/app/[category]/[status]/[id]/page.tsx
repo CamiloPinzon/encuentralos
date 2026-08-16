@@ -97,26 +97,25 @@ export default async function ReportDetailPage({ params }: ReportDetailPageProps
           Volver al listado
         </Link>
 
-        {/* Tarjeta Principal */}
-        <article className="glass rounded-3xl overflow-hidden border border-slate-200 shadow-2xl">
-          <div className="flex flex-col md:flex-row h-auto md:h-[calc(100vh-4rem)]">
+        {/* Contenedor Principal Sin Scroll Interno */}
+        <div className="flex flex-col md:flex-row gap-8 md:gap-12 items-start">
             
-            {/* Lado Izquierdo - Imagen (Fixed on Desktop) */}
-            <div className="w-full md:w-1/2 relative bg-black flex items-center justify-center">
+            {/* Lado Izquierdo - Imagen (Sticky en Desktop) */}
+            <div className="w-full md:w-1/2 relative bg-slate-900 rounded-3xl overflow-hidden shadow-2xl flex items-center justify-center aspect-square md:aspect-auto md:h-[calc(100vh-6rem)] md:sticky md:top-20 z-10">
               {report.image_url && report.image_url !== 'https://via.placeholder.com/300?text=Sin+Imagen' ? (
                 <ZoomableImage 
                   src={report.image_url} 
                   alt={`Foto de ${report.title}`} 
                 />
               ) : (
-                <div className="absolute inset-0 flex items-center justify-center text-muted">
+                <div className="absolute inset-0 flex items-center justify-center text-slate-400">
                   <span>Este reporte no incluye fotografía</span>
                 </div>
               )}
             </div>
 
             {/* Sección de Datos */}
-            <div className="w-full md:w-1/2 p-8 md:p-10 flex flex-col overflow-y-auto">
+            <div className="w-full md:w-1/2 flex flex-col pt-2 pb-12">
               
               <div className="flex items-center gap-3 mb-4">
                 <span className="bg-brand/20 text-brand px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest border border-brand/20">
@@ -196,7 +195,6 @@ export default async function ReportDetailPage({ params }: ReportDetailPageProps
 
             </div>
           </div>
-        </article>
       </div>
     </main>
   );
