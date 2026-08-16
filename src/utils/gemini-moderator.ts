@@ -12,7 +12,12 @@ export async function moderateImage(base64Image: string, mimeType: string): Prom
       return { isSafe: true, reason: 'Moderación omitida: falta clave de API' };
     }
 
-    const model = genAI.getGenerativeModel({ model: "gemini-3.5-flash" });
+    const model = genAI.getGenerativeModel({ 
+      model: "gemini-3.5-flash",
+      generationConfig: {
+        responseMimeType: "application/json",
+      }
+    });
 
     const prompt = `
       Actúa como un moderador de contenido estricto para una plataforma dedicada a reportar mascotas perdidas y encontradas.
@@ -27,7 +32,7 @@ export async function moderateImage(base64Image: string, mimeType: string): Prom
       
       DEBES ACEPTAR la imagen si muestra claramente a una mascota o animal (perro, gato, ave, etc.) que podría estar perdido o encontrado, incluso si hay personas o texto acompañando a la mascota.
       
-      Responde ESTRICTAMENTE en formato JSON con la siguiente estructura y sin texto adicional ni formato de markdown:
+      Responde usando este esquema JSON:
       {
         "isSafe": boolean,
         "reason": "Breve justificación de por qué fue aceptada o rechazada (en español)"
@@ -44,20 +49,16 @@ export async function moderateImage(base64Image: string, mimeType: string): Prom
     ];
 
     const result = await model.generateContent([prompt, ...imageParts]);
-    const response = await result.response;
-    const text = response.text();
+    const text = result.response.text();
     
-    // Extraer el JSON en caso de que Gemini responda con formato de markdown (ej. \`\`\`json ... \`\`\`)
-    const jsonMatch = text.match(/\{[\s\S]*\}/);
-    if (jsonMatch) {
-        const parsed = JSON.parse(jsonMatch[0]);
+    try {
+        const parsed = JSON.parse(text);
         return {
             isSafe: !!parsed.isSafe,
             reason: parsed.reason || 'Sin razón especificada'
         };
-    } else {
+    } catch (parseError) {
          console.warn("La respuesta de Gemini no incluyó un JSON válido:", text);
-         // Si falla el parseo, devolvemos false por precaución
          return { isSafe: false, reason: 'La imagen no pudo ser procesada correctamente por el moderador.' };
     }
   } catch (error) {
