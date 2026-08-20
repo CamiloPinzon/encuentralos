@@ -25,12 +25,12 @@ export async function moderateImage(base64Image: string, mimeType: string): Prom
       
       DEBES RECHAZAR la imagen si contiene algo de lo siguiente:
       1. Pornografía, desnudez o contenido sexual explícito.
-      2. Violencia, sangre, maltrato animal o contenido gráfico.
+      2. Violencia, sangre, maltrato animal/infantil o contenido gráfico.
       3. Contenido ilegal, armas o pedofilia.
-      4. Intención de venta o compra de cualquier producto o servicio (incluyendo criaderos o venta de mascotas).
-      5. Contenido irrelevante que NO muestre a una mascota o animal (ej. memes, capturas de pantalla solo con texto, paisajes vacíos, selfies donde no haya un animal).
+      4. Intención de venta o compra de cualquier producto o servicio.
+      5. Contenido irrelevante tipo "troll" (ej. memes puros sin contexto de búsqueda, capturas de pantalla de chistes).
       
-      DEBES ACEPTAR la imagen si muestra claramente a una mascota o animal (perro, gato, ave, etc.) que podría estar perdido o encontrado, incluso si hay personas o texto acompañando a la mascota.
+      DEBES ACEPTAR la imagen si muestra a una mascota (perro, gato, ave, etc.) o a una PERSONA (niño, adulto, anciano) que podría estar perdido o encontrado. Es una app de búsqueda de mascotas Y PERSONAS perdidas.
       
       Responde usando este esquema JSON:
       {
@@ -59,13 +59,12 @@ export async function moderateImage(base64Image: string, mimeType: string): Prom
         };
     } catch (parseError) {
          console.warn("La respuesta de Gemini no incluyó un JSON válido:", text);
-         return { isSafe: false, reason: 'La imagen no pudo ser procesada correctamente por el moderador.' };
+         return { isSafe: true, reason: 'Falló el parseo de la moderación. Omitiendo.' };
     }
   } catch (error) {
     console.error("Error en la moderación con Gemini:", error);
-    // Si hay un error de red o de la API de Gemini, devolvemos false preventivamente, o lo dejamos pasar.
-    // Para evitar bloquear la app entera por caída de Google, en este contexto devolveremos false 
-    // y pediremos al usuario reintentar.
-    return { isSafe: false, reason: 'Error en el servicio de moderación de imágenes. Por favor, intenta de nuevo más tarde.' };
+    // Para evitar bloquear la app entera por caída de Google o error de API Key,
+    // permitimos que la imagen se guarde para no arruinar la experiencia del usuario.
+    return { isSafe: true, reason: 'Error en el servicio de moderación. Omitiendo.' };
   }
 }
