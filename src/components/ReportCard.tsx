@@ -39,6 +39,7 @@ export function ReportCard({ report }: ReportCardProps) {
           {report.status === 'found' && <span className="text-emerald-400">Encontrado</span>}
           {report.status === 'spotted' && <span className="text-blue-400">Visto</span>}
           {report.status === 'resolved' && <span className="text-brand-light">Resuelto</span>}
+          {report.status === 'adoption' && <span className="text-pink-400">Adopción</span>}
         </div>
       </div>
 
