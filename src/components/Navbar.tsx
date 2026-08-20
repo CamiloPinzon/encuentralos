@@ -4,7 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
-import { Menu, X, PlusCircle, Search } from 'lucide-react';
+import { Menu, X, PlusCircle, Search, Heart } from 'lucide-react';
 
 const InstagramIcon = ({ className }: { className?: string }) => (
   <svg
@@ -33,6 +33,7 @@ export function Navbar() {
   const navLinks = [
     { name: 'Mascotas', path: '/pet/searching', icon: <Search className="w-4 h-4" /> },
     { name: 'Personas', path: '/human/searching', icon: <Search className="w-4 h-4" /> },
+    { name: 'Adopciones', path: '/pet/adoption', icon: <Heart className="w-4 h-4" /> },
     { name: 'Clasificados', path: '/clasificados', icon: null },
     { name: 'Mis Reportes', path: '/recuperar', icon: null },
     { name: 'Lugares', path: '/lugares', icon: null },
