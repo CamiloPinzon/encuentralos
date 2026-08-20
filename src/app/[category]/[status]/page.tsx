@@ -24,6 +24,7 @@ const titles: Record<string, Record<string, string>> = {
     found: 'Mascotas Encontradas',
     spotted: 'Mascotas Avistadas',
     resolved: 'Casos Resueltos (Mascotas)',
+    adoption: 'Mascotas en Adopción',
   }
 };
 
@@ -31,7 +32,7 @@ export default async function FeedPage({ params }: FeedPageProps) {
   const { category, status } = await params;
   
   // Validar parámetros
-  if (!['human', 'pet'].includes(category) || !['searching', 'found', 'spotted', 'resolved'].includes(status)) {
+  if (!['human', 'pet'].includes(category) || !['searching', 'found', 'spotted', 'resolved', 'adoption'].includes(status)) {
     return (
       <main className="container mx-auto p-4 py-20 text-center">
         <h1 className="text-3xl font-bold text-red-400">Categoría o estado inválido</h1>
