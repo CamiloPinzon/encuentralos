@@ -20,22 +20,21 @@ export async function moderateImage(base64Image: string, mimeType: string): Prom
     });
 
     const prompt = `
-      Actúa como un moderador de contenido estricto para una plataforma dedicada a reportar mascotas perdidas y encontradas.
-      Analiza esta imagen y determina si es apropiada para la plataforma. 
-      
-      DEBES RECHAZAR la imagen si contiene algo de lo siguiente:
-      1. Pornografía, desnudez o contenido sexual explícito.
-      2. Violencia, sangre, maltrato animal/infantil o contenido gráfico.
-      3. Contenido ilegal, armas o pedofilia.
-      4. Intención de venta o compra de cualquier producto o servicio.
-      5. Contenido irrelevante tipo "troll" (ej. memes puros sin contexto de búsqueda, capturas de pantalla de chistes).
-      
-      DEBES ACEPTAR la imagen si muestra a una mascota (perro, gato, ave, etc.) o a una PERSONA (niño, adulto, anciano) que podría estar perdido o encontrado. Es una app de búsqueda de mascotas Y PERSONAS perdidas.
-      
+      Eres el sistema de moderación de seguridad para una aplicación de reporte de mascotas y personas perdidas.
+      Tu única tarea es bloquear y rechazar contenido explícitamente ilegal o inapropiado.
+
+      DEBES RECHAZAR la imagen si y solo si contiene:
+      1. Material pornográfico, contenido sexual explícito o desnudez.
+      2. Pedofilia o abuso infantil.
+      3. Violencia extrema, mutilación, sangre o maltrato animal gráfico.
+      4. Drogas ilegales o armas de fuego.
+
+      Cualquier otra imagen que no pertenezca a las categorías anteriores (como carteles de "se busca", fotos con texto, capturas de pantalla, mascotas, personas, paisajes, etc.) es completamente válida y segura para la plataforma.
+
       Responde usando este esquema JSON:
       {
-        "isSafe": boolean,
-        "reason": "Breve justificación de por qué fue aceptada o rechazada (en español)"
+        "isSafe": boolean, // false si contiene material prohibido según las reglas anteriores, true en cualquier otro caso
+        "reason": "Justificación de la decisión"
       }
     `;
 
